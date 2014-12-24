@@ -15,6 +15,8 @@
 #include <cairo/cairo.h>
 
 extern "C" {
+	#define val_get_float(v) val_get_double(v)
+
     <?php foreach ($abstracts as $abstract) { ?>
 		DECLARE_KIND(kind_<?= $abstract->name ?>)
 		DEFINE_KIND(kind_<?= $abstract->name ?>)
@@ -35,8 +37,13 @@ extern "C" {
         		<?= $arg->check ?>;
         	<?php } ?>
 
-			<?= $function->retval->type ?> _result = <?= $function->name ?>(<?php echo implode(', ', array_map(function($a) { return $a->get; }, $function->args)); ?>);
-			return <?= $function->retval->alloc('_result') ?>;
+        	<?php if ($function->retval->type == 'void') { ?>
+				<?= $function->name ?>(<?php echo implode(', ', array_map(function($a) { return $a->get; }, $function->args)); ?>);
+				return val_null;
+        	<?php } else { ?>
+				<?= $function->retval->type ?> _result = <?= $function->name ?>(<?php echo implode(', ', array_map(function($a) { return $a->get; }, $function->args)); ?>);
+				return <?= $function->retval->alloc('_result') ?>;
+        	<?php } ?>
         }
         DEFINE_PRIM(hx_<?= $function->name ?>, <?= count($function->args) ?>);
     <?php } ?>
