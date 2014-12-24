@@ -1,0 +1,3 @@
+<project>
+	<ndll name="cairo" haxelib="cairo" />
+</project>

@@ -1,0 +1,14 @@
+{
+  "name": "cairo",
+  "license": "MIT",
+  "classPath": "src",
+  "tags": ["cpp","neko","cairo"],
+  "description": "Cairo bindings for haxe",
+  "contributors": ["soywiz"],
+  "releasenote": "",
+  "version": "0.0.1",
+  "url": "https://github.com/soywiz/haxe-cairo",
+  "dependencies": {
+    "hxcpp": ""
+  }
+}

@@ -1,0 +1,80 @@
+<xml>
+
+<include name="${HXCPP}/build-tool/BuildCommon.xml"/>
+
+<!-- 
+  Build with:
+     -Diphonesim              -> build i386 version
+     -Diphoneos               -> build armv6
+     -Diphoneos -DHXCPP_ARMV7 -> build armv7
+     -Dandroid                -> build android armv5
+     -Dandroid  -DHXCPP_ARMV7 -> build android armv7
+     -Dandroid  -DHXCPP_X86   -> build android x86
+     - no defines             -> build current OS
+     -DHXCPP_M64              -> build current OS, 64 but version
+     -Ddebug                  -> Used in combination with above for debug
+-->
+
+<set name="iphonesim" value="1" if="ios" />
+<set name="iphoneos" value="1" if="ios" unless="simulator" />
+
+<set name="mobile" value="1" if="iphone"/>
+<set name="mobile" value="1" if="android"/>
+<set name="mobile" value="1" if="webos"/>
+<set name="mobile" value="1" if="blackberry"/>
+<set name="mobile" value="1" if="tizen"/>
+<set name="mobile" value="1" if="gph"/>
+
+<set name="IOS_ARCH" value="-v7" if="HXCPP_ARMV7" />
+
+<set name="ndll-tool" value="dll" unless="iphone"/>
+<set name="ndll-tool" value="static_link" if="iphone"/>
+<set name="name_extra" value=".iphonesim" if="iphonesim"/>
+<set name="name_extra" value=".iphoneos${IOS_ARCH}" if="iphoneos"/>
+
+<set name="name_extra" value="-x86" if="simulator" unless="iphonesim" />
+
+<set name="CAIRO" value="cairo/src/" />
+
+<set name="name_prefix" value="lib" if="iphone" />
+
+<compilerflag value="-I/usr/local/Cellar/cairo/1.14.0/include" />
+
+<linker id="dll" exe="g++">
+	  <flag value="-Llibs/Mac64"/>
+	  <flag value="-lcairo"/>
+	  <flag value="-L/usr/local/Cellar/pixman/0.32.6/lib"/>
+	  <flag value="-lpixman-1"/>
+	  <flag value="-L/usr/local/Cellar/libpng/1.6.13/lib"/>
+	  <flag value="-lpng"/>
+	  <flag value="-L/usr/local/Cellar/freetype/2.5.4/lib"/>
+	  <flag value="-lfreetype"/>
+	  <flag value="-L/usr/local/Cellar/fontconfig/2.11.1/lib"/>
+	  <flag value="-lfontconfig"/>
+	  <flag value="-L/usr/local/Cellar/cairo/1.14.0/lib"/>
+	  <flag value="-lcairo"/>
+</linker>
+
+<files id="common">
+	<depend name="${HXCPP}/include/hx/Macros.h"/>
+	<depend name="${HXCPP}/include/hx/CFFI.h"/>
+
+	<file name="ExternalInterface.cpp" />
+
+</files>
+
+<files id="windows">
+</files>
+	
+<target id="NDLL" output="${name_prefix}cairo${name_extra}" tool="linker" toolid="${ndll-tool}">
+	<outdir name="../ndll/${BINDIR}" />
+	<ext value=".ndll" unless="mobile"/>
+	<files id="common" />
+	<files id="windows" if="windows"/>
+</target>
+
+<target id="default">
+	<target id="NDLL"/>
+</target>
+
+</xml>
