@@ -41,18 +41,16 @@
 <compilerflag value="-I/usr/local/Cellar/cairo/1.14.0/include" />
 
 <linker id="dll" exe="g++">
-	  <flag value="-Llibs/Mac64"/>
-	  <flag value="-lcairo"/>
 	  <flag value="-L/usr/local/Cellar/pixman/0.32.6/lib"/>
-	  <flag value="-lpixman-1"/>
 	  <flag value="-L/usr/local/Cellar/libpng/1.6.13/lib"/>
-	  <flag value="-lpng"/>
 	  <flag value="-L/usr/local/Cellar/freetype/2.5.4/lib"/>
-	  <flag value="-lfreetype"/>
 	  <flag value="-L/usr/local/Cellar/fontconfig/2.11.1/lib"/>
-	  <flag value="-lfontconfig"/>
 	  <flag value="-L/usr/local/Cellar/cairo/1.14.0/lib"/>
-	  <flag value="-lcairo"/>
+	  <lib value="-lpixman-1"/>
+	  <lib value="-lpng"/>
+	  <lib value="-lfreetype"/>
+	  <lib value="-lfontconfig"/>
+	  <lib value="-lcairo"/>
 </linker>
 
 <files id="common">

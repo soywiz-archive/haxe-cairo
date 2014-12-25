@@ -9,7 +9,9 @@ import cpp.Lib;
 class CairoRaw {
 	static private inline function load(name:String, count:Int) return Lib.load('cairo', name, count);
 
+	#if neko
 	static private var laoded = hxcpp.NekoInit.nekoInit("cairo");
+	#end
 
 		static public var cairo_version_string = load('hx_cairo_version_string', 0);
 		static public var cairo_create = load('hx_cairo_create', 1);

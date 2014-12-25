@@ -9,7 +9,9 @@ import cpp.Lib;
 class CairoRaw {
 	static private inline function load(name:String, count:Int) return Lib.load('cairo', name, count);
 
+	#if neko
 	static private var laoded = hxcpp.NekoInit.nekoInit("cairo");
+	#end
 
 	<?php foreach ($functions as $function) { ?>
 	static public var <?= $function->name ?> = load('hx_<?= $function->name ?>', <?= count($function->args) ?>);
