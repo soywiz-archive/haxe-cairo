@@ -7,7 +7,7 @@ class CairoFunctions {
 		$surface = type('cairo_surface_t', 'cairo_surface_destroy');
 		$cairo = type('cairo_t', 'cairo_destroy');
 		$pattern = type('cairo_pattern_t', 'cairo_pattern_destroy');
-		$matrix = type('cairo_matrix_t', 'dummy_free');
+		$matrix = type('cairo_matrix_t', 'cairo_matrix_destroy');
 		$path = type('cairo_path_t', 'cairo_path_destroy');
 		
 
@@ -109,6 +109,24 @@ unsigned int        cairo_get_reference_count           (cairo_t *cr);
 cairo_status_t      cairo_set_user_data                 (cairo_t *cr, const cairo_user_data_key_t *key, void *user_data, cairo_destroy_func_t destroy);
 void *              cairo_get_user_data                 (cairo_t *cr, const cairo_user_data_key_t *key);
 */
+				// Matrix - http://cairographics.org/manual/cairo-cairo-matrix-t.html
+				func($matrix, 'cairo_matrix_create', []),
+				func($void, 'cairo_matrix_init', [arg($matrix, 'matrix'), arg($double, 'xx'), arg($double, 'yx'), arg($double, 'xy'), arg($double, 'yy'), arg($double, 'x0'), arg($double, 'y0')]),
+				func($void, 'cairo_matrix_init_identity', [arg($matrix, 'matrix')]),
+				func($void, 'cairo_matrix_init_translate', [arg($matrix, 'matrix'), arg($double, 'tx'), arg($double, 'ty')]),
+				func($void, 'cairo_matrix_init_scale', [arg($matrix, 'matrix'), arg($double, 'sx'), arg($double, 'sy')]),
+				func($void, 'cairo_matrix_init_rotate', [arg($matrix, 'matrix'), arg($double, 'radians')]),
+
+				func($void, 'cairo_matrix_translate', [arg($matrix, 'matrix'), arg($double, 'tx'), arg($double, 'ty')]),
+				func($void, 'cairo_matrix_scale', [arg($matrix, 'matrix'), arg($double, 'sx'), arg($double, 'sy')]),
+				func($void, 'cairo_matrix_rotate', [arg($matrix, 'matrix'), arg($double, 'radians')]),
+				func($status, 'cairo_matrix_invert', [arg($matrix, 'matrix')]),
+				func($void, 'cairo_matrix_multiply', [arg($matrix, 'result'), arg($matrix, 'a'), arg($matrix, 'b')]),
+/*
+void                cairo_matrix_transform_distance     (const cairo_matrix_t *matrix, double *dx, double *dy);
+void                cairo_matrix_transform_point        (const cairo_matrix_t *matrix, double *x, double *y);
+*/
+
 				// Surface
 				func($surface, 'cairo_image_surface_create', [arg($format, 'format'), arg($int, 'width'), arg($int, 'height')]),
 				func($surface, 'cairo_image_surface_create_for_data', [arg($bytePointer, 'data'), arg($format, 'format'), arg($int, 'width'), arg($int, 'height'), arg($int, 'stride')]),

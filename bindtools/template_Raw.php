@@ -12,6 +12,6 @@ class CairoRaw {
 	static private var laoded = hxcpp.NekoInit.nekoInit("cairo");
 
 	<?php foreach ($functions as $function) { ?>
-	static public var hx_<?= $function->name ?> = load('hx_<?= $function->name ?>', <?= count($function->args) ?>);
+	static public var <?= $function->name ?> = load('hx_<?= $function->name ?>', <?= count($function->args) ?>);
 	<?php } ?>
 }

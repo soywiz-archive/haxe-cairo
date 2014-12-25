@@ -19,6 +19,14 @@ extern "C" {
 
 	void dummy_free(void*ptr) { }
 
+	cairo_matrix_t* cairo_matrix_create() {
+		return new cairo_matrix_t;
+	}
+
+	void cairo_matrix_destroy(cairo_matrix_t* matrix) {
+		delete matrix;
+	}
+
     <?php foreach ($abstracts as $abstract) { ?>
 		DECLARE_KIND(kind_<?= $abstract->name ?>)
 		DEFINE_KIND(kind_<?= $abstract->name ?>)
