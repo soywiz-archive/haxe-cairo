@@ -1,0 +1,5 @@
+#brew install cairo --universal
+pushd project
+rm -rf obj
+haxelib run hxcpp Build.xml -Dmac
+popd
