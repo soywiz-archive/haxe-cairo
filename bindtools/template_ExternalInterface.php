@@ -17,6 +17,8 @@
 extern "C" {
 	#define val_get_float(v) val_get_double(v)
 
+	void dummy_free(void*ptr) { }
+
     <?php foreach ($abstracts as $abstract) { ?>
 		DECLARE_KIND(kind_<?= $abstract->name ?>)
 		DEFINE_KIND(kind_<?= $abstract->name ?>)

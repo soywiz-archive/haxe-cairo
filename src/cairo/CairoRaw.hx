@@ -9,8 +9,15 @@ import cpp.Lib;
 class CairoRaw {
 	static private inline function load(name:String, count:Int) return Lib.load('cairo', name, count);
 
+	static private var laoded = hxcpp.NekoInit.nekoInit("cairo");
 
 		static public var hx_cairo_version_string = load('hx_cairo_version_string', 0);
+		static public var hx_cairo_create = load('hx_cairo_create', 1);
+		static public var hx_cairo_save = load('hx_cairo_save', 1);
+		static public var hx_cairo_restore = load('hx_cairo_restore', 1);
+		static public var hx_cairo_set_source_rgba = load('hx_cairo_set_source_rgba', 5);
+		static public var hx_cairo_fill = load('hx_cairo_fill', 1);
+		static public var hx_cairo_stroke = load('hx_cairo_stroke', 1);
 		static public var hx_cairo_image_surface_create = load('hx_cairo_image_surface_create', 3);
 		static public var hx_cairo_image_surface_create_for_data = load('hx_cairo_image_surface_create_for_data', 5);
 		static public var hx_cairo_image_surface_get_format = load('hx_cairo_image_surface_get_format', 1);
@@ -24,6 +31,19 @@ class CairoRaw {
 		static public var hx_cairo_set_matrix = load('hx_cairo_set_matrix', 2);
 		static public var hx_cairo_get_matrix = load('hx_cairo_get_matrix', 2);
 		static public var hx_cairo_identity_matrix = load('hx_cairo_identity_matrix', 1);
+		static public var hx_cairo_copy_path = load('hx_cairo_copy_path', 1);
+		static public var hx_cairo_copy_path_flat = load('hx_cairo_copy_path_flat', 1);
+		static public var hx_cairo_append_path = load('hx_cairo_append_path', 2);
+		static public var hx_cairo_line_to = load('hx_cairo_line_to', 3);
+		static public var hx_cairo_move_to = load('hx_cairo_move_to', 3);
+		static public var hx_cairo_new_path = load('hx_cairo_new_path', 1);
+		static public var hx_cairo_new_sub_path = load('hx_cairo_new_sub_path', 1);
+		static public var hx_cairo_close_path = load('hx_cairo_close_path', 1);
+		static public var hx_cairo_arc = load('hx_cairo_arc', 6);
+		static public var hx_cairo_arc_negative = load('hx_cairo_arc_negative', 6);
+		static public var hx_cairo_curve_to = load('hx_cairo_curve_to', 7);
+		static public var hx_cairo_rectangle = load('hx_cairo_rectangle', 5);
+		static public var hx_cairo_pattern_create_rgba = load('hx_cairo_pattern_create_rgba', 4);
 		static public var hx_cairo_image_surface_create_from_png = load('hx_cairo_image_surface_create_from_png', 1);
 		static public var hx_cairo_surface_write_to_png = load('hx_cairo_surface_write_to_png', 2);
 	}

@@ -21,9 +21,12 @@ class CairoSurface {
 		return new CairoSurface(CairoRaw.hx_cairo_image_surface_create(format, width, height));
 	}
 
-	static public function createFromPng(filename:String) {
+	static public function createFromPng(filename:String):CairoSurface {
 		return new CairoSurface(CairoRaw.hx_cairo_image_surface_create_from_png(filename));
+	}
 
+	public function getContext():CairoContext {
+		return new CairoContext(CairoRaw.hx_cairo_create(this.handle));
 	}
 
 	public function writeToPng(path:String) {
