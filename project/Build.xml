@@ -36,15 +36,12 @@
 
 <set name="name_prefix" value="lib" if="iphone" />
 
-<compiler id="dll" exe="g++" unless="windows">
+<linker id="dll" exe="g++" unless="windows">
 	  <flag value="-L/usr/local/Cellar/pixman/0.32.6/lib"/>
 	  <flag value="-L/usr/local/Cellar/libpng/1.6.13/lib"/>
 	  <flag value="-L/usr/local/Cellar/freetype/2.5.4/lib"/>
 	  <flag value="-L/usr/local/Cellar/fontconfig/2.11.1/lib"/>
 	  <flag value="-L/usr/local/Cellar/cairo/1.14.0/lib"/>
-</compiler>
-
-<linker id="dll" exe="g++" unless="windows">
 	  <lib name="-lpixman-1"/>
 	  <lib name="-lpng"/>
 	  <lib name="-lfreetype"/>
