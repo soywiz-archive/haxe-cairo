@@ -7,7 +7,7 @@
 #endif
 
 #include <hx/CFFI.h>
-#include <hxcpp.h> 
+//#include <hxcpp.h> 
 
 #include <string.h>
 #include <stdio.h>
