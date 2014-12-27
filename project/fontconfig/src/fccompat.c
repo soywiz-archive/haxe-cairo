@@ -42,6 +42,12 @@
 #include <string.h>
 #include <time.h>
 
+ #ifdef WIN32
+#   include <io.h>
+
+typedef int mode_t;
+#endif
+
 #ifdef O_CLOEXEC
 #define FC_O_CLOEXEC O_CLOEXEC
 #else

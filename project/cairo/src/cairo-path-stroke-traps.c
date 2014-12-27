@@ -299,8 +299,17 @@ join (struct stroker *stroker,
 	    _cairo_traps_tessellate_triangle_with_edges (stroker->traps,
 							 tri, edges);
 	} else {
-	    cairo_point_t t[] = { in->point, *inpt, *outpt };
-	    cairo_point_t e[] = { in->cw, in->ccw, out->cw, out->ccw };
+		cairo_point_t t[3];
+		cairo_point_t e[4];
+
+		memcpy( &t[0], &in->point, sizeof(cairo_point_t) );
+		memcpy( &t[1], inpt, sizeof(cairo_point_t) );
+		memcpy( &t[2], outpt, sizeof(cairo_point_t) );
+
+		memcpy( &e[0], &in->cw, sizeof(cairo_point_t) );
+		memcpy( &e[1], &in->ccw, sizeof(cairo_point_t) );
+		memcpy( &e[2], &out->cw, sizeof(cairo_point_t) );
+		memcpy( &e[3], &out->ccw, sizeof(cairo_point_t) );
 	    _cairo_traps_tessellate_triangle_with_edges (stroker->traps, t, e);
 	}
 	break;
@@ -461,8 +470,17 @@ join (struct stroker *stroker,
     }
 
     case CAIRO_LINE_JOIN_BEVEL: {
-	cairo_point_t t[] = { in->point, *inpt, *outpt };
-	cairo_point_t e[] = { in->cw, in->ccw, out->cw, out->ccw };
+		cairo_point_t t[3];
+		cairo_point_t e[4];
+
+		memcpy( &t[0], &in->point, sizeof(cairo_point_t) );
+		memcpy( &t[1], inpt, sizeof(cairo_point_t) );
+		memcpy( &t[2], outpt, sizeof(cairo_point_t) );
+
+		memcpy( &e[0], &in->cw, sizeof(cairo_point_t) );
+		memcpy( &e[1], &in->ccw, sizeof(cairo_point_t) );
+		memcpy( &e[2], &out->cw, sizeof(cairo_point_t) );
+		memcpy( &e[3], &out->ccw, sizeof(cairo_point_t) );
 	_cairo_traps_tessellate_triangle_with_edges (stroker->traps, t, e);
 	break;
     }

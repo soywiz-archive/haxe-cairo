@@ -8,7 +8,10 @@
 #define HAVE_ALARM 1
 
 /* Whether the compiler supports __builtin_clz */
+#ifdef WIN32
+#else
 #define HAVE_BUILTIN_CLZ /**/
+#endif
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
@@ -124,7 +127,10 @@
 #define TLS __thread
 
 /* Whether the tool chain supports __attribute__((constructor)) */
+#ifdef WIN32
+#else
 #define TOOLCHAIN_SUPPORTS_ATTRIBUTE_CONSTRUCTOR /**/
+#endif
 
 /* use ARM IWMMXT compiler intrinsics */
 /* #undef USE_ARM_IWMMXT */

@@ -11,7 +11,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include <cairo/cairo.h>
+#include "cairo/src/cairo.h"
 
 extern "C" {
 	#define val_get_float(v) val_get_double(v)

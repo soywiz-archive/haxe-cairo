@@ -57,6 +57,8 @@
 </files>
 
 <files id="png">
+	<compilerflag value="-Izlib" />
+
 	<!--
 	<file name="png/example.c" />
 -->
@@ -85,7 +87,8 @@
 	<compilerflag value="-Ipixman/pixman" />
 	<compilerflag value="-DHAVE_CONFIG_H=1" />
 	<compilerflag value="-DM64BIT" if="x64" />
-	
+	<compilerflag value="-DWIN32" if="windows" />
+
 	<!--
 	<compilerflag value="-stdlib=libc++" />
 	<compilerflag value="-std=c++11" />
@@ -134,6 +137,7 @@
 	<compilerflag value="-Ifreetype/include" />
 	<compilerflag value="-DFT2_BUILD_LIBRARY" />
 	<compilerflag value="-DM64BIT" if="x64" />
+	<compilerflag value="-DWIN32" if="windows" />
 
 	<file name="freetype/src/autofit/autofit.c" />
 	<file name="freetype/src/base/ftadvanc.c" />
@@ -198,7 +202,8 @@
 	<compilerflag value='-DFONTCONFIG_PATH="fonts.conf"' />
 	<compilerflag value='-DFC_CACHEDIR="cache"' />
 	<compilerflag value="-DM64BIT" if="x64" />
-	
+	<compilerflag value="-DWIN32" if="windows" />
+
 	<!--
 	<file name="fontconfig/fc-cache/fc-cache.c" />
 	<file name="fontconfig/fc-case/fc-case.c" />
@@ -246,7 +251,8 @@
 	<compilerflag value="-DHAVE_EXPAT_CONFIG_H=1" />
 	<compilerflag value="-Iexpat" />
 	<compilerflag value="-DM64BIT" if="x64" />
-	
+	<compilerflag value="-DWIN32" if="windows" />
+
 	<file name="expat/lib/xmlparse.c" />
 	<file name="expat/lib/xmlrole.c" />
 	<file name="expat/lib/xmltok.c" />
@@ -270,10 +276,14 @@
 	<compilerflag value="-Ifreetype" />
 	<compilerflag value="-Ifreetype/include" />
 	<compilerflag value="-Icairo" />
+	<compilerflag value="-Izlib" />
+	<compilerflag value="-Ipng" />
 	<compilerflag value="-Icairo/src" />
 	<compilerflag value="-DHAVE_CONFIG_H=1" />
-	<compilerflag value="-Wenum-conversion" />
 	<compilerflag value="-DM64BIT" if="x64" />
+	<compilerflag value="-DWIN32" if="windows" />
+	<compilerflag value="-DCAIRO_WIN32_STATIC_BUILD" if="windows" />
+	
 
 	<file name="cairo/src/cairo-analysis-surface.c" />
 	<file name="cairo/src/cairo-arc.c" />
@@ -384,11 +394,22 @@
 	<file name="cairo/src/cairo-polygon.c" />
 	<file name="cairo/src/cairo-ps-surface.c" />
 
-	<file name="cairo/src/cairo-quartz-font.c" />
 	<!--
-	<file name="cairo/src/cairo-quartz-image-surface.c" />
-	<file name="cairo/src/cairo-quartz-surface.c" />
+	<file name="cairo/src/cairo-quartz-font.c" if="mac" />
+	<file name="cairo/src/cairo-quartz-image-surface.c" if="mac" />
+	<file name="cairo/src/cairo-quartz-surface.c" if="mac" />
 	-->
+
+	<!--
+	<file name="cairo/src/win32/cairo-win32-device.c" if="windows" />
+	<file name="cairo/src/win32/cairo-win32-display-surface.c" if="windows" />
+	<file name="cairo/src/win32/cairo-win32-font.c" if="windows" />
+	<file name="cairo/src/win32/cairo-win32-gdi-compositior.c" if="windows" />
+	<file name="cairo/src/win32/cairo-win32-printing-surface.c" if="windows" />
+	<file name="cairo/src/win32/cairo-win32-surface.c" if="windows" />
+	<file name="cairo/src/win32/cairo-win32-system.c" if="windows" />
+	-->
+
 	<file name="cairo/src/cairo-raster-source-pattern.c" />
 	<file name="cairo/src/cairo-recording-surface.c" />
 	<file name="cairo/src/cairo-rectangle.c" />
@@ -480,7 +501,9 @@
 	<depend name="${HXCPP}/include/hx/CFFI.h"/>
 
 	<compilerflag value="-Iinclude" />
+	<compilerflag value="-I." />
 	<compilerflag value="-I${ANDROID_NDK_ROOT}/sources/cpufeatures" if="android"/>
+	<compilerflag value="-DWIN32" if="windows" />
 
 	<file name="ExternalInterface.cpp" />
 </files>
@@ -495,7 +518,7 @@
 	<files id="png" />
 	<files id="pixman" />
 	<files id="freetype" />
-	<files id="fontconfig" />
+	<files id="fontconfig" unless="windows" />
 	<files id="expat" />
 	<files id="cairo" />
 	<files id="common" />

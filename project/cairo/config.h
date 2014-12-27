@@ -28,10 +28,14 @@
 #define CAIRO_HAS_INTERPRETER 1
 
 /* Define to 1 to enable cairo's pthread feature */
+#ifdef WIN32
+#else
 #define CAIRO_HAS_PTHREAD 1
-
 /* Define to 1 if we have full pthread support */
 #define CAIRO_HAS_REAL_PTHREAD 1
+#endif
+
+
 
 /* Define to 1 if libspectre is available */
 /* #undef CAIRO_HAS_SPECTRE */
@@ -73,7 +77,10 @@
 /* #undef HAVE_CLOCK_GETTIME */
 
 /* Define to 1 if you have the `ctime_r' function. */
+#ifdef WIN32
+#else
 #define HAVE_CTIME_R 1
+#endif
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
@@ -133,7 +140,10 @@
 #define HAVE_GETLINE 1
 
 /* Enable if your compiler supports the Intel __sync_* atomic primitives */
+#ifdef WIN32
+#else
 #define HAVE_INTEL_ATOMIC_PRIMITIVES 1
+#endif
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
@@ -170,7 +180,10 @@
 #define HAVE_MKDIR 2
 
 /* Define to 1 if you have the `mmap' function. */
+#ifdef WIN32
+#else
 #define HAVE_MMAP 1
+#endif
 
 /* Enable if you have MacOS X atomic operations */
 /* #undef HAVE_OS_ATOMIC_OPS */
@@ -248,7 +261,10 @@
 #define HAVE_UINT64_T 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
+#ifdef WIN32
+#else
 #define HAVE_UNISTD_H 1
+#endif
 
 /* Define to 1 if you have Valgrind */
 /* #undef HAVE_VALGRIND */
@@ -284,7 +300,7 @@
 #define HAVE_ZLIB 1
 
 /* Define to 1 if the system has the type `__uint128_t'. */
-#if M64BIT
+#ifdef M64BIT
 #define HAVE___UINT128_T 1
 #else
 #define HAVE___UINT128_T 0
@@ -331,10 +347,15 @@
 #define SIZEOF_LONG_LONG 8
 
 /* The size of `size_t', as computed by sizeof. */
-#define SIZEOF_SIZE_T 8
 
 /* The size of `void *', as computed by sizeof. */
+#ifdef M64BIT
 #define SIZEOF_VOID_P 8
+#define SIZEOF_SIZE_T 8
+#else
+#define SIZEOF_VOID_P 8
+#define SIZEOF_SIZE_T 4
+#endif
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1

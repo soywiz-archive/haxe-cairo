@@ -4,3 +4,5 @@ example/output.png
 project/obj
 *.o
 *.obj
+*.ndll
+*.NDLL

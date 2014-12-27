@@ -25,7 +25,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+ #ifdef WIN32
+ #else
 #include <dirent.h>
+ #endif
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
