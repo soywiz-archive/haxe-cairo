@@ -1,6 +1,5 @@
 #!/bin/bash
 #apt-get install libcairo2-dev:i386
 pushd project
-rm -rf obj
 haxelib run hxcpp Build.xml -Dlinux
 popd

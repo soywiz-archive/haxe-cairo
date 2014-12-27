@@ -29,6 +29,9 @@
 
 /* Define to 1 to enable cairo's pthread feature */
 #ifdef WIN32
+#define CAIRO_NO_MUTEX 1
+#elif LINUX
+#define CAIRO_NO_MUTEX 1
 #else
 #define CAIRO_HAS_PTHREAD 1
 /* Define to 1 if we have full pthread support */

@@ -39,6 +39,8 @@
 <set name="x64" value="1" if="HXCPP_M64" />
 
 <files id="zlib">
+	<compilerflag value="-DLINUX" if="linux" />
+
 	<file name="zlib/adler32.c" />
 	<file name="zlib/crc32.c" />
 	<file name="zlib/gzclose.c" />
@@ -58,6 +60,7 @@
 
 <files id="png">
 	<compilerflag value="-Izlib" />
+	<compilerflag value="-DLINUX" if="linux" />
 
 	<!--
 	<file name="png/example.c" />
@@ -88,6 +91,16 @@
 	<compilerflag value="-DHAVE_CONFIG_H=1" />
 	<compilerflag value="-DM64BIT" if="x64" />
 	<compilerflag value="-DWIN32" if="windows" />
+	<compilerflag value="-DLINUX" if="linux" />
+	<!--
+	<compilerflag value="-D__MMX__=1" />
+	-->
+	<compilerflag value="-Wpsabi" if="linux" />
+	<compilerflag value="-mmmx" if="linux" />
+	<compilerflag value="-msse" if="linux" />
+	<compilerflag value="-msse2" if="linux" />
+	<compilerflag value="-msse3" if="linux" />
+	<compilerflag value="-mssse3" if="linux" />
 
 	<!--
 	<compilerflag value="-stdlib=libc++" />
@@ -138,6 +151,7 @@
 	<compilerflag value="-DFT2_BUILD_LIBRARY" />
 	<compilerflag value="-DM64BIT" if="x64" />
 	<compilerflag value="-DWIN32" if="windows" />
+	<compilerflag value="-DLINUX" if="linux" />
 
 	<file name="freetype/src/autofit/autofit.c" />
 	<file name="freetype/src/base/ftadvanc.c" />
@@ -203,6 +217,7 @@
 	<compilerflag value='-DFC_CACHEDIR="cache"' />
 	<compilerflag value="-DM64BIT" if="x64" />
 	<compilerflag value="-DWIN32" if="windows" />
+	<compilerflag value="-DLINUX" if="linux" />
 
 	<!--
 	<file name="fontconfig/fc-cache/fc-cache.c" />
@@ -252,6 +267,7 @@
 	<compilerflag value="-Iexpat" />
 	<compilerflag value="-DM64BIT" if="x64" />
 	<compilerflag value="-DWIN32" if="windows" />
+	<compilerflag value="-DLINUX" if="linux" />
 
 	<file name="expat/lib/xmlparse.c" />
 	<file name="expat/lib/xmlrole.c" />
@@ -283,7 +299,7 @@
 	<compilerflag value="-DM64BIT" if="x64" />
 	<compilerflag value="-DWIN32" if="windows" />
 	<compilerflag value="-DCAIRO_WIN32_STATIC_BUILD" if="windows" />
-	
+	<compilerflag value="-DLINUX" if="linux" />	
 
 	<file name="cairo/src/cairo-analysis-surface.c" />
 	<file name="cairo/src/cairo-arc.c" />

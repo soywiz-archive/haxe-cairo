@@ -31,7 +31,7 @@
 #include "pixman-private.h"
 #include "pixman-inlines.h"
 
-#if defined(USE_SSSE3) && USE_SSSE3
+#ifdef __SSSE3__
 
 #include <mmintrin.h>
 #include <xmmintrin.h>
@@ -347,7 +347,7 @@ static const pixman_fast_path_t ssse3_fast_paths[] =
 pixman_implementation_t *
 _pixman_implementation_create_ssse3 (pixman_implementation_t *fallback)
 {
-	#if defined(USE_SSSE3) && USE_SSSE3
+	#ifdef __SSSE3__
     pixman_implementation_t *imp =
 	_pixman_implementation_create (fallback, ssse3_fast_paths);
 

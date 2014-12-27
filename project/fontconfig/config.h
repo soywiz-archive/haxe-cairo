@@ -5,7 +5,11 @@
 /* #undef AC_APPLE_UNIVERSAL_BUILD */
 
 /* The normal alignment of `double', in bytes. */
+#ifdef M64BIT
 #define ALIGNOF_DOUBLE 8
+#else
+#define ALIGNOF_DOUBLE 4
+#endif
 
 /* Use libxml2 instead of Expat */
 /* #undef ENABLE_LIBXML2 */
@@ -42,7 +46,10 @@
 #define HAVE_FCNTL_H 1
 
 /* Define to 1 if you have the `fstatfs' function. */
+#if LINUX
+#else
 #define HAVE_FSTATFS 1
+#endif
 
 /* Define to 1 if you have the `fstatvfs' function. */
 #define HAVE_FSTATVFS 1
@@ -81,7 +88,10 @@
 #define HAVE_GETPAGESIZE 1
 
 /* Define to 1 if you have the `getprogname' function. */
+#ifdef LINUX
+#else
 #define HAVE_GETPROGNAME 1
+#endif
 
 /* Have Intel __sync_* atomic primitives */
 #define HAVE_INTEL_ATOMIC_PRIMITIVES 1

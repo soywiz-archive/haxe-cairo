@@ -1,5 +1,4 @@
 #!/bin/bash
 pushd project
-rm -rf obj
 haxelib run hxcpp Build.xml -Dlinux -DHXCPP_M64
 popd
