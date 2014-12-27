@@ -28,12 +28,15 @@
 #endif
 
 #include <stdlib.h>
+#include "pixman-private.h"
+#include "pixman-inlines.h"
+
+#if defined(USE_SSSE3) && USE_SSSE3
+
 #include <mmintrin.h>
 #include <xmmintrin.h>
 #include <emmintrin.h>
 #include <tmmintrin.h>
-#include "pixman-private.h"
-#include "pixman-inlines.h"
 
 typedef struct
 {
@@ -339,13 +342,19 @@ static const pixman_fast_path_t ssse3_fast_paths[] =
     { PIXMAN_OP_NONE },
 };
 
+#endif
+
 pixman_implementation_t *
 _pixman_implementation_create_ssse3 (pixman_implementation_t *fallback)
 {
+	#if defined(USE_SSSE3) && USE_SSSE3
     pixman_implementation_t *imp =
 	_pixman_implementation_create (fallback, ssse3_fast_paths);
 
     imp->iter_info = ssse3_iters;
-
     return imp;
+    #else
+    return fallback;
+    #endif
+
 }

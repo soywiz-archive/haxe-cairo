@@ -1,3 +1,4 @@
+#!/bin/bash
 pushd project
 #rm -rf obj
 haxelib run hxcpp Build.xml -Dmac -DHXCPP_M64

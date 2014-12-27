@@ -281,7 +281,11 @@
 /* #undef SIZEOF_VOIDP */
 
 /* The size of `void *', as computed by sizeof. */
+#if M64BIT
 #define SIZEOF_VOID_P 8
+#else
+#define SIZEOF_VOID_P 4
+#endif
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1

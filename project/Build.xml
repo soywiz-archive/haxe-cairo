@@ -36,6 +36,8 @@
 
 <set name="name_prefix" value="lib" if="iphone" />
 
+<set name="x64" value="1" if="HXCPP_M64" />
+
 <files id="zlib">
 	<file name="zlib/adler32.c" />
 	<file name="zlib/crc32.c" />
@@ -82,6 +84,8 @@
 	<compilerflag value="-Ipixman" />
 	<compilerflag value="-Ipixman/pixman" />
 	<compilerflag value="-DHAVE_CONFIG_H=1" />
+	<compilerflag value="-DM64BIT" if="x64" />
+	
 	<!--
 	<compilerflag value="-stdlib=libc++" />
 	<compilerflag value="-std=c++11" />
@@ -129,6 +133,7 @@
 <files id="freetype">
 	<compilerflag value="-Ifreetype/include" />
 	<compilerflag value="-DFT2_BUILD_LIBRARY" />
+	<compilerflag value="-DM64BIT" if="x64" />
 
 	<file name="freetype/src/autofit/autofit.c" />
 	<file name="freetype/src/base/ftadvanc.c" />
@@ -192,6 +197,7 @@
 	<compilerflag value="-DHAVE_CONFIG_H=1" />
 	<compilerflag value='-DFONTCONFIG_PATH="fonts.conf"' />
 	<compilerflag value='-DFC_CACHEDIR="cache"' />
+	<compilerflag value="-DM64BIT" if="x64" />
 	
 	<!--
 	<file name="fontconfig/fc-cache/fc-cache.c" />
@@ -239,6 +245,7 @@
 <files id="expat">
 	<compilerflag value="-DHAVE_EXPAT_CONFIG_H=1" />
 	<compilerflag value="-Iexpat" />
+	<compilerflag value="-DM64BIT" if="x64" />
 	
 	<file name="expat/lib/xmlparse.c" />
 	<file name="expat/lib/xmlrole.c" />
@@ -265,6 +272,8 @@
 	<compilerflag value="-Icairo" />
 	<compilerflag value="-Icairo/src" />
 	<compilerflag value="-DHAVE_CONFIG_H=1" />
+	<compilerflag value="-Wenum-conversion" />
+	<compilerflag value="-DM64BIT" if="x64" />
 
 	<file name="cairo/src/cairo-analysis-surface.c" />
 	<file name="cairo/src/cairo-arc.c" />

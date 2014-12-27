@@ -151,7 +151,11 @@
 #define USE_SSE2 1
 
 /* use SSSE3 compiler intrinsics */
+#if M64BIT
 #define USE_SSSE3 1
+#else
+#define USE_SSSE3 0
+#endif
 
 /* use VMX compiler intrinsics */
 /* #undef USE_VMX */

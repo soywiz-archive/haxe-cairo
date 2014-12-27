@@ -284,7 +284,11 @@
 #define HAVE_ZLIB 1
 
 /* Define to 1 if the system has the type `__uint128_t'. */
+#if M64BIT
 #define HAVE___UINT128_T 1
+#else
+#define HAVE___UINT128_T 0
+#endif
 
 /* Define to 1 if shared memory segments are released deferred. */
 /* #undef IPC_RMID_DEFERRED_RELEASE */
