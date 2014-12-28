@@ -14,11 +14,13 @@ class Test {
 			context.rectangle(30, 30, 70, 70);
 			context.fill();
 			context.saveRestore(function() {
+				context.setAntialias(CairoAntialias.SUBPIXEL);
 				context.transform(new CairoMatrix().setToRotate(1));
 				context.setSourceRgba(0, 0, 1, 1);
 				context.rectangle(100, 30, 70, 70);
 				context.fill();
 			});
+			trace('status', context.getStatus());
 		});
 		surface.writeToPng('output.png');
 		

@@ -36,7 +36,7 @@ class CairoMatrix {
 
 	public function transformDistance(p:CairoPoint):CairoPoint {
 		var inout = [p.x, p.y];
-		CairoRaw.hx_cairo_matrix_transform_distance(handle, inout);
+		CairoRaw.cairo_matrix_transform_distance(handle, inout);
 		return new CairoPoint(inout[0], inout[1]);
 	}
 

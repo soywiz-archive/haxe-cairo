@@ -7,7 +7,7 @@ class CairoSurface {
 	public var height(get, never):Int;
 	public var stride(get, never):Int;
 
-	private function new(handle:Dynamic) {
+	public function new(handle:Dynamic) {
 		if (handle == null) throw "Couldn't create surface";
 		this.handle = handle;
 	}

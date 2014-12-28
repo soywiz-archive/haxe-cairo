@@ -13,7 +13,13 @@ class CairoFunctions {
 
 		$format = enum_type('cairo_format_t');
 		$status = enum_type('cairo_status_t');
+		$antialias = enum_type('cairo_antialias_t');
+		$operator = enum_type('cairo_operator_t');
+		$fillrule = enum_type('cairo_fill_rule_t');
+		$content = enum_type('cairo_content_t');
+		
 		$int = prim_prim_type('int', 'int');
+		$bool = prim_prim_type('bool', 'bool');
 		$void = prim_prim_type('void', 'void');
 		$string = prim_prim_type('string', 'const char*');
 
@@ -51,29 +57,47 @@ class CairoFunctions {
 
 				// Cairo
 				func($cairo, 'cairo_create', [arg($surface, 'target')]),
+				//func($cairo, 'cairo_reference', [arg($cairo, 'cr')]),
+				//func($cairo, 'cairo_destroy', [arg($cairo, 'cr')]),
+				//func($int, 'cairo_get_reference_count', [arg($cairo, 'cr')]),
 				func($void, 'cairo_save', [arg($cairo, 'cr')]),
 				func($void, 'cairo_restore', [arg($cairo, 'cr')]),
+				func($void, 'cairo_set_source_rgb', [arg($cairo, 'cr'), arg($double, 'red'), arg($double, 'green'), arg($double, 'blue')]),
 				func($void, 'cairo_set_source_rgba', [arg($cairo, 'cr'), arg($double, 'red'), arg($double, 'green'), arg($double, 'blue'), arg($double, 'alpha')]),
+				func($void, 'cairo_set_source', [arg($cairo, 'cr'), arg($pattern, 'source')]),
 				func($void, 'cairo_fill', [arg($cairo, 'cr')]),
 				func($void, 'cairo_stroke', [arg($cairo, 'cr')]),
+				func($status, 'cairo_status', [arg($cairo, 'cr')]),
+				func($surface, 'cairo_get_target', [arg($cairo, 'cr')]),
+
+				func($void, 'cairo_set_antialias', [arg($cairo, 'cr'), arg($antialias, 'value')]),
+				func($antialias, 'cairo_get_antialias', [arg($cairo, 'cr')]),
+
+				func($void, 'cairo_set_fill_rule', [arg($cairo, 'cr'), arg($fillrule, 'value')]),
+				func($fillrule, 'cairo_get_fill_rule', [arg($cairo, 'cr')]),
+
+				func($void, 'cairo_set_line_width', [arg($cairo, 'cr'), arg($double, 'value')]),
+				func($void, 'cairo_set_miter_limit', [arg($cairo, 'cr'), arg($double, 'value')]),
+				func($void, 'cairo_set_tolerance', [arg($cairo, 'cr'), arg($double, 'value')]),
+
+				func($double, 'cairo_get_line_width', [arg($cairo, 'cr')]),
+				func($double, 'cairo_get_miter_limit', [arg($cairo, 'cr')]),
+				func($double, 'cairo_get_tolerance', [arg($cairo, 'cr')]),
+
+				func($void, 'cairo_set_operator', [arg($cairo, 'cr'), arg($operator, 'op')]),
+				func($operator, 'cairo_get_operator', [arg($cairo, 'cr')]),
+
+				func($void, 'cairo_copy_page', [arg($cairo, 'cr')]),
+				func($void, 'cairo_show_page', [arg($cairo, 'cr')]),
+
+				func($void, 'cairo_push_group', [arg($cairo, 'cr')]),
+				func($void, 'cairo_push_group_with_content', [arg($cairo, 'cr'), arg($content, 'content')]),
 /*
-typedef             cairo_t;
-cairo_t *           cairo_reference                     (cairo_t *cr);
-void                cairo_destroy                       (cairo_t *cr);
-cairo_status_t      cairo_status                        (cairo_t *cr);
-cairo_surface_t *   cairo_get_target                    (cairo_t *cr);
-void                cairo_push_group                    (cairo_t *cr);
-void                cairo_push_group_with_content       (cairo_t *cr, cairo_content_t content);
 cairo_pattern_t *   cairo_pop_group                     (cairo_t *cr);
 void                cairo_pop_group_to_source           (cairo_t *cr);
 cairo_surface_t *   cairo_get_group_target              (cairo_t *cr);
-void                cairo_set_source_rgb                (cairo_t *cr, double red, double green, double blue);
-void                cairo_set_source                    (cairo_t *cr, cairo_pattern_t *source);
 void                cairo_set_source_surface            (cairo_t *cr, cairo_surface_t *surface, double x, double y);
 cairo_pattern_t *   cairo_get_source                    (cairo_t *cr);
-enum                cairo_antialias_t;
-void                cairo_set_antialias                 (cairo_t *cr, cairo_antialias_t antialias);
-cairo_antialias_t   cairo_get_antialias                 (cairo_t *cr);
 void                cairo_set_dash                      (cairo_t *cr, const double *dashes, int num_dashes, double offset);
 int                 cairo_get_dash_count                (cairo_t *cr);
 void                cairo_get_dash                      (cairo_t *cr, double *dashes, double *offset);
@@ -86,15 +110,6 @@ cairo_line_cap_t    cairo_get_line_cap                  (cairo_t *cr);
 enum                cairo_line_join_t;
 void                cairo_set_line_join                 (cairo_t *cr, cairo_line_join_t line_join);
 cairo_line_join_t   cairo_get_line_join                 (cairo_t *cr);
-void                cairo_set_line_width                (cairo_t *cr, double width);
-double              cairo_get_line_width                (cairo_t *cr);
-void                cairo_set_miter_limit               (cairo_t *cr, double limit);
-double              cairo_get_miter_limit               (cairo_t *cr);
-enum                cairo_operator_t;
-void                cairo_set_operator                  (cairo_t *cr, cairo_operator_t op);
-cairo_operator_t    cairo_get_operator                  (cairo_t *cr);
-void                cairo_set_tolerance                 (cairo_t *cr, double tolerance);
-double              cairo_get_tolerance                 (cairo_t *cr);
 void                cairo_clip                          (cairo_t *cr);
 void                cairo_clip_preserve                 (cairo_t *cr);
 void                cairo_clip_extents                  (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
@@ -114,9 +129,6 @@ void                cairo_paint_with_alpha              (cairo_t *cr, double alp
 void                cairo_stroke_preserve               (cairo_t *cr);
 void                cairo_stroke_extents                (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
 cairo_bool_t        cairo_in_stroke                     (cairo_t *cr, double x, double y);
-void                cairo_copy_page                     (cairo_t *cr);
-void                cairo_show_page                     (cairo_t *cr);
-unsigned int        cairo_get_reference_count           (cairo_t *cr);
 cairo_status_t      cairo_set_user_data                 (cairo_t *cr, const cairo_user_data_key_t *key, void *user_data, cairo_destroy_func_t destroy);
 void *              cairo_get_user_data                 (cairo_t *cr, const cairo_user_data_key_t *key);
 */
@@ -137,7 +149,7 @@ void *              cairo_get_user_data                 (cairo_t *cr, const cair
 				func($void, 'cairo_matrix_transform_distance', [arg($matrix, 'matrix'), arg($pointRef, 'point')]),
 				func($void, 'cairo_matrix_transform_point', [arg($matrix, 'matrix'), arg($pointRef, 'point')]),
 				
-				// Surface
+				// Surface: http://cairographics.org/manual/cairo-Image-Surfaces.html
 				func($surface, 'cairo_image_surface_create', [arg($format, 'format'), arg($int, 'width'), arg($int, 'height')]),
 				func($surface, 'cairo_image_surface_create_for_data', [arg($bytePointer, 'data'), arg($format, 'format'), arg($int, 'width'), arg($int, 'height'), arg($int, 'stride')]),
 				
@@ -168,11 +180,12 @@ void *              cairo_get_user_data                 (cairo_t *cr, const cair
 				func($void, 'cairo_arc_negative', [arg($cairo, 'cr'), arg($double, 'xc'), arg($double, 'yc'), arg($double, 'radius'), arg($double, 'angle1'), arg($double, 'angle2')]),
 				func($void, 'cairo_curve_to', [arg($cairo, 'cr'), arg($double, 'x1'), arg($double, 'y1'), arg($double, 'x2'), arg($double, 'y2'), arg($double, 'x3'), arg($double, 'y3')]),
 				func($void, 'cairo_rectangle', [arg($cairo, 'cr'), arg($double, 'x'), arg($double, 'y'), arg($double, 'width'), arg($double, 'height')]),
+
+				func($bool, 'cairo_has_current_point', [arg($cairo, 'cr')]),
+				func($void, 'cairo_get_current_point', [arg($cairo, 'cr'), arg($pointRef, 'point')]),
 /*
 union               cairo_path_data_t;
 enum                cairo_path_data_type_t;
-cairo_bool_t        cairo_has_current_point             (cairo_t *cr);
-void                cairo_get_current_point             (cairo_t *cr, double *x, double *y);
 
 void                cairo_glyph_path                    (cairo_t *cr, const cairo_glyph_t *glyphs, int num_glyphs);
 void                cairo_text_path                     (cairo_t *cr, const char *utf8);
