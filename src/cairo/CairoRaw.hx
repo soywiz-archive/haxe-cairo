@@ -13,7 +13,10 @@ class CairoRaw {
 	static private var laoded = hxcpp.NekoInit.nekoInit("cairo");
 	#end
 
+		static public var cairo_version = load('hx_cairo_version', 0);
 		static public var cairo_version_string = load('hx_cairo_version_string', 0);
+		static public var cairo_status_to_string = load('hx_cairo_status_to_string', 1);
+		static public var cairo_debug_reset_static_data = load('hx_cairo_debug_reset_static_data', 0);
 		static public var cairo_create = load('hx_cairo_create', 1);
 		static public var cairo_save = load('hx_cairo_save', 1);
 		static public var cairo_restore = load('hx_cairo_restore', 1);
@@ -54,6 +57,16 @@ class CairoRaw {
 		static public var cairo_clip_preserve = load('hx_cairo_clip_preserve', 1);
 		static public var cairo_in_clip = load('hx_cairo_in_clip', 3);
 		static public var cairo_reset_clip = load('hx_cairo_reset_clip', 1);
+		static public var cairo_fill_preserve = load('hx_cairo_fill_preserve', 1);
+		static public var cairo_fill_extents = load('hx_cairo_fill_extents', 3);
+		static public var cairo_in_fill = load('hx_cairo_in_fill', 3);
+		static public var cairo_stroke_preserve = load('hx_cairo_stroke_preserve', 1);
+		static public var cairo_stroke_extents = load('hx_cairo_stroke_extents', 3);
+		static public var cairo_in_stroke = load('hx_cairo_in_stroke', 3);
+		static public var cairo_mask = load('hx_cairo_mask', 2);
+		static public var cairo_mask_surface = load('hx_cairo_mask_surface', 4);
+		static public var cairo_paint = load('hx_cairo_paint', 1);
+		static public var cairo_paint_with_alpha = load('hx_cairo_paint_with_alpha', 2);
 		static public var cairo_matrix_create = load('hx_cairo_matrix_create', 0);
 		static public var cairo_matrix_init = load('hx_cairo_matrix_init', 7);
 		static public var cairo_matrix_init_identity = load('hx_cairo_matrix_init_identity', 1);
@@ -80,6 +93,10 @@ class CairoRaw {
 		static public var cairo_set_matrix = load('hx_cairo_set_matrix', 2);
 		static public var cairo_get_matrix = load('hx_cairo_get_matrix', 2);
 		static public var cairo_identity_matrix = load('hx_cairo_identity_matrix', 1);
+		static public var cairo_user_to_device = load('hx_cairo_user_to_device', 2);
+		static public var cairo_user_to_device_distance = load('hx_cairo_user_to_device_distance', 2);
+		static public var cairo_device_to_user = load('hx_cairo_device_to_user', 2);
+		static public var cairo_device_to_user_distance = load('hx_cairo_device_to_user_distance', 2);
 		static public var cairo_copy_path = load('hx_cairo_copy_path', 1);
 		static public var cairo_copy_path_flat = load('hx_cairo_copy_path_flat', 1);
 		static public var cairo_append_path = load('hx_cairo_append_path', 2);
@@ -98,7 +115,33 @@ class CairoRaw {
 		static public var cairo_has_current_point = load('hx_cairo_has_current_point', 1);
 		static public var cairo_get_current_point = load('hx_cairo_get_current_point', 2);
 		static public var cairo_path_extents = load('hx_cairo_path_extents', 3);
+		static public var cairo_select_font_face = load('hx_cairo_select_font_face', 4);
+		static public var cairo_set_font_size = load('hx_cairo_set_font_size', 2);
+		static public var cairo_show_text = load('hx_cairo_show_text', 2);
 		static public var cairo_pattern_create_rgba = load('hx_cairo_pattern_create_rgba', 4);
+		static public var cairo_pattern_create_rgb = load('hx_cairo_pattern_create_rgb', 3);
+		static public var cairo_pattern_create_for_surface = load('hx_cairo_pattern_create_for_surface', 1);
+		static public var cairo_pattern_create_mesh = load('hx_cairo_pattern_create_mesh', 0);
+		static public var cairo_pattern_create_linear = load('hx_cairo_pattern_create_linear', 4);
+		static public var cairo_pattern_create_radial = load('hx_cairo_pattern_create_radial', 6);
+		static public var cairo_pattern_set_filter = load('hx_cairo_pattern_set_filter', 2);
+		static public var cairo_pattern_get_filter = load('hx_cairo_pattern_get_filter', 1);
+		static public var cairo_pattern_add_color_stop_rgb = load('hx_cairo_pattern_add_color_stop_rgb', 5);
+		static public var cairo_pattern_add_color_stop_rgba = load('hx_cairo_pattern_add_color_stop_rgba', 6);
+		static public var cairo_pattern_set_extend = load('hx_cairo_pattern_set_extend', 2);
+		static public var cairo_pattern_get_extend = load('hx_cairo_pattern_get_extend', 1);
+		static public var cairo_pattern_get_type = load('hx_cairo_pattern_get_type', 1);
+		static public var cairo_pattern_status = load('hx_cairo_pattern_status', 1);
+		static public var cairo_mesh_pattern_begin_patch = load('hx_cairo_mesh_pattern_begin_patch', 1);
+		static public var cairo_mesh_pattern_end_patch = load('hx_cairo_mesh_pattern_end_patch', 1);
+		static public var cairo_mesh_pattern_move_to = load('hx_cairo_mesh_pattern_move_to', 3);
+		static public var cairo_mesh_pattern_line_to = load('hx_cairo_mesh_pattern_line_to', 3);
+		static public var cairo_mesh_pattern_curve_to = load('hx_cairo_mesh_pattern_curve_to', 7);
+		static public var cairo_mesh_pattern_set_control_point = load('hx_cairo_mesh_pattern_set_control_point', 4);
+		static public var cairo_mesh_pattern_set_corner_color_rgb = load('hx_cairo_mesh_pattern_set_corner_color_rgb', 5);
+		static public var cairo_mesh_pattern_set_corner_color_rgba = load('hx_cairo_mesh_pattern_set_corner_color_rgba', 6);
+		static public var cairo_pattern_set_matrix = load('hx_cairo_pattern_set_matrix', 2);
+		static public var cairo_pattern_get_matrix = load('hx_cairo_pattern_get_matrix', 2);
 		static public var cairo_image_surface_create_from_png = load('hx_cairo_image_surface_create_from_png', 1);
 		static public var cairo_surface_write_to_png = load('hx_cairo_surface_write_to_png', 2);
 	}

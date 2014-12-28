@@ -2,7 +2,7 @@ import cairo.*;
 
 class Test {
 	static public function main() {
-		trace('Cairo version: ' + Cairo.getVersion());
+		trace('Cairo version: ' + Cairo.getVersionString());
 		var surface = CairoSurface.create(CairoSurfaceFormat.ARGB32, 256, 256);
 		trace(surface);
 		var context = surface.getContext();
@@ -18,11 +18,15 @@ class Test {
 				context.transform(new CairoMatrix().setToRotate(1));
 				context.setSourceRgba(0, 0, 1, 1);
 				context.rectangle(100, 30, 70, 70);
-		trace('path extents', context.getPathExtents());
+				trace('path extents', context.getPathExtents());
 				context.fill();
 			});
 			trace('status', context.getStatus());
 		});
+		context.selectFontFace("Arial", CairoFontSlant.NORMAL, CairoFontWeight.NORMAL);
+		context.setFontSize(50);
+		//context.showText('Hello World!');
+
 		surface.writeToPng('output.png');
 		trace('clip extents', context.getClipExtents());
 		

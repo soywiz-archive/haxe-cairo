@@ -82,12 +82,32 @@ extern "C" {
 		}
 
     
+            value hx_cairo_version() {
+        	
+        					int _result = cairo_version();
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_version, 0);
             value hx_cairo_version_string() {
         	
         					const char* _result = cairo_version_string();
 	        					return alloc_string(_result);
         	        }
         DEFINE_PRIM(hx_cairo_version_string, 0);
+            value hx_cairo_status_to_string(value status) {
+        	        		val_check(status, int);
+        	
+        					const char* _result = cairo_status_to_string(((cairo_status_t)val_get_int(status)));
+	        		        		;
+	        					return alloc_string(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_status_to_string, 1);
+            value hx_cairo_debug_reset_static_data() {
+        	
+        					cairo_debug_reset_static_data();
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_debug_reset_static_data, 0);
             value hx_cairo_create(value target) {
         	        		kind_cairo_surface_t_check(target);
         	
@@ -456,6 +476,112 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_reset_clip, 1);
+            value hx_cairo_fill_preserve(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_fill_preserve(kind_cairo_t_get(cr));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_fill_preserve, 1);
+            value hx_cairo_fill_extents(value cr, value p1, value p2) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(p1, array); double p1_x = val_number(val_array_i(p1, 0)), p1_y = val_number(val_array_i(p1, 1));
+        	        		val_check(p2, array); double p2_x = val_number(val_array_i(p2, 0)), p2_y = val_number(val_array_i(p2, 1));
+        	
+        					cairo_fill_extents(kind_cairo_t_get(cr), &p1_x, &p1_y, &p2_x, &p2_y);
+	        		        		;
+	        		        		val_array_set_i(p1, 0, alloc_float(p1_x)); val_array_set_i(p1, 1, alloc_float(p1_y));;
+	        		        		val_array_set_i(p2, 0, alloc_float(p2_x)); val_array_set_i(p2, 1, alloc_float(p2_y));;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_fill_extents, 3);
+            value hx_cairo_in_fill(value cr, value x, value y) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(x, number);;
+        	        		val_check(y, number);;
+        	
+        					bool _result = cairo_in_fill(kind_cairo_t_get(cr), val_get_double(x), val_get_double(y));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return alloc_bool(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_in_fill, 3);
+            value hx_cairo_stroke_preserve(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_stroke_preserve(kind_cairo_t_get(cr));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_stroke_preserve, 1);
+            value hx_cairo_stroke_extents(value cr, value p1, value p2) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(p1, array); double p1_x = val_number(val_array_i(p1, 0)), p1_y = val_number(val_array_i(p1, 1));
+        	        		val_check(p2, array); double p2_x = val_number(val_array_i(p2, 0)), p2_y = val_number(val_array_i(p2, 1));
+        	
+        					cairo_stroke_extents(kind_cairo_t_get(cr), &p1_x, &p1_y, &p2_x, &p2_y);
+	        		        		;
+	        		        		val_array_set_i(p1, 0, alloc_float(p1_x)); val_array_set_i(p1, 1, alloc_float(p1_y));;
+	        		        		val_array_set_i(p2, 0, alloc_float(p2_x)); val_array_set_i(p2, 1, alloc_float(p2_y));;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_stroke_extents, 3);
+            value hx_cairo_in_stroke(value cr, value x, value y) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(x, number);;
+        	        		val_check(y, number);;
+        	
+        					bool _result = cairo_in_stroke(kind_cairo_t_get(cr), val_get_double(x), val_get_double(y));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return alloc_bool(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_in_stroke, 3);
+            value hx_cairo_mask(value cr, value value) {
+        	        		kind_cairo_t_check(cr);
+        	        		kind_cairo_pattern_t_check(value);
+        	
+        					cairo_mask(kind_cairo_t_get(cr), kind_cairo_pattern_t_get(value));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mask, 2);
+            value hx_cairo_mask_surface(value cr, value surface, value x, value y) {
+        	        		kind_cairo_t_check(cr);
+        	        		kind_cairo_surface_t_check(surface);
+        	        		val_check(x, number);;
+        	        		val_check(y, number);;
+        	
+        					cairo_mask_surface(kind_cairo_t_get(cr), kind_cairo_surface_t_get(surface), val_get_double(x), val_get_double(y));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mask_surface, 4);
+            value hx_cairo_paint(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_paint(kind_cairo_t_get(cr));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_paint, 1);
+            value hx_cairo_paint_with_alpha(value cr, value alpha) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(alpha, number);;
+        	
+        					cairo_paint_with_alpha(kind_cairo_t_get(cr), val_get_double(alpha));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_paint_with_alpha, 2);
             value hx_cairo_matrix_create() {
         	
         					cairo_matrix_t* _result = cairo_matrix_create();
@@ -730,6 +856,46 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_identity_matrix, 1);
+            value hx_cairo_user_to_device(value cr, value point) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(point, array); double point_x = val_number(val_array_i(point, 0)), point_y = val_number(val_array_i(point, 1));
+        	
+        					cairo_user_to_device(kind_cairo_t_get(cr), &point_x, &point_y);
+	        		        		;
+	        		        		val_array_set_i(point, 0, alloc_float(point_x)); val_array_set_i(point, 1, alloc_float(point_y));;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_user_to_device, 2);
+            value hx_cairo_user_to_device_distance(value cr, value point) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(point, array); double point_x = val_number(val_array_i(point, 0)), point_y = val_number(val_array_i(point, 1));
+        	
+        					cairo_user_to_device_distance(kind_cairo_t_get(cr), &point_x, &point_y);
+	        		        		;
+	        		        		val_array_set_i(point, 0, alloc_float(point_x)); val_array_set_i(point, 1, alloc_float(point_y));;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_user_to_device_distance, 2);
+            value hx_cairo_device_to_user(value cr, value point) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(point, array); double point_x = val_number(val_array_i(point, 0)), point_y = val_number(val_array_i(point, 1));
+        	
+        					cairo_device_to_user(kind_cairo_t_get(cr), &point_x, &point_y);
+	        		        		;
+	        		        		val_array_set_i(point, 0, alloc_float(point_x)); val_array_set_i(point, 1, alloc_float(point_y));;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_device_to_user, 2);
+            value hx_cairo_device_to_user_distance(value cr, value point) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(point, array); double point_x = val_number(val_array_i(point, 0)), point_y = val_number(val_array_i(point, 1));
+        	
+        					cairo_device_to_user_distance(kind_cairo_t_get(cr), &point_x, &point_y);
+	        		        		;
+	        		        		val_array_set_i(point, 0, alloc_float(point_x)); val_array_set_i(point, 1, alloc_float(point_y));;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_device_to_user_distance, 2);
             value hx_cairo_copy_path(value cr) {
         	        		kind_cairo_t_check(cr);
         	
@@ -950,6 +1116,40 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_path_extents, 3);
+            value hx_cairo_select_font_face(value cr, value family, value slant, value weight) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(family, string);
+        	        		val_check(slant, int);
+        	        		val_check(weight, int);
+        	
+        					cairo_select_font_face(kind_cairo_t_get(cr), val_get_string(family), ((cairo_font_slant_t)val_get_int(slant)), ((cairo_font_weight_t)val_get_int(weight)));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_select_font_face, 4);
+            value hx_cairo_set_font_size(value cr, value size) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(size, number);;
+        	
+        					cairo_set_font_size(kind_cairo_t_get(cr), val_get_double(size));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_set_font_size, 2);
+            value hx_cairo_show_text(value cr, value text) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(text, string);
+        	
+        					cairo_show_text(kind_cairo_t_get(cr), val_get_string(text));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_show_text, 2);
             value hx_cairo_pattern_create_rgba(value red, value green, value blue, value alpha) {
         	        		val_check(red, number);;
         	        		val_check(green, number);;
@@ -964,6 +1164,278 @@ extern "C" {
 	        					return kind_cairo_pattern_t_alloc(_result);
         	        }
         DEFINE_PRIM(hx_cairo_pattern_create_rgba, 4);
+            value hx_cairo_pattern_create_rgb(value red, value green, value blue) {
+        	        		val_check(red, number);;
+        	        		val_check(green, number);;
+        	        		val_check(blue, number);;
+        	
+        					cairo_pattern_t* _result = cairo_pattern_create_rgb(val_get_double(red), val_get_double(green), val_get_double(blue));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return kind_cairo_pattern_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_create_rgb, 3);
+            value hx_cairo_pattern_create_for_surface(value surface) {
+        	        		kind_cairo_surface_t_check(surface);
+        	
+        					cairo_pattern_t* _result = cairo_pattern_create_for_surface(kind_cairo_surface_t_get(surface));
+	        		        		;
+	        					return kind_cairo_pattern_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_create_for_surface, 1);
+            value hx_cairo_pattern_create_mesh() {
+        	
+        					cairo_pattern_t* _result = cairo_pattern_create_mesh();
+	        					return kind_cairo_pattern_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_create_mesh, 0);
+            value hx_cairo_pattern_create_linear(value x0, value y0, value x1, value y2) {
+        	        		val_check(x0, number);;
+        	        		val_check(y0, number);;
+        	        		val_check(x1, number);;
+        	        		val_check(y2, number);;
+        	
+        					cairo_pattern_t* _result = cairo_pattern_create_linear(val_get_double(x0), val_get_double(y0), val_get_double(x1), val_get_double(y2));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return kind_cairo_pattern_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_create_linear, 4);
+            value hx_cairo_pattern_create_radial(value cx0, value cy0, value radius0, value cx1, value cy2, value radius1) {
+        	        		val_check(cx0, number);;
+        	        		val_check(cy0, number);;
+        	        		val_check(radius0, number);;
+        	        		val_check(cx1, number);;
+        	        		val_check(cy2, number);;
+        	        		val_check(radius1, number);;
+        	
+        					cairo_pattern_t* _result = cairo_pattern_create_radial(val_get_double(cx0), val_get_double(cy0), val_get_double(radius0), val_get_double(cx1), val_get_double(cy2), val_get_double(radius1));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return kind_cairo_pattern_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_create_radial, 6);
+            value hx_cairo_pattern_set_filter(value pattern, value filter) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(filter, int);
+        	
+        					cairo_pattern_set_filter(kind_cairo_pattern_t_get(pattern), ((cairo_filter_t)val_get_int(filter)));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_set_filter, 2);
+            value hx_cairo_pattern_get_filter(value pattern) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	
+        					cairo_filter_t _result = cairo_pattern_get_filter(kind_cairo_pattern_t_get(pattern));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_get_filter, 1);
+            value hx_cairo_pattern_add_color_stop_rgb(value pattern, value offset, value r, value g, value b) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(offset, number);;
+        	        		val_check(r, number);;
+        	        		val_check(g, number);;
+        	        		val_check(b, number);;
+        	
+        					cairo_pattern_add_color_stop_rgb(kind_cairo_pattern_t_get(pattern), val_get_double(offset), val_get_double(r), val_get_double(g), val_get_double(b));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_add_color_stop_rgb, 5);
+            value hx_cairo_pattern_add_color_stop_rgba(value pattern, value offset, value r, value g, value b, value a) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(offset, number);;
+        	        		val_check(r, number);;
+        	        		val_check(g, number);;
+        	        		val_check(b, number);;
+        	        		val_check(a, number);;
+        	
+        					cairo_pattern_add_color_stop_rgba(kind_cairo_pattern_t_get(pattern), val_get_double(offset), val_get_double(r), val_get_double(g), val_get_double(b), val_get_double(a));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_add_color_stop_rgba, 6);
+            value hx_cairo_pattern_set_extend(value pattern, value v) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(v, int);
+        	
+        					cairo_pattern_set_extend(kind_cairo_pattern_t_get(pattern), ((cairo_extend_t)val_get_int(v)));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_set_extend, 2);
+            value hx_cairo_pattern_get_extend(value pattern) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	
+        					cairo_extend_t _result = cairo_pattern_get_extend(kind_cairo_pattern_t_get(pattern));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_get_extend, 1);
+            value hx_cairo_pattern_get_type(value pattern) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	
+        					cairo_pattern_type_t _result = cairo_pattern_get_type(kind_cairo_pattern_t_get(pattern));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_get_type, 1);
+            value hx_cairo_pattern_status(value pattern) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	
+        					cairo_status_t _result = cairo_pattern_status(kind_cairo_pattern_t_get(pattern));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_status, 1);
+            value hx_cairo_mesh_pattern_begin_patch(value pattern) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	
+        					cairo_mesh_pattern_begin_patch(kind_cairo_pattern_t_get(pattern));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mesh_pattern_begin_patch, 1);
+            value hx_cairo_mesh_pattern_end_patch(value pattern) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	
+        					cairo_mesh_pattern_end_patch(kind_cairo_pattern_t_get(pattern));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mesh_pattern_end_patch, 1);
+            value hx_cairo_mesh_pattern_move_to(value pattern, value x, value y) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(x, number);;
+        	        		val_check(y, number);;
+        	
+        					cairo_mesh_pattern_move_to(kind_cairo_pattern_t_get(pattern), val_get_double(x), val_get_double(y));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mesh_pattern_move_to, 3);
+            value hx_cairo_mesh_pattern_line_to(value pattern, value x, value y) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(x, number);;
+        	        		val_check(y, number);;
+        	
+        					cairo_mesh_pattern_line_to(kind_cairo_pattern_t_get(pattern), val_get_double(x), val_get_double(y));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mesh_pattern_line_to, 3);
+            value hx_cairo_mesh_pattern_curve_to(value pattern, value x1, value y1, value x2, value y2, value x3, value y3) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(x1, number);;
+        	        		val_check(y1, number);;
+        	        		val_check(x2, number);;
+        	        		val_check(y2, number);;
+        	        		val_check(x3, number);;
+        	        		val_check(y3, number);;
+        	
+        					cairo_mesh_pattern_curve_to(kind_cairo_pattern_t_get(pattern), val_get_double(x1), val_get_double(y1), val_get_double(x2), val_get_double(y2), val_get_double(x3), val_get_double(y3));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mesh_pattern_curve_to, 7);
+            value hx_cairo_mesh_pattern_set_control_point(value pattern, value point_num, value x, value y) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(point_num, int);
+        	        		val_check(x, number);;
+        	        		val_check(y, number);;
+        	
+        					cairo_mesh_pattern_set_control_point(kind_cairo_pattern_t_get(pattern), val_get_int(point_num), val_get_double(x), val_get_double(y));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mesh_pattern_set_control_point, 4);
+            value hx_cairo_mesh_pattern_set_corner_color_rgb(value pattern, value corner_num, value r, value g, value b) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(corner_num, int);
+        	        		val_check(r, number);;
+        	        		val_check(g, number);;
+        	        		val_check(b, number);;
+        	
+        					cairo_mesh_pattern_set_corner_color_rgb(kind_cairo_pattern_t_get(pattern), val_get_int(corner_num), val_get_double(r), val_get_double(g), val_get_double(b));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mesh_pattern_set_corner_color_rgb, 5);
+            value hx_cairo_mesh_pattern_set_corner_color_rgba(value pattern, value corner_num, value r, value g, value b, value a) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(corner_num, int);
+        	        		val_check(r, number);;
+        	        		val_check(g, number);;
+        	        		val_check(b, number);;
+        	        		val_check(a, number);;
+        	
+        					cairo_mesh_pattern_set_corner_color_rgba(kind_cairo_pattern_t_get(pattern), val_get_int(corner_num), val_get_double(r), val_get_double(g), val_get_double(b), val_get_double(a));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_mesh_pattern_set_corner_color_rgba, 6);
+            value hx_cairo_pattern_set_matrix(value pattern, value matrix) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		kind_cairo_matrix_t_check(matrix);
+        	
+        					cairo_pattern_set_matrix(kind_cairo_pattern_t_get(pattern), kind_cairo_matrix_t_get(matrix));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_set_matrix, 2);
+            value hx_cairo_pattern_get_matrix(value pattern, value matrix) {
+        	        		kind_cairo_pattern_t_check(pattern);
+        	        		kind_cairo_matrix_t_check(matrix);
+        	
+        					cairo_pattern_get_matrix(kind_cairo_pattern_t_get(pattern), kind_cairo_matrix_t_get(matrix));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_pattern_get_matrix, 2);
             value hx_cairo_image_surface_create_from_png(value filename) {
         	        		val_check(filename, string);
         	

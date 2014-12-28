@@ -5,11 +5,7 @@
 /* #undef AC_APPLE_UNIVERSAL_BUILD */
 
 /* The normal alignment of `double', in bytes. */
-#ifdef M64BIT
 #define ALIGNOF_DOUBLE 8
-#else
-#define ALIGNOF_DOUBLE 4
-#endif
 
 /* Use libxml2 instead of Expat */
 /* #undef ENABLE_LIBXML2 */
@@ -46,10 +42,7 @@
 #define HAVE_FCNTL_H 1
 
 /* Define to 1 if you have the `fstatfs' function. */
-#if LINUX
-#else
 #define HAVE_FSTATFS 1
-#endif
 
 /* Define to 1 if you have the `fstatvfs' function. */
 #define HAVE_FSTATVFS 1
@@ -88,10 +81,7 @@
 #define HAVE_GETPAGESIZE 1
 
 /* Define to 1 if you have the `getprogname' function. */
-#ifdef LINUX
-#else
 #define HAVE_GETPROGNAME 1
-#endif
 
 /* Have Intel __sync_* atomic primitives */
 #define HAVE_INTEL_ATOMIC_PRIMITIVES 1
@@ -121,14 +111,7 @@
 #define HAVE_MKSTEMP 1
 
 /* Define to 1 if you have a working `mmap' system call. */
-   #ifdef WIN32
-   #else
 #define HAVE_MMAP 1
-   #endif
-
-   #ifdef WIN32
-   #define F_OK 0
-  #endif 
 
 /* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
 /* #undef HAVE_NDIR_H */
@@ -146,10 +129,7 @@
 #define HAVE_RAND 1
 
 /* Define to 1 if you have the `random' function. */
-   #ifdef WIN32
-   #else
 #define HAVE_RANDOM 1
-   #endif
 
 /* Define to 1 if you have the `random_r' function. */
 /* #undef HAVE_RANDOM_R */
@@ -239,11 +219,7 @@
 #define HAVE_TT_OS2_USUPPEROPTICALPOINTSIZE 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
-#ifdef WIN32
-#define inline
-#else
 #define HAVE_UNISTD_H 1
-#endif
 
 /* Define to 1 if you have the `vprintf' function. */
 #define HAVE_VPRINTF 1
@@ -305,14 +281,7 @@
 /* #undef SIZEOF_VOIDP */
 
 /* The size of `void *', as computed by sizeof. */
-
-#if M64BIT
 #define SIZEOF_VOID_P 8
-#else
-#define SIZEOF_VOID_P 4
-#endif
-   
-//#define SIZEOF_VOID_P sizeof(void*)
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1

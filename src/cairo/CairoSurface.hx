@@ -25,6 +25,10 @@ class CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_image_surface_create_from_png(filename));
 	}
 
+	//static public function createForPDF(filename:String, width:Float, height:Float):CairoSurface {
+	//	return new CairoSurface(CairoRaw.cairo_pdf_surface_create(filename, width, height));
+	//}
+
 	public function getContext():CairoContext {
 		return new CairoContext(CairoRaw.cairo_create(this.handle));
 	}
