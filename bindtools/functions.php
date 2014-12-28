@@ -9,6 +9,7 @@ class CairoFunctions {
 		$pattern = type('cairo_pattern_t', 'cairo_pattern_destroy');
 		$matrix = type('cairo_matrix_t', 'cairo_matrix_destroy');
 		$path = type('cairo_path_t', 'cairo_path_destroy');
+		$region = type('cairo_region_t', 'cairo_region_destroy');
 		
 
 		$format = enum_type('cairo_format_t');
@@ -24,6 +25,7 @@ class CairoFunctions {
 		$patterntype = enum_type('cairo_pattern_type_t');
 		$fontweight = enum_type('cairo_font_weight_t');
 		$fontslant = enum_type('cairo_font_slant_t');
+		$regionoverlap = enum_type('cairo_region_overlap_t');
 
 		$int = prim_prim_type('int', 'int');
 		$bool = prim_prim_type('bool', 'bool');
@@ -57,8 +59,34 @@ class CairoFunctions {
 			function($v) { return "-----"; }
 		);
 
+		$rectangleIntRef = prim_type(
+			'unsigned char*',
+			'unsigned char*',
+			function($v) { return "
+				val_check({$v}, object);
+				int field_x = val_id(\"x\");
+				int field_y = val_id(\"y\");
+				int field_width = val_id(\"width\");
+				int field_height = val_id(\"height\");
+				cairo_rectangle_int_t rect_{$v} = { 0 };
+				rect_{$v}.x = val_number(val_field({$v}, field_x));
+				rect_{$v}.y = val_number(val_field({$v}, field_y));
+				rect_{$v}.width = val_number(val_field({$v}, field_width));
+				rect_{$v}.height = val_number(val_field({$v}, field_height));
+				";
+			},
+			function($v) { return "
+				alloc_field($v, field_x, alloc_int(rect_{$v}.x));
+				alloc_field($v, field_y, alloc_int(rect_{$v}.y));
+				alloc_field($v, field_width, alloc_int(rect_{$v}.width));
+				alloc_field($v, field_height, alloc_int(rect_{$v}.height));
+			"; },
+			function($v) { return "&rect_{$v}"; },
+			function($v) { return "-----"; }
+		);
+
 		return [
-			'abstracts' => [ $surface, $cairo, $pattern, $matrix, $path ],
+			'abstracts' => [ $surface, $cairo, $pattern, $matrix, $path, $region ],
 			'functions' => [
 				func($int, 'cairo_version', []),
 				func($string, 'cairo_version_string', []),
@@ -219,40 +247,39 @@ void                cairo_text_path                     (cairo_t *cr, const char
 */
 
 				// Regions: http://cairographics.org/manual/cairo-Regions.html
-/*
-typedef             cairo_region_t;
-cairo_region_t *    cairo_region_create                 (void);
-cairo_region_t *    cairo_region_create_rectangle       (const cairo_rectangle_int_t *rectangle);
-cairo_region_t *    cairo_region_create_rectangles      (const cairo_rectangle_int_t *rects, int count);
-cairo_region_t *    cairo_region_copy                   (const cairo_region_t *original);
-cairo_region_t *    cairo_region_reference              (cairo_region_t *region);
-void                cairo_region_destroy                (cairo_region_t *region);
-cairo_status_t      cairo_region_status                 (const cairo_region_t *region);
-void                cairo_region_get_extents            (const cairo_region_t *region, cairo_rectangle_int_t *extents);
-int                 cairo_region_num_rectangles         (const cairo_region_t *region);
-void                cairo_region_get_rectangle          (const cairo_region_t *region, int nth, cairo_rectangle_int_t *rectangle);
-cairo_bool_t        cairo_region_is_empty               (const cairo_region_t *region);
-cairo_bool_t        cairo_region_contains_point         (const cairo_region_t *region, int x, int y);
-enum                cairo_region_overlap_t;
-cairo_region_overlap_t cairo_region_contains_rectangle  (const cairo_region_t *region, const cairo_rectangle_int_t *rectangle);
-cairo_bool_t        cairo_region_equal                  (const cairo_region_t *a, const cairo_region_t *b);
-void                cairo_region_translate              (cairo_region_t *region, int dx, int dy);
-cairo_status_t      cairo_region_intersect              (cairo_region_t *dst, const cairo_region_t *other);
-cairo_status_t      cairo_region_intersect_rectangle    (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
-cairo_status_t      cairo_region_subtract               (cairo_region_t *dst, const cairo_region_t *other);
-cairo_status_t      cairo_region_subtract_rectangle     (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
-cairo_status_t      cairo_region_union                  (cairo_region_t *dst, const cairo_region_t *other);
-cairo_status_t      cairo_region_union_rectangle        (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
-cairo_status_t      cairo_region_xor                    (cairo_region_t *dst, const cairo_region_t *other);
-cairo_status_t      cairo_region_xor_rectangle          (cairo_region_t *dst, const cairo_rectangle_int_t *rectangle);
-*/
+				func($region, 'cairo_region_create', []),
+				//func($region, 'cairo_region_create_rectangle', [arg($rectangle, 'rectangle')]), // unused
+				//func($region, 'cairo_region_create_rectangles', [arg($rectangle, 'rectangle')]), // unused
+				//func($region, 'cairo_region_reference', [arg($region, 'region')]), // unused
+				//func($void, 'cairo_region_destroy', [arg($region, 'region')]), // unused
+				func($region, 'cairo_region_copy', [arg($region, 'region')]),
+				func($status, 'cairo_region_status', [arg($region, 'region')]),
+				func($bool, 'cairo_region_is_empty', [arg($region, 'region')]),
+				func($bool, 'cairo_region_contains_point', [arg($region, 'region'), arg($int, 'x'), arg($int, 'y')]),
+				func($bool, 'cairo_region_equal', [arg($region, 'a'), arg($region, 'b')]),
+				func($void, 'cairo_region_translate', [arg($region, 'region'), arg($int, 'dx'), arg($int, 'dy')]),
+				func($int, 'cairo_region_num_rectangles', [arg($region, 'region')]),
+
+				func($status, 'cairo_region_intersect', [arg($region, 'dst'), arg($region, 'other')]),
+				func($status, 'cairo_region_subtract', [arg($region, 'dst'), arg($region, 'other')]),
+				func($status, 'cairo_region_union', [arg($region, 'dst'), arg($region, 'other')]),
+				func($status, 'cairo_region_xor', [arg($region, 'dst'), arg($region, 'other')]),
+				func($status, 'cairo_region_union_rectangle', [arg($region, 'dst'), arg($rectangleIntRef, 'rectangle')]),
+				func($status, 'cairo_region_intersect_rectangle', [arg($region, 'dst'), arg($rectangleIntRef, 'rectangle')]),
+				func($status, 'cairo_region_subtract_rectangle', [arg($region, 'dst'), arg($rectangleIntRef, 'rectangle')]),
+				func($status, 'cairo_region_xor_rectangle', [arg($region, 'dst'), arg($rectangleIntRef, 'rectangle')]),
+
+				func($regionoverlap, 'cairo_region_contains_rectangle', [arg($region, 'region'), arg($rectangleIntRef, 'rectangle')]),
+				func($void, 'cairo_region_get_extents', [arg($region, 'region'), arg($rectangleIntRef, 'extents')]),
+				func($void, 'cairo_region_get_rectangle', [arg($region, 'region'), arg($int, 'nth'), arg($rectangleIntRef, 'rectangle')]),
+
 				// Text: http://cairographics.org/manual/cairo-text.html
 				func($void, 'cairo_select_font_face', [arg($cairo, 'cr'), arg($string, 'family'), arg($fontslant, 'slant'), arg($fontweight, 'weight')]),
 				func($void, 'cairo_set_font_size', [arg($cairo, 'cr'), arg($double, 'size')]),
 				func($void, 'cairo_show_text', [arg($cairo, 'cr'), arg($string, 'text')]),
+				func($void, 'cairo_set_font_matrix', [arg($cairo, 'cr'), arg($matrix, 'matrix')]),
+				func($void, 'cairo_get_font_matrix', [arg($cairo, 'cr'), arg($matrix, 'matrix')]),
 /*
-void                cairo_set_font_matrix               (cairo_t *cr, const cairo_matrix_t *matrix);
-void                cairo_get_font_matrix               (cairo_t *cr, cairo_matrix_t *matrix);
 void                cairo_set_font_options              (cairo_t *cr, const cairo_font_options_t *options);
 void                cairo_get_font_options              (cairo_t *cr, cairo_font_options_t *options);
 void                cairo_set_font_face                 (cairo_t *cr, cairo_font_face_t *font_face);

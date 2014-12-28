@@ -34,17 +34,24 @@ class CairoPattern {
 		return new CairoPatternGradient(CairoRaw.cairo_pattern_create_radial(cx0, cy0, radius0, cx1, cy1, radius1));
 	}
 
-	public function setFilter(value:CairoFilter) CairoRaw.cairo_pattern_set_filter(handle, value);
+	public function setFilter(value:CairoFilter):CairoPattern {
+		CairoRaw.cairo_pattern_set_filter(handle, value);
+		return this;
+	}
 	public function getFilter():CairoFilter return cast(CairoRaw.cairo_pattern_get_filter(handle), CairoFilter);
 
-	public function setExtend(value:CairoExtend) CairoRaw.cairo_pattern_set_extend(handle, value);
+	public function setExtend(value:CairoExtend):CairoPattern {
+		CairoRaw.cairo_pattern_set_extend(handle, value);
+		return this;
+	}
 	public function getExtend():CairoExtend return cast(CairoRaw.cairo_pattern_get_extend(handle), CairoExtend);
 
 	public function getType():CairoPatternType return cast(CairoRaw.cairo_pattern_get_type(handle), CairoPatternType);
 	public function getStatus():CairoStatus return cast(CairoRaw.cairo_pattern_status(handle), CairoStatus);
 
-	public function setMatrix(matrix:CairoMatrix) {
+	public function setMatrix(matrix:CairoMatrix):CairoPattern {
 		CairoRaw.cairo_pattern_set_matrix(handle, matrix);
+		return this;
 	}
 
 	public function getMatrix() {

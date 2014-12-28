@@ -81,6 +81,17 @@ extern "C" {
 	        return abstract_object; 
 		}
 
+    		DECLARE_KIND(kind_cairo_region_t)
+		DEFINE_KIND(kind_cairo_region_t)
+		void kind_cairo_region_t_check(value z) { val_check_kind(z, kind_cairo_region_t);  }
+		cairo_region_t* kind_cairo_region_t_get(value z) { return ((cairo_region_t*)val_get_handle(z, kind_cairo_region_t)); }
+		void kind_cairo_region_t_destroy(value z) { cairo_region_destroy(kind_cairo_region_t_get(z)); }
+		value kind_cairo_region_t_alloc(cairo_region_t* z) {
+	        value abstract_object = alloc_abstract(kind_cairo_region_t, z);
+	        val_gc(abstract_object, ((hxFinalizer) kind_cairo_region_t_destroy));
+	        return abstract_object; 
+		}
+
     
             value hx_cairo_version() {
         	
@@ -1116,6 +1127,302 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_path_extents, 3);
+            value hx_cairo_region_create() {
+        	
+        					cairo_region_t* _result = cairo_region_create();
+	        					return kind_cairo_region_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_create, 0);
+            value hx_cairo_region_copy(value region) {
+        	        		kind_cairo_region_t_check(region);
+        	
+        					cairo_region_t* _result = cairo_region_copy(kind_cairo_region_t_get(region));
+	        		        		;
+	        					return kind_cairo_region_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_copy, 1);
+            value hx_cairo_region_status(value region) {
+        	        		kind_cairo_region_t_check(region);
+        	
+        					cairo_status_t _result = cairo_region_status(kind_cairo_region_t_get(region));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_status, 1);
+            value hx_cairo_region_is_empty(value region) {
+        	        		kind_cairo_region_t_check(region);
+        	
+        					bool _result = cairo_region_is_empty(kind_cairo_region_t_get(region));
+	        		        		;
+	        					return alloc_bool(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_is_empty, 1);
+            value hx_cairo_region_contains_point(value region, value x, value y) {
+        	        		kind_cairo_region_t_check(region);
+        	        		val_check(x, int);
+        	        		val_check(y, int);
+        	
+        					bool _result = cairo_region_contains_point(kind_cairo_region_t_get(region), val_get_int(x), val_get_int(y));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return alloc_bool(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_contains_point, 3);
+            value hx_cairo_region_equal(value a, value b) {
+        	        		kind_cairo_region_t_check(a);
+        	        		kind_cairo_region_t_check(b);
+        	
+        					bool _result = cairo_region_equal(kind_cairo_region_t_get(a), kind_cairo_region_t_get(b));
+	        		        		;
+	        		        		;
+	        					return alloc_bool(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_equal, 2);
+            value hx_cairo_region_translate(value region, value dx, value dy) {
+        	        		kind_cairo_region_t_check(region);
+        	        		val_check(dx, int);
+        	        		val_check(dy, int);
+        	
+        					cairo_region_translate(kind_cairo_region_t_get(region), val_get_int(dx), val_get_int(dy));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_region_translate, 3);
+            value hx_cairo_region_num_rectangles(value region) {
+        	        		kind_cairo_region_t_check(region);
+        	
+        					int _result = cairo_region_num_rectangles(kind_cairo_region_t_get(region));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_num_rectangles, 1);
+            value hx_cairo_region_intersect(value dst, value other) {
+        	        		kind_cairo_region_t_check(dst);
+        	        		kind_cairo_region_t_check(other);
+        	
+        					cairo_status_t _result = cairo_region_intersect(kind_cairo_region_t_get(dst), kind_cairo_region_t_get(other));
+	        		        		;
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_intersect, 2);
+            value hx_cairo_region_subtract(value dst, value other) {
+        	        		kind_cairo_region_t_check(dst);
+        	        		kind_cairo_region_t_check(other);
+        	
+        					cairo_status_t _result = cairo_region_subtract(kind_cairo_region_t_get(dst), kind_cairo_region_t_get(other));
+	        		        		;
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_subtract, 2);
+            value hx_cairo_region_union(value dst, value other) {
+        	        		kind_cairo_region_t_check(dst);
+        	        		kind_cairo_region_t_check(other);
+        	
+        					cairo_status_t _result = cairo_region_union(kind_cairo_region_t_get(dst), kind_cairo_region_t_get(other));
+	        		        		;
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_union, 2);
+            value hx_cairo_region_xor(value dst, value other) {
+        	        		kind_cairo_region_t_check(dst);
+        	        		kind_cairo_region_t_check(other);
+        	
+        					cairo_status_t _result = cairo_region_xor(kind_cairo_region_t_get(dst), kind_cairo_region_t_get(other));
+	        		        		;
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_xor, 2);
+            value hx_cairo_region_union_rectangle(value dst, value rectangle) {
+        	        		kind_cairo_region_t_check(dst);
+        	        		
+				val_check(rectangle, object);
+				int field_x = val_id("x");
+				int field_y = val_id("y");
+				int field_width = val_id("width");
+				int field_height = val_id("height");
+				cairo_rectangle_int_t rect_rectangle = { 0 };
+				rect_rectangle.x = val_number(val_field(rectangle, field_x));
+				rect_rectangle.y = val_number(val_field(rectangle, field_y));
+				rect_rectangle.width = val_number(val_field(rectangle, field_width));
+				rect_rectangle.height = val_number(val_field(rectangle, field_height));
+				;
+        	
+        					cairo_status_t _result = cairo_region_union_rectangle(kind_cairo_region_t_get(dst), &rect_rectangle);
+	        		        		;
+	        		        		
+				alloc_field(rectangle, field_x, alloc_int(rect_rectangle.x));
+				alloc_field(rectangle, field_y, alloc_int(rect_rectangle.y));
+				alloc_field(rectangle, field_width, alloc_int(rect_rectangle.width));
+				alloc_field(rectangle, field_height, alloc_int(rect_rectangle.height));
+			;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_union_rectangle, 2);
+            value hx_cairo_region_intersect_rectangle(value dst, value rectangle) {
+        	        		kind_cairo_region_t_check(dst);
+        	        		
+				val_check(rectangle, object);
+				int field_x = val_id("x");
+				int field_y = val_id("y");
+				int field_width = val_id("width");
+				int field_height = val_id("height");
+				cairo_rectangle_int_t rect_rectangle = { 0 };
+				rect_rectangle.x = val_number(val_field(rectangle, field_x));
+				rect_rectangle.y = val_number(val_field(rectangle, field_y));
+				rect_rectangle.width = val_number(val_field(rectangle, field_width));
+				rect_rectangle.height = val_number(val_field(rectangle, field_height));
+				;
+        	
+        					cairo_status_t _result = cairo_region_intersect_rectangle(kind_cairo_region_t_get(dst), &rect_rectangle);
+	        		        		;
+	        		        		
+				alloc_field(rectangle, field_x, alloc_int(rect_rectangle.x));
+				alloc_field(rectangle, field_y, alloc_int(rect_rectangle.y));
+				alloc_field(rectangle, field_width, alloc_int(rect_rectangle.width));
+				alloc_field(rectangle, field_height, alloc_int(rect_rectangle.height));
+			;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_intersect_rectangle, 2);
+            value hx_cairo_region_subtract_rectangle(value dst, value rectangle) {
+        	        		kind_cairo_region_t_check(dst);
+        	        		
+				val_check(rectangle, object);
+				int field_x = val_id("x");
+				int field_y = val_id("y");
+				int field_width = val_id("width");
+				int field_height = val_id("height");
+				cairo_rectangle_int_t rect_rectangle = { 0 };
+				rect_rectangle.x = val_number(val_field(rectangle, field_x));
+				rect_rectangle.y = val_number(val_field(rectangle, field_y));
+				rect_rectangle.width = val_number(val_field(rectangle, field_width));
+				rect_rectangle.height = val_number(val_field(rectangle, field_height));
+				;
+        	
+        					cairo_status_t _result = cairo_region_subtract_rectangle(kind_cairo_region_t_get(dst), &rect_rectangle);
+	        		        		;
+	        		        		
+				alloc_field(rectangle, field_x, alloc_int(rect_rectangle.x));
+				alloc_field(rectangle, field_y, alloc_int(rect_rectangle.y));
+				alloc_field(rectangle, field_width, alloc_int(rect_rectangle.width));
+				alloc_field(rectangle, field_height, alloc_int(rect_rectangle.height));
+			;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_subtract_rectangle, 2);
+            value hx_cairo_region_xor_rectangle(value dst, value rectangle) {
+        	        		kind_cairo_region_t_check(dst);
+        	        		
+				val_check(rectangle, object);
+				int field_x = val_id("x");
+				int field_y = val_id("y");
+				int field_width = val_id("width");
+				int field_height = val_id("height");
+				cairo_rectangle_int_t rect_rectangle = { 0 };
+				rect_rectangle.x = val_number(val_field(rectangle, field_x));
+				rect_rectangle.y = val_number(val_field(rectangle, field_y));
+				rect_rectangle.width = val_number(val_field(rectangle, field_width));
+				rect_rectangle.height = val_number(val_field(rectangle, field_height));
+				;
+        	
+        					cairo_status_t _result = cairo_region_xor_rectangle(kind_cairo_region_t_get(dst), &rect_rectangle);
+	        		        		;
+	        		        		
+				alloc_field(rectangle, field_x, alloc_int(rect_rectangle.x));
+				alloc_field(rectangle, field_y, alloc_int(rect_rectangle.y));
+				alloc_field(rectangle, field_width, alloc_int(rect_rectangle.width));
+				alloc_field(rectangle, field_height, alloc_int(rect_rectangle.height));
+			;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_xor_rectangle, 2);
+            value hx_cairo_region_contains_rectangle(value region, value rectangle) {
+        	        		kind_cairo_region_t_check(region);
+        	        		
+				val_check(rectangle, object);
+				int field_x = val_id("x");
+				int field_y = val_id("y");
+				int field_width = val_id("width");
+				int field_height = val_id("height");
+				cairo_rectangle_int_t rect_rectangle = { 0 };
+				rect_rectangle.x = val_number(val_field(rectangle, field_x));
+				rect_rectangle.y = val_number(val_field(rectangle, field_y));
+				rect_rectangle.width = val_number(val_field(rectangle, field_width));
+				rect_rectangle.height = val_number(val_field(rectangle, field_height));
+				;
+        	
+        					cairo_region_overlap_t _result = cairo_region_contains_rectangle(kind_cairo_region_t_get(region), &rect_rectangle);
+	        		        		;
+	        		        		
+				alloc_field(rectangle, field_x, alloc_int(rect_rectangle.x));
+				alloc_field(rectangle, field_y, alloc_int(rect_rectangle.y));
+				alloc_field(rectangle, field_width, alloc_int(rect_rectangle.width));
+				alloc_field(rectangle, field_height, alloc_int(rect_rectangle.height));
+			;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_region_contains_rectangle, 2);
+            value hx_cairo_region_get_extents(value region, value extents) {
+        	        		kind_cairo_region_t_check(region);
+        	        		
+				val_check(extents, object);
+				int field_x = val_id("x");
+				int field_y = val_id("y");
+				int field_width = val_id("width");
+				int field_height = val_id("height");
+				cairo_rectangle_int_t rect_extents = { 0 };
+				rect_extents.x = val_number(val_field(extents, field_x));
+				rect_extents.y = val_number(val_field(extents, field_y));
+				rect_extents.width = val_number(val_field(extents, field_width));
+				rect_extents.height = val_number(val_field(extents, field_height));
+				;
+        	
+        					cairo_region_get_extents(kind_cairo_region_t_get(region), &rect_extents);
+	        		        		;
+	        		        		
+				alloc_field(extents, field_x, alloc_int(rect_extents.x));
+				alloc_field(extents, field_y, alloc_int(rect_extents.y));
+				alloc_field(extents, field_width, alloc_int(rect_extents.width));
+				alloc_field(extents, field_height, alloc_int(rect_extents.height));
+			;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_region_get_extents, 2);
+            value hx_cairo_region_get_rectangle(value region, value nth, value rectangle) {
+        	        		kind_cairo_region_t_check(region);
+        	        		val_check(nth, int);
+        	        		
+				val_check(rectangle, object);
+				int field_x = val_id("x");
+				int field_y = val_id("y");
+				int field_width = val_id("width");
+				int field_height = val_id("height");
+				cairo_rectangle_int_t rect_rectangle = { 0 };
+				rect_rectangle.x = val_number(val_field(rectangle, field_x));
+				rect_rectangle.y = val_number(val_field(rectangle, field_y));
+				rect_rectangle.width = val_number(val_field(rectangle, field_width));
+				rect_rectangle.height = val_number(val_field(rectangle, field_height));
+				;
+        	
+        					cairo_region_get_rectangle(kind_cairo_region_t_get(region), val_get_int(nth), &rect_rectangle);
+	        		        		;
+	        		        		;
+	        		        		
+				alloc_field(rectangle, field_x, alloc_int(rect_rectangle.x));
+				alloc_field(rectangle, field_y, alloc_int(rect_rectangle.y));
+				alloc_field(rectangle, field_width, alloc_int(rect_rectangle.width));
+				alloc_field(rectangle, field_height, alloc_int(rect_rectangle.height));
+			;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_region_get_rectangle, 3);
             value hx_cairo_select_font_face(value cr, value family, value slant, value weight) {
         	        		kind_cairo_t_check(cr);
         	        		val_check(family, string);
@@ -1150,6 +1457,26 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_show_text, 2);
+            value hx_cairo_set_font_matrix(value cr, value matrix) {
+        	        		kind_cairo_t_check(cr);
+        	        		kind_cairo_matrix_t_check(matrix);
+        	
+        					cairo_set_font_matrix(kind_cairo_t_get(cr), kind_cairo_matrix_t_get(matrix));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_set_font_matrix, 2);
+            value hx_cairo_get_font_matrix(value cr, value matrix) {
+        	        		kind_cairo_t_check(cr);
+        	        		kind_cairo_matrix_t_check(matrix);
+        	
+        					cairo_get_font_matrix(kind_cairo_t_get(cr), kind_cairo_matrix_t_get(matrix));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_get_font_matrix, 2);
             value hx_cairo_pattern_create_rgba(value red, value green, value blue, value alpha) {
         	        		val_check(red, number);;
         	        		val_check(green, number);;

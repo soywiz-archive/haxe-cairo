@@ -58,6 +58,13 @@ class CairoContext {
 		CairoRaw.cairo_set_matrix(this.handle, out.handle);
 		return out;
 	}
+	public function setFontMatrix(matrix:CairoMatrix) CairoRaw.cairo_set_font_matrix(handle, matrix.handle);
+	public function getFontMatrix():CairoMatrix {
+		var out = new CairoMatrix();
+		CairoRaw.cairo_set_font_matrix(handle, out.handle);
+		return out;
+	}
+
 	public function hasCurrentPoint() return CairoRaw.cairo_has_current_point(this.handle);
 	public function getCurrentPoint():CairoPoint {
 		var out = [0.0, 0.0];
