@@ -65,6 +65,17 @@ class CairoContext {
 		return out;
 	}
 
+	public function setFontOptions(value:CairoFontOptions):CairoContext {
+		CairoRaw.cairo_set_font_options(handle, value);
+		return this;
+	}
+
+	public function getFontOptions():CairoFontOptions {
+		var out = CairoFontOptions.create();
+		CairoRaw.cairo_set_font_options(handle, out);
+		return out;
+	}
+
 	public function hasCurrentPoint() return CairoRaw.cairo_has_current_point(this.handle);
 	public function getCurrentPoint():CairoPoint {
 		var out = [0.0, 0.0];

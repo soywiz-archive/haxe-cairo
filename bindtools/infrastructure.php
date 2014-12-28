@@ -89,5 +89,5 @@ function prim_prim_type($name, $type) {
 		function($v) use ($name) { return "alloc_{$name}($v)"; }
 	);
 }
-function func($retval, $name, $args) { return new BindFunction($retval, $name, $args); }
-function arg($type, $name) { return new BindArgument($type, $name); }
+function func(BindType  $retval, $name, $args) { return new BindFunction($retval, $name, $args); }
+function arg(BindType $type, $name) { return new BindArgument($type, $name); }

@@ -130,6 +130,23 @@ extern "C" {
 	        return abstract_object; 
 		}
 
+    		DECLARE_KIND(kind_cairo_font_options_t)
+		DEFINE_KIND(kind_cairo_font_options_t)
+		void kind_cairo_font_options_t_check(value z) {
+			val_check_kind(z, kind_cairo_font_options_t);
+		}
+		cairo_font_options_t* kind_cairo_font_options_t_get(value z) {
+			return ((cairo_font_options_t*)val_get_handle(z, kind_cairo_font_options_t));
+		}
+		void kind_cairo_font_options_t_destroy(value z) {
+			cairo_font_options_destroy(kind_cairo_font_options_t_get(z));
+		}
+		value kind_cairo_font_options_t_alloc(cairo_font_options_t* z) {
+	        value abstract_object = alloc_abstract(kind_cairo_font_options_t, z);
+	        val_gc(abstract_object, ((hxFinalizer) kind_cairo_font_options_t_destroy));
+	        return abstract_object; 
+		}
+
     
             value hx_cairo_version() {
         	
@@ -1531,6 +1548,148 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_get_font_matrix, 2);
+            value hx_cairo_set_font_options(value cr, value options) {
+        	        		kind_cairo_t_check(cr);
+        	        		kind_cairo_font_options_t_check(options);
+        	
+        					cairo_set_font_options(kind_cairo_t_get(cr), kind_cairo_font_options_t_get(options));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_set_font_options, 2);
+            value hx_cairo_get_font_options(value cr, value options) {
+        	        		kind_cairo_t_check(cr);
+        	        		kind_cairo_font_options_t_check(options);
+        	
+        					cairo_get_font_options(kind_cairo_t_get(cr), kind_cairo_font_options_t_get(options));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_get_font_options, 2);
+            value hx_cairo_font_options_create() {
+        	
+        					cairo_font_options_t* _result = cairo_font_options_create();
+	        					return kind_cairo_font_options_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_create, 0);
+            value hx_cairo_font_options_copy(value original) {
+        	        		kind_cairo_font_options_t_check(original);
+        	
+        					cairo_font_options_t* _result = cairo_font_options_copy(kind_cairo_font_options_t_get(original));
+	        		        		;
+	        					return kind_cairo_font_options_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_copy, 1);
+            value hx_cairo_font_options_status(value options) {
+        	        		kind_cairo_font_options_t_check(options);
+        	
+        					cairo_status_t _result = cairo_font_options_status(kind_cairo_font_options_t_get(options));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_status, 1);
+            value hx_cairo_font_options_merge(value options, value other) {
+        	        		kind_cairo_font_options_t_check(options);
+        	        		kind_cairo_font_options_t_check(other);
+        	
+        					cairo_font_options_merge(kind_cairo_font_options_t_get(options), kind_cairo_font_options_t_get(other));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_merge, 2);
+            value hx_cairo_font_options_hash(value options) {
+        	        		kind_cairo_font_options_t_check(options);
+        	
+        					int _result = cairo_font_options_hash(kind_cairo_font_options_t_get(options));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_hash, 1);
+            value hx_cairo_font_options_equal(value a, value b) {
+        	        		kind_cairo_font_options_t_check(a);
+        	        		kind_cairo_font_options_t_check(b);
+        	
+        					bool _result = cairo_font_options_equal(kind_cairo_font_options_t_get(a), kind_cairo_font_options_t_get(b));
+	        		        		;
+	        		        		;
+	        					return alloc_bool(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_equal, 2);
+            value hx_cairo_font_options_set_antialias(value options, value antialias) {
+        	        		kind_cairo_font_options_t_check(options);
+        	        		val_check(antialias, int);
+        	
+        					cairo_font_options_set_antialias(kind_cairo_font_options_t_get(options), ((cairo_antialias_t)val_get_int(antialias)));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_set_antialias, 2);
+            value hx_cairo_font_options_set_subpixel_order(value options, value subpixel_order) {
+        	        		kind_cairo_font_options_t_check(options);
+        	        		val_check(subpixel_order, int);
+        	
+        					cairo_font_options_set_subpixel_order(kind_cairo_font_options_t_get(options), ((cairo_subpixel_order_t)val_get_int(subpixel_order)));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_set_subpixel_order, 2);
+            value hx_cairo_font_options_set_hint_style(value options, value hintstyle) {
+        	        		kind_cairo_font_options_t_check(options);
+        	        		val_check(hintstyle, int);
+        	
+        					cairo_font_options_set_hint_style(kind_cairo_font_options_t_get(options), ((cairo_hint_style_t)val_get_int(hintstyle)));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_set_hint_style, 2);
+            value hx_cairo_font_options_set_hint_metrics(value options, value hintmetrics) {
+        	        		kind_cairo_font_options_t_check(options);
+        	        		val_check(hintmetrics, int);
+        	
+        					cairo_font_options_set_hint_metrics(kind_cairo_font_options_t_get(options), ((cairo_hint_metrics_t)val_get_int(hintmetrics)));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_set_hint_metrics, 2);
+            value hx_cairo_font_options_get_antialias(value options) {
+        	        		kind_cairo_font_options_t_check(options);
+        	
+        					cairo_antialias_t _result = cairo_font_options_get_antialias(kind_cairo_font_options_t_get(options));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_get_antialias, 1);
+            value hx_cairo_font_options_get_subpixel_order(value options) {
+        	        		kind_cairo_font_options_t_check(options);
+        	
+        					cairo_subpixel_order_t _result = cairo_font_options_get_subpixel_order(kind_cairo_font_options_t_get(options));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_get_subpixel_order, 1);
+            value hx_cairo_font_options_get_hint_style(value options) {
+        	        		kind_cairo_font_options_t_check(options);
+        	
+        					cairo_hint_style_t _result = cairo_font_options_get_hint_style(kind_cairo_font_options_t_get(options));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_get_hint_style, 1);
+            value hx_cairo_font_options_get_hint_metrics(value options) {
+        	        		kind_cairo_font_options_t_check(options);
+        	
+        					cairo_hint_metrics_t _result = cairo_font_options_get_hint_metrics(kind_cairo_font_options_t_get(options));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_font_options_get_hint_metrics, 1);
             value hx_cairo_pattern_create_rgba(value red, value green, value blue, value alpha) {
         	        		val_check(red, number);;
         	        		val_check(green, number);;

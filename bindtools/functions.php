@@ -10,6 +10,7 @@ class CairoFunctions {
 		$matrix = type('cairo_matrix_t', 'cairo_matrix_destroy');
 		$path = type('cairo_path_t', 'cairo_path_destroy');
 		$region = type('cairo_region_t', 'cairo_region_destroy');
+		$fontoptions = type('cairo_font_options_t', 'cairo_font_options_destroy');
 		
 
 		$format = enum_type('cairo_format_t');
@@ -26,6 +27,9 @@ class CairoFunctions {
 		$fontweight = enum_type('cairo_font_weight_t');
 		$fontslant = enum_type('cairo_font_slant_t');
 		$regionoverlap = enum_type('cairo_region_overlap_t');
+		$subpixelorder = enum_type('cairo_subpixel_order_t');
+		$hintstyle = enum_type('cairo_hint_style_t');
+		$hintmetrics = enum_type('cairo_hint_metrics_t');
 
 		$int = prim_prim_type('int', 'int');
 		$bool = prim_prim_type('bool', 'bool');
@@ -86,7 +90,7 @@ class CairoFunctions {
 		);
 
 		return [
-			'abstracts' => [ $surface, $cairo, $pattern, $matrix, $path, $region ],
+			'abstracts' => [ $surface, $cairo, $pattern, $matrix, $path, $region, $fontoptions ],
 			'functions' => [
 				func($int, 'cairo_version', []),
 				func($string, 'cairo_version_string', []),
@@ -322,9 +326,10 @@ void                cairo_text_path                     (cairo_t *cr, const char
 				func($void, 'cairo_show_text', [arg($cairo, 'cr'), arg($string, 'text')]),
 				func($void, 'cairo_set_font_matrix', [arg($cairo, 'cr'), arg($matrix, 'matrix')]),
 				func($void, 'cairo_get_font_matrix', [arg($cairo, 'cr'), arg($matrix, 'matrix')]),
+
+				func($void, 'cairo_set_font_options', [arg($cairo, 'cr'), arg($fontoptions, 'options')]),
+				func($void, 'cairo_get_font_options', [arg($cairo, 'cr'), arg($fontoptions, 'options')]),
 /*
-void                cairo_set_font_options              (cairo_t *cr, const cairo_font_options_t *options);
-void                cairo_get_font_options              (cairo_t *cr, cairo_font_options_t *options);
 void                cairo_set_font_face                 (cairo_t *cr, cairo_font_face_t *font_face);
 cairo_font_face_t * cairo_get_font_face                 (cairo_t *cr);
 void                cairo_set_scaled_font               (cairo_t *cr, const cairo_scaled_font_t *scaled_font);
@@ -343,6 +348,22 @@ void                cairo_glyph_free                    (cairo_glyph_t *glyphs);
 cairo_text_cluster_t * cairo_text_cluster_allocate      (int num_clusters);
 void                cairo_text_cluster_free             (cairo_text_cluster_t *clusters);
 */
+				// FontOptions: http://cairographics.org/manual/cairo-cairo-font-options-t.html
+				func($fontoptions, 'cairo_font_options_create', []),
+				func($fontoptions, 'cairo_font_options_copy', [arg($fontoptions, 'original')]),
+				func($status, 'cairo_font_options_status', [arg($fontoptions, 'options')]),
+				func($void, 'cairo_font_options_merge', [arg($fontoptions, 'options'), arg($fontoptions, 'other')]),
+				func($int, 'cairo_font_options_hash', [arg($fontoptions, 'options')]),
+				func($bool, 'cairo_font_options_equal', [arg($fontoptions, 'a'), arg($fontoptions, 'b')]),
+				func($void, 'cairo_font_options_set_antialias', [arg($fontoptions, 'options'), arg($antialias, 'antialias')]),
+				func($void, 'cairo_font_options_set_subpixel_order', [arg($fontoptions, 'options'), arg($subpixelorder, 'subpixel_order')]),
+				func($void, 'cairo_font_options_set_hint_style', [arg($fontoptions, 'options'), arg($hintstyle, 'hintstyle')]),
+				func($void, 'cairo_font_options_set_hint_metrics', [arg($fontoptions, 'options'), arg($hintmetrics, 'hintmetrics')]),
+
+				func($antialias, 'cairo_font_options_get_antialias', [arg($fontoptions, 'options')]),
+				func($subpixelorder, 'cairo_font_options_get_subpixel_order', [arg($fontoptions, 'options')]),
+				func($hintstyle, 'cairo_font_options_get_hint_style', [arg($fontoptions, 'options')]),
+				func($hintmetrics, 'cairo_font_options_get_hint_metrics', [arg($fontoptions, 'options')]),
 
 				// Patterns: http://cairographics.org/manual/cairo-cairo-pattern-t.html
 				func($pattern, 'cairo_pattern_create_rgba', [arg($double, 'red'), arg($double, 'green'), arg($double, 'blue'), arg($double, 'alpha')]),
