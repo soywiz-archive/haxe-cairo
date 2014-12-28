@@ -25,9 +25,31 @@ class CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_image_surface_create_from_png(filename));
 	}
 
-	//static public function createForPDF(filename:String, width:Float, height:Float):CairoSurface {
-	//	return new CairoSurface(CairoRaw.cairo_pdf_surface_create(filename, width, height));
-	//}
+	static public function createForSvg(filename:String, width_in_points:Float, height_in_points:Float):CairoSurface {
+		return new CairoSurface(CairoRaw.cairo_svg_surface_create(filename, width_in_points, height_in_points));
+	}
+
+	static public function createForPdf(filename:String, width:Float, height:Float):CairoSurface {
+		return new CairoSurface(CairoRaw.cairo_pdf_surface_create(filename, width, height));
+	}
+
+	/*
+	public function destroy():CairoSurface {
+		CairoRaw.cairo_surface_destroy(this.handle);
+		this.handle = null;
+		return this;
+	}
+	*/
+
+	public function flush():CairoSurface {
+		CairoRaw.cairo_surface_flush(this.handle);
+		return this;
+	}
+
+	public function finish():CairoSurface {
+		CairoRaw.cairo_surface_finish(this.handle);
+		return this;
+	}
 
 	public function getContext():CairoContext {
 		return new CairoContext(CairoRaw.cairo_create(this.handle));

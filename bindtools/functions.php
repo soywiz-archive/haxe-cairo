@@ -196,14 +196,57 @@ cairo_rectangle_list_t * cairo_copy_clip_rectangle_list (cairo_t *cr);
 				func($void, 'cairo_matrix_transform_point', [arg($matrix, 'matrix'), arg($pointRef, 'point')]),
 				
 				// Surface: http://cairographics.org/manual/cairo-Image-Surfaces.html
+				// http://cairographics.org/manual/cairo-cairo-surface-t.html
 				func($surface, 'cairo_image_surface_create', [arg($format, 'format'), arg($int, 'width'), arg($int, 'height')]),
 				func($surface, 'cairo_image_surface_create_for_data', [arg($bytePointer, 'data'), arg($format, 'format'), arg($int, 'width'), arg($int, 'height'), arg($int, 'stride')]),
-				
 				func($format, 'cairo_image_surface_get_format', [arg($surface, 'surface')]),
 				func($int, 'cairo_image_surface_get_width', [arg($surface, 'surface')]),
 				func($int, 'cairo_image_surface_get_height', [arg($surface, 'surface')]),
 				func($int, 'cairo_image_surface_get_stride', [arg($surface, 'surface')]),
 
+				//func($void, 'cairo_surface_destroy', [arg($surface, 'surface')]), // no used
+				func($void, 'cairo_surface_finish', [arg($surface, 'surface')]),
+				func($void, 'cairo_surface_flush', [arg($surface, 'surface')]),
+
+				/*
+cairo_surface_t *   cairo_image_surface_create          (cairo_format_t format, int width, int height);
+cairo_surface_t *   cairo_image_surface_create_for_data (unsigned char *data, cairo_format_t format, int width, int height, int stride);
+unsigned char *     cairo_image_surface_get_data        (cairo_surface_t *surface);
+cairo_format_t      cairo_image_surface_get_format      (cairo_surface_t *surface);
+int                 cairo_image_surface_get_width       (cairo_surface_t *surface);
+int                 cairo_image_surface_get_height      (cairo_surface_t *surface);
+int                 cairo_image_surface_get_stride      (cairo_surface_t *surface);
+
+cairo_surface_t *   cairo_surface_create_similar        (cairo_surface_t *other, cairo_content_t content, int width, int height);
+cairo_surface_t *   cairo_surface_create_similar_image  (cairo_surface_t *other, cairo_format_t format, int width, int height);
+cairo_surface_t *   cairo_surface_create_for_rectangle  (cairo_surface_t *target, double x, double y, double width, double height);
+cairo_surface_t *   cairo_surface_reference             (cairo_surface_t *surface);
+void                cairo_surface_destroy               (cairo_surface_t *surface);
+cairo_status_t      cairo_surface_status                (cairo_surface_t *surface);
+cairo_device_t *    cairo_surface_get_device            (cairo_surface_t *surface);
+void                cairo_surface_get_font_options      (cairo_surface_t *surface, cairo_font_options_t *options);
+cairo_content_t     cairo_surface_get_content           (cairo_surface_t *surface);
+void                cairo_surface_mark_dirty            (cairo_surface_t *surface);
+void                cairo_surface_mark_dirty_rectangle  (cairo_surface_t *surface, int x, int y, int width, int height);
+void                cairo_surface_set_device_offset     (cairo_surface_t *surface, double x_offset, double y_offset);
+void                cairo_surface_get_device_offset     (cairo_surface_t *surface, double *x_offset, double *y_offset);
+void                cairo_surface_set_fallback_resolution(cairo_surface_t *surface, double x_pixels_per_inch, double y_pixels_per_inch);
+void                cairo_surface_get_fallback_resolution(cairo_surface_t *surface, double *x_pixels_per_inch, double *y_pixels_per_inch);
+enum                cairo_surface_type_t;
+cairo_surface_type_t cairo_surface_get_type             (cairo_surface_t *surface);
+unsigned int        cairo_surface_get_reference_count   (cairo_surface_t *surface);
+cairo_status_t      cairo_surface_set_user_data         (cairo_surface_t *surface, const cairo_user_data_key_t *key, void *user_data, cairo_destroy_func_t destroy);
+void *              cairo_surface_get_user_data         (cairo_surface_t *surface, const cairo_user_data_key_t *key);
+void                cairo_surface_copy_page             (cairo_surface_t *surface);
+void                cairo_surface_show_page             (cairo_surface_t *surface);
+cairo_bool_t        cairo_surface_has_show_text_glyphs  (cairo_surface_t *surface);
+cairo_status_t      cairo_surface_set_mime_data         (cairo_surface_t *surface, const char *mime_type, const unsigned char *data, unsigned long  length, cairo_destroy_func_t destroy, void *closure);
+void                cairo_surface_get_mime_data         (cairo_surface_t *surface, const char *mime_type, const unsigned char **data, unsigned long *length);
+cairo_bool_t        cairo_surface_supports_mime_type    (cairo_surface_t *surface, const char *mime_type);
+cairo_surface_t *   cairo_surface_map_to_image          (cairo_surface_t *surface, const cairo_rectangle_int_t *extents);
+void                cairo_surface_unmap_image           (cairo_surface_t *surface, cairo_surface_t *image);
+				 */
+				
 				// Transformations: http://cairographics.org/manual/cairo-Transformations.html
 				func($void, 'cairo_translate', [arg($cairo, 'cr'), arg($double, 'tx'), arg($double, 'ty')]),
 				func($void, 'cairo_scale', [arg($cairo, 'cr'), arg($double, 'sx'), arg($double, 'sy')]),
@@ -361,10 +404,19 @@ cairo_status_t      (*cairo_read_func_t)                (void *closure, unsigned
 cairo_surface_t *   cairo_image_surface_create_from_png_stream (cairo_read_func_t read_func, void *closure);
 cairo_status_t      (*cairo_write_func_t)               (void *closure, const unsigned char *data, unsigned int length);
 cairo_status_t      cairo_surface_write_to_png_stream   (cairo_surface_t *surface, cairo_write_func_t write_func, void *closure);
-*/	
+*/
+				// SVG Support: http://cairographics.org/manual/cairo-SVG-Surfaces.html
+				func($surface, 'cairo_svg_surface_create', [arg($string, 'filename'), arg($double, 'width_in_points'), arg($double, 'height_in_points')]),
+/*
+cairo_surface_t *   cairo_svg_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
+void                cairo_svg_surface_restrict_to_version(cairo_surface_t *surface, cairo_svg_version_t version);
+enum                cairo_svg_version_t;
+void                cairo_svg_get_versions              (cairo_svg_version_t const **versions, int *num_versions);
+const char *        cairo_svg_version_to_string         (cairo_svg_version_t version);
+*/
 
 				// PDF Support: http://cairographics.org/manual/cairo-PDF-Surfaces.html
-				//func($surface, 'cairo_pdf_surface_create', [arg($string, 'filename'), arg($double, 'width'), arg($double, 'height')]),
+				func($surface, 'cairo_pdf_surface_create', [arg($string, 'filename'), arg($double, 'width'), arg($double, 'height')]),
 /*
 cairo_surface_t *   cairo_pdf_surface_create            (const char *filename, double width_in_points, double height_in_points);
 cairo_surface_t *   cairo_pdf_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);

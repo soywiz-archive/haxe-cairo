@@ -6,3 +6,5 @@ project/obj
 *.obj
 *.ndll
 *.NDLL
+example/output.pdf
+example/output.svg

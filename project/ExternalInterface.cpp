@@ -12,6 +12,8 @@
 #include <stdio.h>
 
 #include "cairo/src/cairo.h"
+#include "cairo/src/cairo-svg.h"
+#include "cairo/src/cairo-pdf.h"
 
 extern "C" {
 	#define val_get_float(v) val_get_double(v)
@@ -28,9 +30,15 @@ extern "C" {
 
     		DECLARE_KIND(kind_cairo_surface_t)
 		DEFINE_KIND(kind_cairo_surface_t)
-		void kind_cairo_surface_t_check(value z) { val_check_kind(z, kind_cairo_surface_t);  }
-		cairo_surface_t* kind_cairo_surface_t_get(value z) { return ((cairo_surface_t*)val_get_handle(z, kind_cairo_surface_t)); }
-		void kind_cairo_surface_t_destroy(value z) { cairo_surface_destroy(kind_cairo_surface_t_get(z)); }
+		void kind_cairo_surface_t_check(value z) {
+			val_check_kind(z, kind_cairo_surface_t);
+		}
+		cairo_surface_t* kind_cairo_surface_t_get(value z) {
+			return ((cairo_surface_t*)val_get_handle(z, kind_cairo_surface_t));
+		}
+		void kind_cairo_surface_t_destroy(value z) {
+			cairo_surface_destroy(kind_cairo_surface_t_get(z));
+		}
 		value kind_cairo_surface_t_alloc(cairo_surface_t* z) {
 	        value abstract_object = alloc_abstract(kind_cairo_surface_t, z);
 	        val_gc(abstract_object, ((hxFinalizer) kind_cairo_surface_t_destroy));
@@ -39,9 +47,15 @@ extern "C" {
 
     		DECLARE_KIND(kind_cairo_t)
 		DEFINE_KIND(kind_cairo_t)
-		void kind_cairo_t_check(value z) { val_check_kind(z, kind_cairo_t);  }
-		cairo_t* kind_cairo_t_get(value z) { return ((cairo_t*)val_get_handle(z, kind_cairo_t)); }
-		void kind_cairo_t_destroy(value z) { cairo_destroy(kind_cairo_t_get(z)); }
+		void kind_cairo_t_check(value z) {
+			val_check_kind(z, kind_cairo_t);
+		}
+		cairo_t* kind_cairo_t_get(value z) {
+			return ((cairo_t*)val_get_handle(z, kind_cairo_t));
+		}
+		void kind_cairo_t_destroy(value z) {
+			cairo_destroy(kind_cairo_t_get(z));
+		}
 		value kind_cairo_t_alloc(cairo_t* z) {
 	        value abstract_object = alloc_abstract(kind_cairo_t, z);
 	        val_gc(abstract_object, ((hxFinalizer) kind_cairo_t_destroy));
@@ -50,9 +64,15 @@ extern "C" {
 
     		DECLARE_KIND(kind_cairo_pattern_t)
 		DEFINE_KIND(kind_cairo_pattern_t)
-		void kind_cairo_pattern_t_check(value z) { val_check_kind(z, kind_cairo_pattern_t);  }
-		cairo_pattern_t* kind_cairo_pattern_t_get(value z) { return ((cairo_pattern_t*)val_get_handle(z, kind_cairo_pattern_t)); }
-		void kind_cairo_pattern_t_destroy(value z) { cairo_pattern_destroy(kind_cairo_pattern_t_get(z)); }
+		void kind_cairo_pattern_t_check(value z) {
+			val_check_kind(z, kind_cairo_pattern_t);
+		}
+		cairo_pattern_t* kind_cairo_pattern_t_get(value z) {
+			return ((cairo_pattern_t*)val_get_handle(z, kind_cairo_pattern_t));
+		}
+		void kind_cairo_pattern_t_destroy(value z) {
+			cairo_pattern_destroy(kind_cairo_pattern_t_get(z));
+		}
 		value kind_cairo_pattern_t_alloc(cairo_pattern_t* z) {
 	        value abstract_object = alloc_abstract(kind_cairo_pattern_t, z);
 	        val_gc(abstract_object, ((hxFinalizer) kind_cairo_pattern_t_destroy));
@@ -61,9 +81,15 @@ extern "C" {
 
     		DECLARE_KIND(kind_cairo_matrix_t)
 		DEFINE_KIND(kind_cairo_matrix_t)
-		void kind_cairo_matrix_t_check(value z) { val_check_kind(z, kind_cairo_matrix_t);  }
-		cairo_matrix_t* kind_cairo_matrix_t_get(value z) { return ((cairo_matrix_t*)val_get_handle(z, kind_cairo_matrix_t)); }
-		void kind_cairo_matrix_t_destroy(value z) { cairo_matrix_destroy(kind_cairo_matrix_t_get(z)); }
+		void kind_cairo_matrix_t_check(value z) {
+			val_check_kind(z, kind_cairo_matrix_t);
+		}
+		cairo_matrix_t* kind_cairo_matrix_t_get(value z) {
+			return ((cairo_matrix_t*)val_get_handle(z, kind_cairo_matrix_t));
+		}
+		void kind_cairo_matrix_t_destroy(value z) {
+			cairo_matrix_destroy(kind_cairo_matrix_t_get(z));
+		}
 		value kind_cairo_matrix_t_alloc(cairo_matrix_t* z) {
 	        value abstract_object = alloc_abstract(kind_cairo_matrix_t, z);
 	        val_gc(abstract_object, ((hxFinalizer) kind_cairo_matrix_t_destroy));
@@ -72,9 +98,15 @@ extern "C" {
 
     		DECLARE_KIND(kind_cairo_path_t)
 		DEFINE_KIND(kind_cairo_path_t)
-		void kind_cairo_path_t_check(value z) { val_check_kind(z, kind_cairo_path_t);  }
-		cairo_path_t* kind_cairo_path_t_get(value z) { return ((cairo_path_t*)val_get_handle(z, kind_cairo_path_t)); }
-		void kind_cairo_path_t_destroy(value z) { cairo_path_destroy(kind_cairo_path_t_get(z)); }
+		void kind_cairo_path_t_check(value z) {
+			val_check_kind(z, kind_cairo_path_t);
+		}
+		cairo_path_t* kind_cairo_path_t_get(value z) {
+			return ((cairo_path_t*)val_get_handle(z, kind_cairo_path_t));
+		}
+		void kind_cairo_path_t_destroy(value z) {
+			cairo_path_destroy(kind_cairo_path_t_get(z));
+		}
 		value kind_cairo_path_t_alloc(cairo_path_t* z) {
 	        value abstract_object = alloc_abstract(kind_cairo_path_t, z);
 	        val_gc(abstract_object, ((hxFinalizer) kind_cairo_path_t_destroy));
@@ -83,9 +115,15 @@ extern "C" {
 
     		DECLARE_KIND(kind_cairo_region_t)
 		DEFINE_KIND(kind_cairo_region_t)
-		void kind_cairo_region_t_check(value z) { val_check_kind(z, kind_cairo_region_t);  }
-		cairo_region_t* kind_cairo_region_t_get(value z) { return ((cairo_region_t*)val_get_handle(z, kind_cairo_region_t)); }
-		void kind_cairo_region_t_destroy(value z) { cairo_region_destroy(kind_cairo_region_t_get(z)); }
+		void kind_cairo_region_t_check(value z) {
+			val_check_kind(z, kind_cairo_region_t);
+		}
+		cairo_region_t* kind_cairo_region_t_get(value z) {
+			return ((cairo_region_t*)val_get_handle(z, kind_cairo_region_t));
+		}
+		void kind_cairo_region_t_destroy(value z) {
+			cairo_region_destroy(kind_cairo_region_t_get(z));
+		}
 		value kind_cairo_region_t_alloc(cairo_region_t* z) {
 	        value abstract_object = alloc_abstract(kind_cairo_region_t, z);
 	        val_gc(abstract_object, ((hxFinalizer) kind_cairo_region_t_destroy));
@@ -795,6 +833,22 @@ extern "C" {
 	        					return alloc_int(_result);
         	        }
         DEFINE_PRIM(hx_cairo_image_surface_get_stride, 1);
+            value hx_cairo_surface_finish(value surface) {
+        	        		kind_cairo_surface_t_check(surface);
+        	
+        					cairo_surface_finish(kind_cairo_surface_t_get(surface));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_surface_finish, 1);
+            value hx_cairo_surface_flush(value surface) {
+        	        		kind_cairo_surface_t_check(surface);
+        	
+        					cairo_surface_flush(kind_cairo_surface_t_get(surface));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_surface_flush, 1);
             value hx_cairo_translate(value cr, value tx, value ty) {
         	        		kind_cairo_t_check(cr);
         	        		val_check(tx, number);;
@@ -1781,5 +1835,29 @@ extern "C" {
 	        					return alloc_int(_result);
         	        }
         DEFINE_PRIM(hx_cairo_surface_write_to_png, 2);
+            value hx_cairo_svg_surface_create(value filename, value width_in_points, value height_in_points) {
+        	        		val_check(filename, string);
+        	        		val_check(width_in_points, number);;
+        	        		val_check(height_in_points, number);;
+        	
+        					cairo_surface_t* _result = cairo_svg_surface_create(val_get_string(filename), val_get_double(width_in_points), val_get_double(height_in_points));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return kind_cairo_surface_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_svg_surface_create, 3);
+            value hx_cairo_pdf_surface_create(value filename, value width, value height) {
+        	        		val_check(filename, string);
+        	        		val_check(width, number);;
+        	        		val_check(height, number);;
+        	
+        					cairo_surface_t* _result = cairo_pdf_surface_create(val_get_string(filename), val_get_double(width), val_get_double(height));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return kind_cairo_surface_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pdf_surface_create, 3);
     }
 

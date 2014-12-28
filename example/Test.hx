@@ -4,6 +4,8 @@ class Test {
 	static public function main() {
 		trace('Cairo version: ' + Cairo.getVersionString());
 		var surface = CairoSurface.create(CairoSurfaceFormat.ARGB32, 256, 256);
+		//var surface = CairoSurface.createForSvg("output.svg", 200, 200);
+		//var surface = CairoSurface.createForPdf("output.pdf", 200, 200);
 		trace(surface);
 		var context = surface.getContext();
 		context.saveRestore(function() {
@@ -27,6 +29,9 @@ class Test {
 		context.setFontSize(50);
 		//context.showText('Hello World!');
 
+		surface.flush();
+		surface.finish();
+		//surface.destroy();
 		surface.writeToPng('output.png');
 		trace('clip extents', context.getClipExtents());
 		

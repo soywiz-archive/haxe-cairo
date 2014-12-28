@@ -12,6 +12,8 @@
 #include <stdio.h>
 
 #include "cairo/src/cairo.h"
+#include "cairo/src/cairo-svg.h"
+#include "cairo/src/cairo-pdf.h"
 
 extern "C" {
 	#define val_get_float(v) val_get_double(v)
@@ -29,9 +31,15 @@ extern "C" {
     <?php foreach ($abstracts as $abstract) { ?>
 		DECLARE_KIND(kind_<?= $abstract->name ?>)
 		DEFINE_KIND(kind_<?= $abstract->name ?>)
-		void kind_<?= $abstract->name ?>_check(value z) { val_check_kind(z, kind_<?= $abstract->name ?>);  }
-		<?= $abstract->name ?>* kind_<?= $abstract->name ?>_get(value z) { return ((<?= $abstract->name ?>*)val_get_handle(z, kind_<?= $abstract->name ?>)); }
-		void kind_<?= $abstract->name ?>_destroy(value z) { <?= $abstract->destructor ?>(kind_<?= $abstract->name ?>_get(z)); }
+		void kind_<?= $abstract->name ?>_check(value z) {
+			val_check_kind(z, kind_<?= $abstract->name ?>);
+		}
+		<?= $abstract->name ?>* kind_<?= $abstract->name ?>_get(value z) {
+			return ((<?= $abstract->name ?>*)val_get_handle(z, kind_<?= $abstract->name ?>));
+		}
+		void kind_<?= $abstract->name ?>_destroy(value z) {
+			<?= $abstract->destructor ?>(kind_<?= $abstract->name ?>_get(z));
+		}
 		value kind_<?= $abstract->name ?>_alloc(<?= $abstract->type ?> z) {
 	        value abstract_object = alloc_abstract(kind_<?= $abstract->name ?>, z);
 	        val_gc(abstract_object, ((hxFinalizer) kind_<?= $abstract->name ?>_destroy));
