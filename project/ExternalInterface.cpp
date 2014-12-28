@@ -112,6 +112,16 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_restore, 1);
+            value hx_cairo_set_source(value cr, value source) {
+        	        		kind_cairo_t_check(cr);
+        	        		kind_cairo_pattern_t_check(source);
+        	
+        					cairo_set_source(kind_cairo_t_get(cr), kind_cairo_pattern_t_get(source));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_set_source, 2);
             value hx_cairo_set_source_rgb(value cr, value red, value green, value blue) {
         	        		kind_cairo_t_check(cr);
         	        		val_check(red, number);;
@@ -142,16 +152,28 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_set_source_rgba, 5);
-            value hx_cairo_set_source(value cr, value source) {
+            value hx_cairo_set_source_surface(value cr, value surface, value x, value y) {
         	        		kind_cairo_t_check(cr);
-        	        		kind_cairo_pattern_t_check(source);
+        	        		kind_cairo_surface_t_check(surface);
+        	        		val_check(x, number);;
+        	        		val_check(y, number);;
         	
-        					cairo_set_source(kind_cairo_t_get(cr), kind_cairo_pattern_t_get(source));
+        					cairo_set_source_surface(kind_cairo_t_get(cr), kind_cairo_surface_t_get(surface), val_get_double(x), val_get_double(y));
+	        		        		;
+	        		        		;
 	        		        		;
 	        		        		;
 	        					return val_null;
         	        }
-        DEFINE_PRIM(hx_cairo_set_source, 2);
+        DEFINE_PRIM(hx_cairo_set_source_surface, 4);
+            value hx_cairo_get_source(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_pattern_t* _result = cairo_get_source(kind_cairo_t_get(cr));
+	        		        		;
+	        					return kind_cairo_pattern_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_get_source, 1);
             value hx_cairo_fill(value cr) {
         	        		kind_cairo_t_check(cr);
         	
@@ -220,6 +242,42 @@ extern "C" {
 	        					return alloc_int(_result);
         	        }
         DEFINE_PRIM(hx_cairo_get_fill_rule, 1);
+            value hx_cairo_set_line_cap(value cr, value value) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(value, int);
+        	
+        					cairo_set_line_cap(kind_cairo_t_get(cr), ((cairo_line_cap_t)val_get_int(value)));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_set_line_cap, 2);
+            value hx_cairo_get_line_cap(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_line_cap_t _result = cairo_get_line_cap(kind_cairo_t_get(cr));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_get_line_cap, 1);
+            value hx_cairo_set_line_join(value cr, value value) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(value, int);
+        	
+        					cairo_set_line_join(kind_cairo_t_get(cr), ((cairo_line_join_t)val_get_int(value)));
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_set_line_join, 2);
+            value hx_cairo_get_line_join(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_line_join_t _result = cairo_get_line_join(kind_cairo_t_get(cr));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_get_line_join, 1);
             value hx_cairo_set_line_width(value cr, value value) {
         	        		kind_cairo_t_check(cr);
         	        		val_check(value, number);;
@@ -326,6 +384,78 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_push_group_with_content, 2);
+            value hx_cairo_pop_group(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_pattern_t* _result = cairo_pop_group(kind_cairo_t_get(cr));
+	        		        		;
+	        					return kind_cairo_pattern_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_pop_group, 1);
+            value hx_cairo_pop_group_to_source(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_pop_group_to_source(kind_cairo_t_get(cr));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_pop_group_to_source, 1);
+            value hx_cairo_get_group_target(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_surface_t* _result = cairo_get_group_target(kind_cairo_t_get(cr));
+	        		        		;
+	        					return kind_cairo_surface_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_get_group_target, 1);
+            value hx_cairo_clip_extents(value cr, value p1, value p2) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(p1, array); double p1_x = val_number(val_array_i(p1, 0)), p1_y = val_number(val_array_i(p1, 1));
+        	        		val_check(p2, array); double p2_x = val_number(val_array_i(p2, 0)), p2_y = val_number(val_array_i(p2, 1));
+        	
+        					cairo_clip_extents(kind_cairo_t_get(cr), &p1_x, &p1_y, &p2_x, &p2_y);
+	        		        		;
+	        		        		val_array_set_i(p1, 0, alloc_float(p1_x)); val_array_set_i(p1, 1, alloc_float(p1_y));;
+	        		        		val_array_set_i(p2, 0, alloc_float(p2_x)); val_array_set_i(p2, 1, alloc_float(p2_y));;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_clip_extents, 3);
+            value hx_cairo_clip(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_clip(kind_cairo_t_get(cr));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_clip, 1);
+            value hx_cairo_clip_preserve(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_clip_preserve(kind_cairo_t_get(cr));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_clip_preserve, 1);
+            value hx_cairo_in_clip(value cr, value x, value y) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(x, number);;
+        	        		val_check(y, number);;
+        	
+        					bool _result = cairo_in_clip(kind_cairo_t_get(cr), val_get_double(x), val_get_double(y));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return alloc_bool(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_in_clip, 3);
+            value hx_cairo_reset_clip(value cr) {
+        	        		kind_cairo_t_check(cr);
+        	
+        					cairo_reset_clip(kind_cairo_t_get(cr));
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_reset_clip, 1);
             value hx_cairo_matrix_create() {
         	
         					cairo_matrix_t* _result = cairo_matrix_create();

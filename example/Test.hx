@@ -23,6 +23,7 @@ class Test {
 			trace('status', context.getStatus());
 		});
 		surface.writeToPng('output.png');
+		trace('extents', context.getExtents());
 		
 		var matrix = new CairoMatrix();
 		matrix.setToScale(2, 2);

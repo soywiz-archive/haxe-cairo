@@ -1,6 +1,9 @@
 package cairo;
 
 @:access(cairo.CairoMatrix.handle)
+@:access(cairo.CairoSurface.handle)
+@:access(cairo.CairoPath.handle)
+@:access(cairo.CairoPattern.handle)
 class CairoContext {
 	private var handle:Dynamic;
 
@@ -24,6 +27,10 @@ class CairoContext {
 	public function setSource(source:CairoPattern) CairoRaw.cairo_set_source(this.handle, source.handle);
 	public function setSourceRgb(r:Float, g:Float, b:Float) CairoRaw.cairo_set_source_rgb(this.handle, r, g, b);
 	public function setSourceRgba(r:Float, g:Float, b:Float, a:Float) CairoRaw.cairo_set_source_rgba(this.handle, r, g, b, a);
+	public function setSourceSurface(surface:CairoSurface, x:Float, y:Float) CairoRaw.cairo_set_source_surface(this.handle, surface.handle, x, y);
+
+	public function getSource() return new CairoPattern(CairoRaw.cairo_get_source(this.handle));
+
 	public function fill() CairoRaw.cairo_fill(this.handle);
 	public function stroke() CairoRaw.cairo_stroke(this.handle);
 	public function translate(dx:Float, dy:Float) CairoRaw.cairo_translate(this.handle, dx, dy);
@@ -61,6 +68,12 @@ class CairoContext {
 	public function setFillRule(value:CairoFillRule) CairoRaw.cairo_set_fill_rule(handle, value);
 	public function getFillRule():CairoFillRule return cast(CairoRaw.cairo_get_fill_rule(handle), CairoFillRule);
 
+	public function setLineCap(value:CairoLineCap) CairoRaw.cairo_set_line_cap(handle, value);
+	public function getLineCap():CairoLineCap return cast(CairoRaw.cairo_get_line_cap(handle), CairoLineCap);
+
+	public function setLineJoin(value:CairoLineJoin) CairoRaw.cairo_set_line_join(handle, value);
+	public function getLineJoin():CairoLineJoin return cast(CairoRaw.cairo_get_line_join(handle), CairoLineJoin);
+
 	public function setLineWidth(value:Float) CairoRaw.cairo_set_line_width(handle, value);
 	public function getLineWidth():Float return CairoRaw.cairo_get_line_width(handle);
 
@@ -86,4 +99,20 @@ class CairoContext {
 	public function newPath() CairoRaw.cairo_new_path(handle);
 	public function newSubPath() CairoRaw.cairo_new_sub_path(handle);
 	public function closePath() CairoRaw.cairo_new_path(handle);
+
+	public function popGroup() return new CairoPattern(CairoRaw.cairo_pop_group(handle));
+	public function popToSource() CairoRaw.cairo_pop_group_to_source(handle);
+	public function getGroupTarget() return new CairoSurface(CairoRaw.cairo_get_group_target(handle));
+
+	public function getExtents() {
+		var p1 = [0.0, 0.0];
+		var p2 = [0.0, 0.0];
+		CairoRaw.cairo_clip_extents(handle, p1, p2);
+		return new CairoRectangle(p1[0], p1[1], p2[0], p2[1]);
+	}
+
+	public function clip() CairoRaw.cairo_clip(handle);
+	public function clipPreserve() CairoRaw.cairo_clip_preserve(handle);
+	public function resetClip() CairoRaw.cairo_reset_clip(handle);
+	public function inClip(x:Float, y:Float):Bool return CairoRaw.cairo_in_clip(handle, x, y);
 }
