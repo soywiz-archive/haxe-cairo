@@ -213,8 +213,14 @@
 	<compilerflag value="-Ifreetype" />
 	<compilerflag value="-Ifreetype/include" />
 	<compilerflag value="-DHAVE_CONFIG_H=1" />
-	<compilerflag value='-DFONTCONFIG_PATH="fonts.conf"' />
-	<compilerflag value='-DFC_CACHEDIR="cache"' />
+
+	<compilerflag value='-DFONTCONFIG_PATH="/opt/X11/lib/X11/fontconfig"' if="mac" />
+	<compilerflag value='-DFC_CACHEDIR="/usr/local/var/cache/fontconfig"' if="mac" />
+
+	<compilerflag value='-DFONTCONFIG_PATH="/var/lib/fontconfig"' if="linux" />
+	<compilerflag value='-DFC_CACHEDIR="/var/cache/fontconfig"' if="linux" />
+
+	
 	<compilerflag value="-DM64BIT" if="x64" />
 	<compilerflag value="-DWIN32" if="windows" />
 	<compilerflag value="-DLINUX" if="linux" />

@@ -48,9 +48,15 @@ extern "C" {
 
         	<?php if ($function->retval->type == 'void') { ?>
 				<?= $function->name ?>(<?php echo implode(', ', array_map(function($a) { return $a->get; }, $function->args)); ?>);
+	        	<?php foreach ($function->args as $arg) { ?>
+	        		<?= $arg->acheck ?>;
+	        	<?php } ?>
 				return val_null;
         	<?php } else { ?>
 				<?= $function->retval->type ?> _result = <?= $function->name ?>(<?php echo implode(', ', array_map(function($a) { return $a->get; }, $function->args)); ?>);
+	        	<?php foreach ($function->args as $arg) { ?>
+	        		<?= $arg->acheck ?>;
+	        	<?php } ?>
 				return <?= $function->retval->alloc('_result') ?>;
         	<?php } ?>
         }

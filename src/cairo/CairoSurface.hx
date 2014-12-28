@@ -7,7 +7,7 @@ class CairoSurface {
 	public var height(get, never):Int;
 	public var stride(get, never):Int;
 
-	private function new(handle:Dynamic) {
+	public function new(handle:Dynamic) {
 		if (handle == null) throw "Couldn't create surface";
 		this.handle = handle;
 	}
@@ -24,6 +24,10 @@ class CairoSurface {
 	static public function createFromPng(filename:String):CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_image_surface_create_from_png(filename));
 	}
+
+	//static public function createForPDF(filename:String, width:Float, height:Float):CairoSurface {
+	//	return new CairoSurface(CairoRaw.cairo_pdf_surface_create(filename, width, height));
+	//}
 
 	public function getContext():CairoContext {
 		return new CairoContext(CairoRaw.cairo_create(this.handle));
