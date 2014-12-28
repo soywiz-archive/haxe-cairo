@@ -5,7 +5,11 @@
 /* #undef AC_APPLE_UNIVERSAL_BUILD */
 
 /* The normal alignment of `double', in bytes. */
+#ifdef M64BIT
 #define ALIGNOF_DOUBLE 8
+#else
+#define ALIGNOF_DOUBLE 4
+#endif
 
 /* Use libxml2 instead of Expat */
 /* #undef ENABLE_LIBXML2 */
@@ -42,10 +46,12 @@
 #define HAVE_FCNTL_H 1
 
 /* Define to 1 if you have the `fstatfs' function. */
+#ifndef LINUX
 #define HAVE_FSTATFS 1
 
 /* Define to 1 if you have the `fstatvfs' function. */
 #define HAVE_FSTATVFS 1
+#endif
 
 /* FT_Bitmap_Size structure includes y_ppem field */
 #define HAVE_FT_BITMAP_SIZE_Y_PPEM 1
@@ -81,7 +87,9 @@
 #define HAVE_GETPAGESIZE 1
 
 /* Define to 1 if you have the `getprogname' function. */
+#ifndef LINUX
 #define HAVE_GETPROGNAME 1
+#endif
 
 /* Have Intel __sync_* atomic primitives */
 #define HAVE_INTEL_ATOMIC_PRIMITIVES 1
@@ -281,7 +289,11 @@
 /* #undef SIZEOF_VOIDP */
 
 /* The size of `void *', as computed by sizeof. */
+#ifdef M64BIT
 #define SIZEOF_VOID_P 8
+#else
+#define SIZEOF_VOID_P 4
+#endif
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
