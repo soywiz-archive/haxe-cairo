@@ -31,6 +31,8 @@ class CairoRaw {
 		static public var cairo_matrix_rotate = load('hx_cairo_matrix_rotate', 2);
 		static public var cairo_matrix_invert = load('hx_cairo_matrix_invert', 1);
 		static public var cairo_matrix_multiply = load('hx_cairo_matrix_multiply', 3);
+		static public var cairo_matrix_transform_distance = load('hx_cairo_matrix_transform_distance', 2);
+		static public var cairo_matrix_transform_point = load('hx_cairo_matrix_transform_point', 2);
 		static public var cairo_image_surface_create = load('hx_cairo_image_surface_create', 3);
 		static public var cairo_image_surface_create_for_data = load('hx_cairo_image_surface_create_for_data', 5);
 		static public var cairo_image_surface_get_format = load('hx_cairo_image_surface_get_format', 1);

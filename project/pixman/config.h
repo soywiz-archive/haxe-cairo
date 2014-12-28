@@ -157,7 +157,7 @@
 #define USE_SSE2 1
 
 /* use SSSE3 compiler intrinsics */
-#if M64BIT
+#if __SSSE3__
 #define USE_SSSE3 1
 #else
 #define USE_SSSE3 0

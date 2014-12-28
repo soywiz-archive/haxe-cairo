@@ -4,14 +4,16 @@ class BindType {
 	public $name;
 	public $type;
 	public $checker;
+	public $achecker;
 	public $getter;
 	public $alloc;
 	public $destructor;
 
-	public function __construct($name, $type, $checker, $getter, $alloc, $destructor = 'free') {
+	public function __construct($name, $type, $checker, $achecker, $getter, $alloc, $destructor = 'free') {
 		$this->name = $name;
 		$this->type = $type;
 		$this->checker = $checker;
+		$this->achecker = $achecker;
 		$this->getter = $getter;
 		$this->alloc = $alloc;
 		$this->destructor = $destructor;
@@ -27,14 +29,17 @@ class BindArgument {
 	public $type;
 	public $name;
 	public $check;
+	public $acheck;
 	public $get;
 
 	public function __construct(BindType $type, $name) {
 		$this->type = $type;
 		$this->name = $name;
 		$checker = $type->checker;
+		$achecker = $type->achecker;
 		$getter = $type->getter;
 		$this->check = $checker($name);
+		$this->acheck = $achecker($name);
 		$this->get = $getter($name);
 	}
 }
@@ -57,17 +62,19 @@ function type($name, $destructor = 'free') {
 		$name,
 		"{$name}*",
 		function($v) use ($name) { return "kind_{$name}_check($v)"; },
+		function($v) use ($name) { return ""; },
 		function($v) use ($name) { return "kind_{$name}_get($v)"; },
 		function($v) use ($name) { return "kind_{$name}_alloc($v)"; },
 		$destructor
 	);
 }
-function prim_type($name, $type, $checker, $getter, $setter) { return new BindType($name, $type, $checker, $getter, $setter, ''); };
+function prim_type($name, $type, $checker, $achecker, $getter, $setter) { return new BindType($name, $type, $checker, $achecker, $getter, $setter, ''); };
 function enum_type($name) {
 	return prim_type(
 		$name,
 		$name,
 		function($v) use ($name) { return "val_check($v, int)"; },
+		function($v) use ($name) { return ""; },
 		function($v) use ($name) { return "(($name)val_get_int($v))"; },
 		function($v) use ($name) { return "alloc_int($v)"; }
 	);
@@ -77,6 +84,7 @@ function prim_prim_type($name, $type) {
 		$name,
 		$type,
 		function($v) use ($name) { return "val_check($v, {$name})"; },
+		function($v) use ($name) { return ""; },
 		function($v) use ($name) { return "val_get_{$name}($v)"; },
 		function($v) use ($name) { return "alloc_{$name}($v)"; }
 	);

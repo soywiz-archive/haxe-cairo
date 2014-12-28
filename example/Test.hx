@@ -21,5 +21,9 @@ class Test {
 			});
 		});
 		surface.writeToPng('output.png');
+		
+		var matrix = new CairoMatrix();
+		matrix.setToScale(2, 2);
+		trace(matrix.transformPoint(new CairoPoint(10, 10)));
 	}
 }

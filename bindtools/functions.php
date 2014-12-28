@@ -21,6 +21,7 @@ class CairoFunctions {
 			'double',
 			'double',
 			function($v) { return "val_check($v, number);"; },
+			function($v) { return ""; },
 			function($v) { return "val_get_double($v)"; },
 			function($v) { return "alloc_float($v)"; }
 		);
@@ -29,7 +30,17 @@ class CairoFunctions {
 			'unsigned char*',
 			'unsigned char*',
 			function($v) { return "{ buffer temp = val_to_buffer($v); if (!temp) hx_failure(\"invalid source buffer\");}"; },
+			function($v) { return ""; },
 			function($v) { return "(unsigned char*)buffer_data(val_to_buffer($v))"; },
+			function($v) { return "-----"; }
+		);
+
+		$pointRef = prim_type(
+			'unsigned char*',
+			'unsigned char*',
+			function($v) { return "val_check({$v}, array); double {$v}_x = val_number(val_array_i({$v}, 0)), {$v}_y = val_number(val_array_i({$v}, 1))"; },
+			function($v) { return "val_array_set_i($v, 0, alloc_float({$v}_x)); val_array_set_i($v, 1, alloc_float({$v}_y));"; },
+			function($v) { return "&{$v}_x, &{$v}_y"; },
 			function($v) { return "-----"; }
 		);
 
@@ -122,11 +133,10 @@ void *              cairo_get_user_data                 (cairo_t *cr, const cair
 				func($void, 'cairo_matrix_rotate', [arg($matrix, 'matrix'), arg($double, 'radians')]),
 				func($status, 'cairo_matrix_invert', [arg($matrix, 'matrix')]),
 				func($void, 'cairo_matrix_multiply', [arg($matrix, 'result'), arg($matrix, 'a'), arg($matrix, 'b')]),
-/*
-void                cairo_matrix_transform_distance     (const cairo_matrix_t *matrix, double *dx, double *dy);
-void                cairo_matrix_transform_point        (const cairo_matrix_t *matrix, double *x, double *y);
-*/
 
+				func($void, 'cairo_matrix_transform_distance', [arg($matrix, 'matrix'), arg($pointRef, 'point')]),
+				func($void, 'cairo_matrix_transform_point', [arg($matrix, 'matrix'), arg($pointRef, 'point')]),
+				
 				// Surface
 				func($surface, 'cairo_image_surface_create', [arg($format, 'format'), arg($int, 'width'), arg($int, 'height')]),
 				func($surface, 'cairo_image_surface_create_for_data', [arg($bytePointer, 'data'), arg($format, 'format'), arg($int, 'width'), arg($int, 'height'), arg($int, 'stride')]),

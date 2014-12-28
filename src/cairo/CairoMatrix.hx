@@ -28,6 +28,18 @@ class CairoMatrix {
 		return this;
 	}
 
+	public function transformPoint(p:CairoPoint):CairoPoint {
+		var inout = [p.x, p.y];
+		CairoRaw.cairo_matrix_transform_point(handle, inout);
+		return new CairoPoint(inout[0], inout[1]);
+	}
+
+	public function transformDistance(p:CairoPoint):CairoPoint {
+		var inout = [p.x, p.y];
+		CairoRaw.hx_cairo_matrix_transform_distance(handle, inout);
+		return new CairoPoint(inout[0], inout[1]);
+	}
+
 	public function translate(tx:Float, ty:Float) { CairoRaw.cairo_matrix_translate(handle, tx, ty); return this; }
 
 	public function scale(sx:Float, sy:Float) { CairoRaw.cairo_matrix_scale(handle, sx, sy); return this; }
