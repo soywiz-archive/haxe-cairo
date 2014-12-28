@@ -45,6 +45,11 @@ class CairoContext {
 	public function arcNegative(xc:Float, yc:Float, radius:Float, angle1:Float, angle2:Float) CairoRaw.cairo_arc_negative(handle, xc, yc, radius, angle1, angle2);
 	public function curveTo(x1:Float, y1:Float, x2:Float, y2:Float, x3:Float, y3:Float) CairoRaw.cairo_curve_to(handle, x1, y1, x2, y2, x3, y3);
 
+
+	public function relMoveTo(x:Float, y:Float) CairoRaw.cairo_rel_move_to(this.handle, x, y);
+	public function relLineTo(x:Float, y:Float) CairoRaw.cairo_rel_line_to(this.handle, x, y);
+	public function relCurveTo(x1:Float, y1:Float, x2:Float, y2:Float, x3:Float, y3:Float) CairoRaw.cairo_rel_curve_to(handle, x1, y1, x2, y2, x3, y3);
+
 	public function rectangle(x:Float, y:Float, width:Float, height:Float) CairoRaw.cairo_rectangle(this.handle, x, y, width, height);
 	public function transform(matrix:CairoMatrix) CairoRaw.cairo_transform(this.handle, matrix.handle);
 	public function setMatrix(matrix:CairoMatrix) CairoRaw.cairo_set_matrix(this.handle, matrix.handle);
@@ -104,11 +109,42 @@ class CairoContext {
 	public function popToSource() CairoRaw.cairo_pop_group_to_source(handle);
 	public function getGroupTarget() return new CairoSurface(CairoRaw.cairo_get_group_target(handle));
 
-	public function getExtents() {
+	public function getClipExtents() {
 		var p1 = [0.0, 0.0];
 		var p2 = [0.0, 0.0];
 		CairoRaw.cairo_clip_extents(handle, p1, p2);
 		return new CairoRectangle(p1[0], p1[1], p2[0], p2[1]);
+	}
+
+	public function getPathExtents() {
+		var p1 = [0.0, 0.0];
+		var p2 = [0.0, 0.0];
+		CairoRaw.cairo_path_extents(handle, p1, p2);
+		return new CairoRectangle(p1[0], p1[1], p2[0], p2[1]);
+	}
+
+	public function userToDevice(point:CairoPoint):CairoPoint {
+		var p = [point.x, pont.y];
+		CairoRaw.cairo_user_to_device(handle, p);
+		return new CairoPoint(p[0], p[1]);
+	}
+
+	public function userToDeviceDistance(point:CairoPoint):CairoPoint {
+		var p = [point.x, pont.y];
+		CairoRaw.cairo_user_to_device_distance(handle, p);
+		return new CairoPoint(p[0], p[1]);
+	}
+
+	public function deviceToUser(point:CairoPoint):CairoPoint {
+		var p = [point.x, pont.y];
+		CairoRaw.cairo_device_to_user(handle, p);
+		return new CairoPoint(p[0], p[1]);
+	}
+
+	public function deviceToUserDistance(point:CairoPoint):CairoPoint {
+		var p = [point.x, pont.y];
+		CairoRaw.cairo_device_to_user_distance(handle, p);
+		return new CairoPoint(p[0], p[1]);
 	}
 
 	public function clip() CairoRaw.cairo_clip(handle);

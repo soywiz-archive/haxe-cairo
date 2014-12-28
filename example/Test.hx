@@ -18,12 +18,13 @@ class Test {
 				context.transform(new CairoMatrix().setToRotate(1));
 				context.setSourceRgba(0, 0, 1, 1);
 				context.rectangle(100, 30, 70, 70);
+		trace('path extents', context.getPathExtents());
 				context.fill();
 			});
 			trace('status', context.getStatus());
 		});
 		surface.writeToPng('output.png');
-		trace('extents', context.getExtents());
+		trace('clip extents', context.getClipExtents());
 		
 		var matrix = new CairoMatrix();
 		matrix.setToScale(2, 2);

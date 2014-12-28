@@ -91,9 +91,13 @@ class CairoRaw {
 		static public var cairo_arc = load('hx_cairo_arc', 6);
 		static public var cairo_arc_negative = load('hx_cairo_arc_negative', 6);
 		static public var cairo_curve_to = load('hx_cairo_curve_to', 7);
+		static public var cairo_rel_curve_to = load('hx_cairo_rel_curve_to', 7);
+		static public var cairo_rel_line_to = load('hx_cairo_rel_line_to', 3);
+		static public var cairo_rel_move_to = load('hx_cairo_rel_move_to', 3);
 		static public var cairo_rectangle = load('hx_cairo_rectangle', 5);
 		static public var cairo_has_current_point = load('hx_cairo_has_current_point', 1);
 		static public var cairo_get_current_point = load('hx_cairo_get_current_point', 2);
+		static public var cairo_path_extents = load('hx_cairo_path_extents', 3);
 		static public var cairo_pattern_create_rgba = load('hx_cairo_pattern_create_rgba', 4);
 		static public var cairo_image_surface_create_from_png = load('hx_cairo_image_surface_create_from_png', 1);
 		static public var cairo_surface_write_to_png = load('hx_cairo_surface_write_to_png', 2);

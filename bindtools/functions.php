@@ -184,26 +184,30 @@ void *              cairo_get_user_data                 (cairo_t *cr, const cair
 				func($void, 'cairo_arc', [arg($cairo, 'cr'), arg($double, 'xc'), arg($double, 'yc'), arg($double, 'radius'), arg($double, 'angle1'), arg($double, 'angle2')]),
 				func($void, 'cairo_arc_negative', [arg($cairo, 'cr'), arg($double, 'xc'), arg($double, 'yc'), arg($double, 'radius'), arg($double, 'angle1'), arg($double, 'angle2')]),
 				func($void, 'cairo_curve_to', [arg($cairo, 'cr'), arg($double, 'x1'), arg($double, 'y1'), arg($double, 'x2'), arg($double, 'y2'), arg($double, 'x3'), arg($double, 'y3')]),
+
+				func($void, 'cairo_rel_curve_to', [arg($cairo, 'cr'), arg($double, 'dx1'), arg($double, 'dy1'), arg($double, 'dx2'), arg($double, 'dy2'), arg($double, 'dx3'), arg($double, 'dy3')]),
+				func($void, 'cairo_rel_line_to', [arg($cairo, 'cr'), arg($double, 'dx'), arg($double, 'dy')]),
+				func($void, 'cairo_rel_move_to', [arg($cairo, 'cr'), arg($double, 'dx'), arg($double, 'dy')]),
+
 				func($void, 'cairo_rectangle', [arg($cairo, 'cr'), arg($double, 'x'), arg($double, 'y'), arg($double, 'width'), arg($double, 'height')]),
 
 				func($bool, 'cairo_has_current_point', [arg($cairo, 'cr')]),
 				func($void, 'cairo_get_current_point', [arg($cairo, 'cr'), arg($pointRef, 'point')]),
+
+				func($void, 'cairo_path_extents', [arg($cairo, 'cr'), arg($pointRef, 'p1'), arg($pointRef, 'p2')]),
+
+				func($void, 'cairo_user_to_device', [arg($cairo, 'cr'), arg($pointRef, 'point')]);
+				func($void, 'cairo_user_to_device_distance', [arg($cairo, 'cr'), arg($pointRef, 'point')]);
+				func($void, 'cairo_device_to_user', [arg($cairo, 'cr'), arg($pointRef, 'point')]);
+				func($void, 'cairo_device_to_user_distance', [arg($cairo, 'cr'), arg($pointRef, 'point')]);
+
 /*
 union               cairo_path_data_t;
 enum                cairo_path_data_type_t;
 
 void                cairo_glyph_path                    (cairo_t *cr, const cairo_glyph_t *glyphs, int num_glyphs);
 void                cairo_text_path                     (cairo_t *cr, const char *utf8);
-void                cairo_rel_curve_to                  (cairo_t *cr, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3);
-void                cairo_rel_line_to                   (cairo_t *cr, double dx, double dy);
-void                cairo_rel_move_to                   (cairo_t *cr, double dx, double dy);
-void                cairo_path_extents                  (cairo_t *cr, double *x1, double *y1, double *x2, double *y2);
 */
-
-				// void cairo_user_to_device                (cairo_t *cr, double *x, double *y);
-				// void cairo_user_to_device_distance       (cairo_t *cr, double *dx, double *dy);
-				// void cairo_device_to_user                (cairo_t *cr, double *x, double *y);
-				// void cairo_device_to_user_distance       (cairo_t *cr, double *dx, double *dy);
 
 				// Patterns: http://cairographics.org/manual/cairo-cairo-pattern-t.html
 				func($pattern, 'cairo_pattern_create_rgba', [arg($double, 'red'), arg($double, 'green'), arg($double, 'blue'), arg($double, 'alpha')]),

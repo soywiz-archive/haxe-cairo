@@ -860,6 +860,50 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_curve_to, 7);
+            value hx_cairo_rel_curve_to(value cr, value dx1, value dy1, value dx2, value dy2, value dx3, value dy3) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(dx1, number);;
+        	        		val_check(dy1, number);;
+        	        		val_check(dx2, number);;
+        	        		val_check(dy2, number);;
+        	        		val_check(dx3, number);;
+        	        		val_check(dy3, number);;
+        	
+        					cairo_rel_curve_to(kind_cairo_t_get(cr), val_get_double(dx1), val_get_double(dy1), val_get_double(dx2), val_get_double(dy2), val_get_double(dx3), val_get_double(dy3));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_rel_curve_to, 7);
+            value hx_cairo_rel_line_to(value cr, value dx, value dy) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(dx, number);;
+        	        		val_check(dy, number);;
+        	
+        					cairo_rel_line_to(kind_cairo_t_get(cr), val_get_double(dx), val_get_double(dy));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_rel_line_to, 3);
+            value hx_cairo_rel_move_to(value cr, value dx, value dy) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(dx, number);;
+        	        		val_check(dy, number);;
+        	
+        					cairo_rel_move_to(kind_cairo_t_get(cr), val_get_double(dx), val_get_double(dy));
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_rel_move_to, 3);
             value hx_cairo_rectangle(value cr, value x, value y, value width, value height) {
         	        		kind_cairo_t_check(cr);
         	        		val_check(x, number);;
@@ -894,6 +938,18 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_get_current_point, 2);
+            value hx_cairo_path_extents(value cr, value p1, value p2) {
+        	        		kind_cairo_t_check(cr);
+        	        		val_check(p1, array); double p1_x = val_number(val_array_i(p1, 0)), p1_y = val_number(val_array_i(p1, 1));
+        	        		val_check(p2, array); double p2_x = val_number(val_array_i(p2, 0)), p2_y = val_number(val_array_i(p2, 1));
+        	
+        					cairo_path_extents(kind_cairo_t_get(cr), &p1_x, &p1_y, &p2_x, &p2_y);
+	        		        		;
+	        		        		val_array_set_i(p1, 0, alloc_float(p1_x)); val_array_set_i(p1, 1, alloc_float(p1_y));;
+	        		        		val_array_set_i(p2, 0, alloc_float(p2_x)); val_array_set_i(p2, 1, alloc_float(p2_y));;
+	        					return val_null;
+        	        }
+        DEFINE_PRIM(hx_cairo_path_extents, 3);
             value hx_cairo_pattern_create_rgba(value red, value green, value blue, value alpha) {
         	        		val_check(red, number);;
         	        		val_check(green, number);;
