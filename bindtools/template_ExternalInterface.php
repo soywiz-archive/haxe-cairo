@@ -38,22 +38,6 @@ extern "C" {
 		return (cairo_status_t)val_int(result);
 	}
 
-	cairo_status_t cairo_surface_write_to_png_stream2(cairo_surface_t *surface, value writer) {
-		value* root = alloc_root();
-		*root = writer;
-		cairo_status_t result = cairo_surface_write_to_png_stream(surface, cairo_write_stream, (void*)writer);
-		free_root(root);
-		return result;
-	}
-
-	cairo_surface_t *cairo_image_surface_create_from_png_stream2(value reader) {
-		value* root = alloc_root();
-		*root = reader;
-		cairo_surface_t *result = cairo_image_surface_create_from_png_stream(cairo_read_stream, (void*)reader);
-		free_root(root);
-		return result;
-	}
-
 	void dummy_free(void*ptr) { }
 
 	cairo_matrix_t* cairo_matrix_create() {
@@ -85,7 +69,14 @@ extern "C" {
     <?php } ?>
 
     <?php foreach ($functions as $function) { ?>
-        value hx_<?= $function->name ?>(<?php echo implode(', ', array_map(function($a) { return "value {$a->name}"; }, $function->args)); ?>) {
+		<?php if (count($function->args) > 5) { ?>
+			value hx_<?= $function->name ?>(value *_args, int _nargs) {
+			<?php foreach ($function->args as $argn => $arg) { ?>
+				value <?=$arg->name?> = _args[<?=$argn?>];
+			<?php } ?>
+		<?php } else { ?>
+			value hx_<?= $function->name ?>(<?php echo implode(', ', array_map(function($a) { return "value {$a->name}"; }, $function->args)); ?>) {
+		<?php } ?>
         	<?php foreach ($function->args as $arg) { ?>
         		<?= $arg->check ?>;
         	<?php } ?>
@@ -104,7 +95,11 @@ extern "C" {
 				return <?= $function->retval->alloc('_result') ?>;
         	<?php } ?>
         }
-        DEFINE_PRIM(hx_<?= $function->name ?>, <?= count($function->args) ?>);
+		<?php if (count($function->args) > 5) { ?>
+		DEFINE_PRIM_MULT(hx_<?= $function->name ?>);
+		<?php } else { ?>
+		DEFINE_PRIM(hx_<?= $function->name ?>, <?= count($function->args) ?>);
+		<?php } ?>
     <?php } ?>
 }
 

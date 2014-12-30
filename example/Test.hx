@@ -19,6 +19,7 @@ class Test {
 			context.setSource(CairoPattern.createLinear(30, 30, 70, 70).addColorStopRgb(0, 0.5, 0, 0).addColorStopRgb(1, 0, 0, 1));
 			context.rectangle(30, 30, 70, 70);
 			context.fill();
+
 			context.saveRestore(function() {
 				context.setAntialias(CairoAntialias.SUBPIXEL);
 				context.transform(new CairoMatrix().setToRotate(1));
@@ -27,6 +28,18 @@ class Test {
 				trace('path extents', context.getPathExtents());
 				context.fill();
 			});
+
+			context.saveRestore(function() {
+				context.setAntialias(CairoAntialias.SUBPIXEL);
+				context.transform(new CairoMatrix().setToRotate(0.5));
+				context.setSourceRgba(0, 1, 0, 1);
+				context.rectangle(100, 30, 70, 70);
+				context.setLineWidth(5);
+				context.setDashes([10, 3, 20], 5);
+				trace('dashes', context.getDashes());
+				context.stroke();
+			});
+
 			trace('status', context.getStatus());
 		});
 		context.saveRestore(function() {
@@ -55,6 +68,12 @@ class Test {
 	static private function testStreams() {
 		var surface2 = CairoSurface.createFromPngStream(File.read("output2.png")).createForRectangle(50, 50, 100, 100);
 		surface2.writeToPngStream(File.write("output3.png"));
+
+		//var surface3 = CairoSurface.createForSvgStream(File.write("output4.svg"), 100, 100);
+		//var context = surface3.getContext();
+		//context.setSourceRgb(1, 0, 0);
+		//context.rectangle(0, 0, 100, 100);
+		//context.fill();
 	}
 
 	static private function testRegions() {

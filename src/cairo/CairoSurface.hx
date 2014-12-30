@@ -32,7 +32,7 @@ class CairoSurface {
 	}
 
 	static public function createFromPngStream(input:Input, autoclose:Bool = true):CairoSurface {
-		var result = new CairoSurface(CairoRaw.cairo_image_surface_create_from_png_stream2(function(len:Int):BytesData {
+		var result = new CairoSurface(CairoRaw.cairo_image_surface_create_from_png_stream(null, function(len:Int):BytesData {
 			return input.read(len).getData();
 		}));
 		if (autoclose) input.close();
@@ -42,6 +42,24 @@ class CairoSurface {
 	static public function createForSvg(filename:String, width_in_points:Float, height_in_points:Float):CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_svg_surface_create(filename, width_in_points, height_in_points));
 	}
+
+	// should work on GC before get this working, and close after destroying
+	/*
+	static public function createForSvgStream(output:Output, width_in_points:Float, height_in_points:Float):CairoSurface {
+		var result = new CairoSurface(CairoRaw.cairo_svg_surface_create_for_stream(null, function(data:BytesData) {
+			try {
+				output.write(Bytes.ofData(data));
+				output.flush();
+				return CairoStatus.SUCCESS;
+			} catch (e:Dynamic) {
+				return CairoStatus.WRITE_ERROR;
+			}
+		}, width_in_points, height_in_points));
+		//output.flush();
+		//if (autoclose) output.close();
+		return result;
+	}
+	*/
 
 	static public function createForPdf(filename:String, width:Float, height:Float):CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_pdf_surface_create(filename, width, height));
@@ -57,6 +75,14 @@ class CairoSurface {
 
 	public function createForRectangle(x:Float, y:Float, width:Float, height:Float):CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_surface_create_for_rectangle(handle, x, y, width, height));
+	}
+
+	public function restrictToVersion(version:CairoSvgVersion):Void {
+		CairoRaw.cairo_svg_surface_restrict_to_version(handle, version);
+	}
+
+	static public function svgVersionToString(version:CairoSvgVersion):String {
+		return CairoRaw.cairo_svg_version_to_string(version);
 	}
 
 	public function getStatus():CairoStatus return cast(CairoRaw.cairo_surface_status(handle), CairoStatus);
@@ -91,7 +117,7 @@ class CairoSurface {
 	}
 
 	public function writeToPngStream<T: Output>(output:T, autoclose:Bool = true):T {
-		var result = CairoRaw.cairo_surface_write_to_png_stream2(handle, function(data:BytesData) {
+		var result = CairoRaw.cairo_surface_write_to_png_stream(handle, null, function(data:BytesData) {
 			try {
 				output.write(Bytes.ofData(data));
 				return CairoStatus.SUCCESS;

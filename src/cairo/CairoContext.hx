@@ -199,4 +199,26 @@ class CairoContext {
 
 	public function setFontSize(size:Float) CairoRaw.cairo_set_font_size(handle, size);
 	public function showText(text:String) CairoRaw.cairo_show_text(handle, text);
+
+	/**
+	 * Adds closed paths for text to the current path. The generated path if filled, achieves an effect similar to that of cairo_show_text().
+	 */
+	public function textPath(text:String) CairoRaw.cairo_text_path(handle, text);
+
+	//public function getDashCount():Int return CairoRaw.cairo_get_dash_count(handle);
+	public function setDashes(dashes:Array<Float>, offset:Float):CairoContext {
+		CairoRaw.cairo_set_dash(handle, dashes, dashes.length, offset);
+		return this;
+	}
+
+	public function getDashes(): { dashes: Array<Float>, offset:Float } {
+		var count:Int = CairoRaw.cairo_get_dash_count(handle);
+		var dashes = [for (n in 0 ... count) 0.0];
+		var offsetPtr = [0.0];
+		CairoRaw.cairo_get_dash(handle, dashes, offsetPtr);
+		return {
+			dashes: dashes,
+			offset: offsetPtr[0]
+		}
+	}
 }

@@ -30,19 +30,62 @@ class CairoFunctions {
 		$subpixelorder = enum_type('cairo_subpixel_order_t');
 		$hintstyle = enum_type('cairo_hint_style_t');
 		$hintmetrics = enum_type('cairo_hint_metrics_t');
+		$svgversion = enum_type('cairo_svg_version_t');
+
 
 		$int = prim_prim_type('int', 'int');
 		$bool = prim_prim_type('bool', 'bool');
 		$void = prim_prim_type('void', 'void');
 		$string = prim_prim_type('string', 'const char*');
 
+		$cairo_read_stream = prim_type(
+			'--',
+			'--',
+			function($v) { return ""; },
+			function($v) { return ""; },
+			function($v) { return "cairo_read_stream"; },
+			function($v) { return ""; }
+		);
+
+		$cairo_write_stream = prim_type(
+			'--',
+			'--',
+			function($v) { return ""; },
+			function($v) { return ""; },
+			function($v) { return "cairo_write_stream"; },
+			function($v) { return ""; }
+		);
+
 		$value = prim_type(
 			'value',
 			'value',
-			function($v) { return ""; },
-			function($v) { return ""; },
-			function($v) { return "$v"; },
+			function($v) { return "value* root_{$v} = alloc_root(); *root_{$v} = {$v};"; },
+			function($v) { return "free_root(root_{$v});"; },
+			function($v) { return "(void*)$v"; },
 			function($v) { return "$v"; }
+		);
+
+		//func($int, 'cairo_get_dash', [arg($cairo, 'cr'), arg($doubleVector, 'dashes'), arg($doubleRef, 'offset')]),
+
+		$doublePtr = prim_type(
+			'--',
+			'--',
+			function($v) { return "
+				val_check({$v}, array);
+				int {$v}_size = val_array_size({$v});
+				double* {$v}_values = (double*)malloc(sizeof(double) * {$v}_size);
+				{
+					for (int n = 0; n < {$v}_size; n++) {$v}_values[n] = val_number(val_array_i({$v}, n));
+				}
+			"; },
+			function($v) { return "
+				{
+					for (int n = 0; n < {$v}_size; n++) val_array_set_i($v, n, alloc_float({$v}_values[n]));
+				}
+				free({$v}_values);
+			"; },
+			function($v) { return "{$v}_values"; },
+			function($v) { return "-----"; }
 		);
 
 		$double = prim_type(
@@ -178,13 +221,14 @@ class CairoFunctions {
 				func($void, 'cairo_paint', [arg($cairo, 'cr')]),
 				func($void, 'cairo_paint_with_alpha', [arg($cairo, 'cr'), arg($double, 'alpha')]),
 
+				func($int, 'cairo_get_dash_count', [arg($cairo, 'cr')]),
+				func($void, 'cairo_set_dash', [arg($cairo, 'cr'), arg($doublePtr, 'dashes'), arg($int, 'num_dashes'), arg($double, 'offset')]),
+				func($void, 'cairo_get_dash', [arg($cairo, 'cr'), arg($doublePtr, 'dashes'), arg($doublePtr, 'offset')]),
+
 				//func($void, 'cairo_set_user_data', [...]), // not required
 				//func($void, 'cairo_get_user_data', [...]), // not required
 
 /*
-void                cairo_set_dash                      (cairo_t *cr, const double *dashes, int num_dashes, double offset);
-int                 cairo_get_dash_count                (cairo_t *cr);
-void                cairo_get_dash                      (cairo_t *cr, double *dashes, double *offset);
 cairo_rectangle_t;
 cairo_rectangle_list_t;
 void                cairo_rectangle_list_destroy        (cairo_rectangle_list_t *rectangle_list);
@@ -291,10 +335,10 @@ void                cairo_surface_unmap_image           (cairo_surface_t *surfac
 				func($void, 'cairo_get_current_point', [arg($cairo, 'cr'), arg($pointRef, 'point')]),
 
 				func($void, 'cairo_path_extents', [arg($cairo, 'cr'), arg($pointRef, 'p1'), arg($pointRef, 'p2')]),
+				func($void, 'cairo_text_path', [arg($cairo, 'cr'), arg($string, 'utf8')]),
 
 /*
 void                cairo_glyph_path                    (cairo_t *cr, const cairo_glyph_t *glyphs, int num_glyphs);
-void                cairo_text_path                     (cairo_t *cr, const char *utf8);
 */
 
 				// Regions: http://cairographics.org/manual/cairo-Regions.html
@@ -423,24 +467,18 @@ cairo_status_t      cairo_mesh_pattern_get_corner_color_rgba(cairo_pattern_t *pa
 
 				// PNG Support : http://cairographics.org/manual/cairo-PNG-Support.html
 				func($surface, 'cairo_image_surface_create_from_png', [arg($string, 'filename')]),
-				func($surface, 'cairo_image_surface_create_from_png_stream2', [arg($value, 'reader')]),
+				func($surface, 'cairo_image_surface_create_from_png_stream', [arg($cairo_read_stream, '__'), arg($value, 'reader')]),
 				func($status, 'cairo_surface_write_to_png', [arg($surface, 'surface'), arg($string, 'filename')]),
-				func($status, 'cairo_surface_write_to_png_stream2', [arg($surface, 'surface'), arg($value, 'writer')]),
+				func($status, 'cairo_surface_write_to_png_stream', [arg($surface, 'surface'), arg($cairo_write_stream, '__'), arg($value, 'writer')]),
 
-/*
-cairo_status_t      (*cairo_read_func_t)                (void *closure, unsigned char *data, unsigned int length);
-cairo_surface_t *   cairo_image_surface_create_from_png_stream (cairo_read_func_t read_func, void *closure);
-cairo_status_t      (*cairo_write_func_t)               (void *closure, const unsigned char *data, unsigned int length);
-cairo_status_t      cairo_surface_write_to_png_stream   (cairo_surface_t *surface, cairo_write_func_t write_func, void *closure);
-*/
 				// SVG Support: http://cairographics.org/manual/cairo-SVG-Surfaces.html
 				func($surface, 'cairo_svg_surface_create', [arg($string, 'filename'), arg($double, 'width_in_points'), arg($double, 'height_in_points')]),
+				func($surface, 'cairo_svg_surface_create_for_stream', [arg($cairo_write_stream, '__'), arg($value, 'writer'), arg($double, 'width_in_points'), arg($double, 'height_in_points')]),
+				func($void, 'cairo_svg_surface_restrict_to_version', [arg($surface, 'surface'), arg($svgversion, 'version')]),
+				func($string, 'cairo_svg_version_to_string', [arg($svgversion, 'version')]),
+
 /*
-cairo_surface_t *   cairo_svg_surface_create_for_stream (cairo_write_func_t write_func, void *closure, double width_in_points, double height_in_points);
-void                cairo_svg_surface_restrict_to_version(cairo_surface_t *surface, cairo_svg_version_t version);
-enum                cairo_svg_version_t;
 void                cairo_svg_get_versions              (cairo_svg_version_t const **versions, int *num_versions);
-const char *        cairo_svg_version_to_string         (cairo_svg_version_t version);
 */
 
 				// PDF Support: http://cairographics.org/manual/cairo-PDF-Surfaces.html

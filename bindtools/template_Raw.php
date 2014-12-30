@@ -14,6 +14,6 @@ class CairoRaw {
 	#end
 
 	<?php foreach ($functions as $function) { ?>
-	static public var <?= $function->name ?> = load('hx_<?= $function->name ?>', <?= count($function->args) ?>);
+	static public var <?= $function->name ?> = load('hx_<?= $function->name ?>', <?= (count($function->args) > 5) ? -1 : count($function->args) ?>);
 	<?php } ?>
 }
