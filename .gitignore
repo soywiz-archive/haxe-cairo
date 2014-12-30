@@ -1,6 +1,7 @@
 example/out
 example/n.n
 example/output.png
+example/outcpp
 project/obj
 *.o
 *.obj

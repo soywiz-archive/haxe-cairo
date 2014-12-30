@@ -1,0 +1,4 @@
+#!/bin/bash
+pushd example
+haxe -main Test -lib cairo -cpp outcpp && outcpp/Test
+popd

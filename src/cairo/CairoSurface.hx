@@ -31,11 +31,11 @@ class CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_image_surface_create_from_png(filename));
 	}
 
-	static public function createFromPngStream(input:Input):CairoSurface {
+	static public function createFromPngStream(input:Input, autoclose:Bool = true):CairoSurface {
 		var result = new CairoSurface(CairoRaw.cairo_image_surface_create_from_png_stream2(function(len:Int):BytesData {
 			return input.read(len).getData();
 		}));
-
+		if (autoclose) input.close();
 		return result;
 	}
 
