@@ -18,6 +18,22 @@
 extern "C" {
 	#define val_get_float(v) val_get_double(v)
 
+	cairo_status_t cairo_write_stream(void* _writer, const unsigned char *data, unsigned int length) {
+		value writer = (value)_writer;
+		buffer outbuffer = alloc_buffer_len(0);
+		buffer_append_sub(outbuffer, (const char *)data, length);
+		value result = val_call1(writer, buffer_val(outbuffer));
+		return CAIRO_STATUS_SUCCESS;
+	}
+
+	cairo_status_t cairo_surface_write_to_png_stream2(cairo_surface_t *surface, value writer) {
+		value* root = alloc_root();
+		*root = writer;
+		cairo_status_t result = cairo_surface_write_to_png_stream(surface, cairo_write_stream, (void*)writer);
+		free_root(root);
+		return result;
+	}
+
 	void dummy_free(void*ptr) { }
 
 	cairo_matrix_t* cairo_matrix_create() {

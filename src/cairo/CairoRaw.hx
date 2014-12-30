@@ -88,6 +88,10 @@ class CairoRaw {
 		static public var cairo_image_surface_get_stride = load('hx_cairo_image_surface_get_stride', 1);
 		static public var cairo_surface_finish = load('hx_cairo_surface_finish', 1);
 		static public var cairo_surface_flush = load('hx_cairo_surface_flush', 1);
+		static public var cairo_surface_create_similar = load('hx_cairo_surface_create_similar', 4);
+		static public var cairo_surface_create_similar_image = load('hx_cairo_surface_create_similar_image', 4);
+		static public var cairo_surface_create_for_rectangle = load('hx_cairo_surface_create_for_rectangle', 5);
+		static public var cairo_surface_status = load('hx_cairo_surface_status', 1);
 		static public var cairo_translate = load('hx_cairo_translate', 3);
 		static public var cairo_scale = load('hx_cairo_scale', 3);
 		static public var cairo_rotate = load('hx_cairo_rotate', 2);
@@ -183,6 +187,7 @@ class CairoRaw {
 		static public var cairo_pattern_get_matrix = load('hx_cairo_pattern_get_matrix', 2);
 		static public var cairo_image_surface_create_from_png = load('hx_cairo_image_surface_create_from_png', 1);
 		static public var cairo_surface_write_to_png = load('hx_cairo_surface_write_to_png', 2);
+		static public var cairo_surface_write_to_png_stream2 = load('hx_cairo_surface_write_to_png_stream2', 2);
 		static public var cairo_svg_surface_create = load('hx_cairo_svg_surface_create', 3);
 		static public var cairo_pdf_surface_create = load('hx_cairo_pdf_surface_create', 3);
 	}

@@ -1,3 +1,5 @@
+import sys.io.File;
+import haxe.io.BytesOutput;
 import cairo.*;
 
 class Test {
@@ -25,14 +27,19 @@ class Test {
 			});
 			trace('status', context.getStatus());
 		});
-		context.selectFontFace("Arial", CairoFontSlant.NORMAL, CairoFontWeight.NORMAL);
-		context.setFontSize(50);
-		//context.showText('Hello World!');
+		context.saveRestore(function() {
+			context.translate(50, 50);
+			context.selectFontFace("Arial", CairoFontSlant.NORMAL, CairoFontWeight.NORMAL);
+			context.setFontSize(50);
+			//context.showText('Hello World!');
+		});
 
-		surface.flush();
-		surface.finish();
+		//surface.flush();
+		//surface.finish();
 		//surface.destroy();
-		surface.writeToPng('output.png');
+		//surface.writeToPng('output.png');
+		File.saveBytes("output2.png", surface.getPngBytes());
+		//trace(output.getBytes().length);
 		trace('clip extents', context.getClipExtents());
 		
 		var matrix = new CairoMatrix();

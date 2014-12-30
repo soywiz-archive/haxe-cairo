@@ -18,6 +18,22 @@
 extern "C" {
 	#define val_get_float(v) val_get_double(v)
 
+	cairo_status_t cairo_write_stream(void* _writer, const unsigned char *data, unsigned int length) {
+		value writer = (value)_writer;
+		buffer outbuffer = alloc_buffer_len(0);
+		buffer_append_sub(outbuffer, (const char *)data, length);
+		value result = val_call1(writer, buffer_val(outbuffer));
+		return CAIRO_STATUS_SUCCESS;
+	}
+
+	cairo_status_t cairo_surface_write_to_png_stream2(cairo_surface_t *surface, value writer) {
+		value* root = alloc_root();
+		*root = writer;
+		cairo_status_t result = cairo_surface_write_to_png_stream(surface, cairo_write_stream, (void*)writer);
+		free_root(root);
+		return result;
+	}
+
 	void dummy_free(void*ptr) { }
 
 	cairo_matrix_t* cairo_matrix_create() {
@@ -866,6 +882,58 @@ extern "C" {
 	        					return val_null;
         	        }
         DEFINE_PRIM(hx_cairo_surface_flush, 1);
+            value hx_cairo_surface_create_similar(value other, value content, value width, value height) {
+        	        		kind_cairo_surface_t_check(other);
+        	        		val_check(content, int);
+        	        		val_check(width, int);
+        	        		val_check(height, int);
+        	
+        					cairo_surface_t* _result = cairo_surface_create_similar(kind_cairo_surface_t_get(other), ((cairo_content_t)val_get_int(content)), val_get_int(width), val_get_int(height));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return kind_cairo_surface_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_surface_create_similar, 4);
+            value hx_cairo_surface_create_similar_image(value other, value format, value width, value height) {
+        	        		kind_cairo_surface_t_check(other);
+        	        		val_check(format, int);
+        	        		val_check(width, int);
+        	        		val_check(height, int);
+        	
+        					cairo_surface_t* _result = cairo_surface_create_similar_image(kind_cairo_surface_t_get(other), ((cairo_format_t)val_get_int(format)), val_get_int(width), val_get_int(height));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return kind_cairo_surface_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_surface_create_similar_image, 4);
+            value hx_cairo_surface_create_for_rectangle(value target, value x, value y, value width, value height) {
+        	        		kind_cairo_surface_t_check(target);
+        	        		val_check(x, number);;
+        	        		val_check(y, number);;
+        	        		val_check(width, number);;
+        	        		val_check(height, number);;
+        	
+        					cairo_surface_t* _result = cairo_surface_create_for_rectangle(kind_cairo_surface_t_get(target), val_get_double(x), val_get_double(y), val_get_double(width), val_get_double(height));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return kind_cairo_surface_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_surface_create_for_rectangle, 5);
+            value hx_cairo_surface_status(value surface) {
+        	        		kind_cairo_surface_t_check(surface);
+        	
+        					cairo_status_t _result = cairo_surface_status(kind_cairo_surface_t_get(surface));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_surface_status, 1);
             value hx_cairo_translate(value cr, value tx, value ty) {
         	        		kind_cairo_t_check(cr);
         	        		val_check(tx, number);;
@@ -1994,6 +2062,16 @@ extern "C" {
 	        					return alloc_int(_result);
         	        }
         DEFINE_PRIM(hx_cairo_surface_write_to_png, 2);
+            value hx_cairo_surface_write_to_png_stream2(value surface, value writer) {
+        	        		kind_cairo_surface_t_check(surface);
+        	        		;
+        	
+        					cairo_status_t _result = cairo_surface_write_to_png_stream2(kind_cairo_surface_t_get(surface), writer);
+	        		        		;
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_surface_write_to_png_stream2, 2);
             value hx_cairo_svg_surface_create(value filename, value width_in_points, value height_in_points) {
         	        		val_check(filename, string);
         	        		val_check(width_in_points, number);;

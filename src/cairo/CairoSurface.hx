@@ -1,5 +1,10 @@
 package cairo;
 
+import haxe.io.BytesOutput;
+import haxe.io.Output;
+import haxe.io.Bytes;
+import haxe.io.BytesData;
+
 class CairoSurface {
 	private var handle:Dynamic;
 	public var format(get, never):CairoSurfaceFormat;
@@ -33,7 +38,20 @@ class CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_pdf_surface_create(filename, width, height));
 	}
 
-	/*
+	public function createSimilar(content:CairoContent, width:Int, height:Int):CairoSurface {
+		return new CairoSurface(CairoRaw.cairo_surface_create_similar(handle, content, width, height));
+	}
+
+	public function createSimilarImage(format:CairoSurfaceFormat, width:Int, height:Int):CairoSurface {
+		return new CairoSurface(CairoRaw.cairo_surface_create_similar_image(handle, format, width, height));
+	}
+
+	public function createForRectangle(x:Float, y:Float, width:Float, height:Float):CairoSurface {
+		return new CairoSurface(CairoRaw.cairo_surface_create_for_rectangle(handle, x, y, width, height));
+	}
+
+	public function getStatus():CairoStatus return cast(CairoRaw.cairo_surface_status(handle), CairoStatus);
+/*
 	public function destroy():CairoSurface {
 		CairoRaw.cairo_surface_destroy(this.handle);
 		this.handle = null;
@@ -57,6 +75,21 @@ class CairoSurface {
 
 	public function writeToPng(path:String) {
 		CairoRaw.cairo_surface_write_to_png(this.handle, path);
+	}
+
+	public function getPngBytes():Bytes {
+		return writeToPngStream(new BytesOutput()).getBytes();
+	}
+
+	public function writeToPngStream<T: Output>(output:T, autoclose:Bool = true):T {
+		var result = CairoRaw.cairo_surface_write_to_png_stream2(handle, function(data:BytesData) {
+			output.write(Bytes.ofData(data));
+			return CairoStatus.SUCCESS;
+		});
+		output.flush();
+		if (autoclose) output.close();
+		if (result != CairoStatus.SUCCESS) throw "Error writeToPngStream";
+		return output;
 	}
 
 	public function toString() {
