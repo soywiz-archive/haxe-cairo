@@ -1,6 +1,6 @@
 package cairo;
 
-class CairoMeshPattern extends CairoPattern {
+class CairoPatternMesh extends CairoPattern {
 	public function new(handle:Dynamic) super(handle);
 
 	public function beginPatch() CairoRaw.cairo_mesh_pattern_begin_patch(handle);

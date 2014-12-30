@@ -69,6 +69,30 @@ function type($name, $destructor = 'free') {
 	);
 }
 function prim_type($name, $type, $checker, $achecker, $getter, $setter) { return new BindType($name, $type, $checker, $achecker, $getter, $setter, ''); };
+
+function ptr_type($name, $valuetoprim, $primtovalue) {
+	return prim_type(
+		'--',
+		'--',
+		function($v) use ($name, $valuetoprim, $primtovalue) { return "
+				val_check({$v}, array);
+				int {$v}_size = val_array_size({$v});
+				{$name}* {$v}_values = ({$name}*)malloc(sizeof({$name}) * {$v}_size);
+				{
+					for (int n = 0; n < {$v}_size; n++) {$v}_values[n] = {$valuetoprim}(val_array_i({$v}, n));
+				}
+			"; },
+		function($v) use ($name, $valuetoprim, $primtovalue) { return "
+				{
+					for (int n = 0; n < {$v}_size; n++) val_array_set_i($v, n, {$primtovalue}({$v}_values[n]));
+				}
+				free({$v}_values);
+			"; },
+		function($v) use ($name, $valuetoprim, $primtovalue) { return "{$v}_values"; },
+		function($v) use ($name, $valuetoprim, $primtovalue) { return "-----"; }
+	);
+}
+
 function enum_type($name) {
 	return prim_type(
 		$name,

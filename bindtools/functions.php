@@ -67,26 +67,8 @@ class CairoFunctions {
 
 		//func($int, 'cairo_get_dash', [arg($cairo, 'cr'), arg($doubleVector, 'dashes'), arg($doubleRef, 'offset')]),
 
-		$doublePtr = prim_type(
-			'--',
-			'--',
-			function($v) { return "
-				val_check({$v}, array);
-				int {$v}_size = val_array_size({$v});
-				double* {$v}_values = (double*)malloc(sizeof(double) * {$v}_size);
-				{
-					for (int n = 0; n < {$v}_size; n++) {$v}_values[n] = val_number(val_array_i({$v}, n));
-				}
-			"; },
-			function($v) { return "
-				{
-					for (int n = 0; n < {$v}_size; n++) val_array_set_i($v, n, alloc_float({$v}_values[n]));
-				}
-				free({$v}_values);
-			"; },
-			function($v) { return "{$v}_values"; },
-			function($v) { return "-----"; }
-		);
+		$doublePtr = ptr_type('double', 'val_number', 'alloc_float');
+		$intPtr = ptr_type('int', 'val_int', 'alloc_int');
 
 		$double = prim_type(
 			'double',
@@ -450,14 +432,15 @@ void                cairo_text_cluster_free             (cairo_text_cluster_t *c
 				func($void, 'cairo_pattern_set_matrix', [arg($pattern, 'pattern'), arg($matrix, 'matrix')]),
 				func($void, 'cairo_pattern_get_matrix', [arg($pattern, 'pattern'), arg($matrix, 'matrix')]),
 
+				func($status, 'cairo_pattern_get_color_stop_count', [arg($pattern, 'pattern'), arg($intPtr, 'countPtr')]),
+				func($status, 'cairo_pattern_get_color_stop_rgba', [arg($pattern, 'pattern'), arg($int, 'index'), arg($doublePtr, 'offset'), arg($doublePtr, 'red'), arg($doublePtr, 'green'), arg($doublePtr, 'blue'), arg($doublePtr, 'alpha')]),
+				func($status, 'cairo_pattern_get_rgba', [arg($pattern, 'pattern'), arg($doublePtr, 'red'), arg($doublePtr, 'green'), arg($doublePtr, 'blue'), arg($doublePtr, 'alpha')]),
+
+				func($status, 'cairo_pattern_get_linear_points', [arg($pattern, 'pattern'), arg($doublePtr, 'x0'), arg($doublePtr, 'y0'), arg($doublePtr, 'x1'), arg($doublePtr, 'y1')]),
+				func($status, 'cairo_pattern_get_radial_circles', [arg($pattern, 'pattern'), arg($doublePtr, 'x0'), arg($doublePtr, 'y0'), arg($doublePtr, 'r0'), arg($doublePtr, 'x1'), arg($doublePtr, 'y1'), arg($doublePtr, 'r1')]),
+
 				/*
-				typedef             cairo_pattern_t;
-cairo_status_t      cairo_pattern_get_color_stop_count  (cairo_pattern_t *pattern, int *count);
-cairo_status_t      cairo_pattern_get_color_stop_rgba   (cairo_pattern_t *pattern, int index, double *offset, double *red, double *green, double *blue, double *alpha);
-cairo_status_t      cairo_pattern_get_rgba              (cairo_pattern_t *pattern, double *red, double *green, double *blue, double *alpha);
 cairo_status_t      cairo_pattern_get_surface           (cairo_pattern_t *pattern, cairo_surface_t **surface);
-cairo_status_t      cairo_pattern_get_linear_points     (cairo_pattern_t *pattern, double *x0, double *y0, double *x1, double *y1);
-cairo_status_t      cairo_pattern_get_radial_circles    (cairo_pattern_t *pattern, double *x0, double *y0, double *r0, double *x1, double *y1, double *r1);
 
 cairo_status_t      cairo_mesh_pattern_get_patch_count  (cairo_pattern_t *pattern, unsigned int *count);
 cairo_path_t *      cairo_mesh_pattern_get_path         (cairo_pattern_t *pattern, unsigned int patch_num);

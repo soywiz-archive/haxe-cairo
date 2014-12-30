@@ -189,6 +189,11 @@ class CairoRaw {
 		static public var cairo_mesh_pattern_set_corner_color_rgba = load('hx_cairo_mesh_pattern_set_corner_color_rgba', -1);
 		static public var cairo_pattern_set_matrix = load('hx_cairo_pattern_set_matrix', 2);
 		static public var cairo_pattern_get_matrix = load('hx_cairo_pattern_get_matrix', 2);
+		static public var cairo_pattern_get_color_stop_count = load('hx_cairo_pattern_get_color_stop_count', 2);
+		static public var cairo_pattern_get_color_stop_rgba = load('hx_cairo_pattern_get_color_stop_rgba', -1);
+		static public var cairo_pattern_get_rgba = load('hx_cairo_pattern_get_rgba', 5);
+		static public var cairo_pattern_get_linear_points = load('hx_cairo_pattern_get_linear_points', 5);
+		static public var cairo_pattern_get_radial_circles = load('hx_cairo_pattern_get_radial_circles', -1);
 		static public var cairo_image_surface_create_from_png = load('hx_cairo_image_surface_create_from_png', 1);
 		static public var cairo_image_surface_create_from_png_stream = load('hx_cairo_image_surface_create_from_png_stream', 2);
 		static public var cairo_surface_write_to_png = load('hx_cairo_surface_write_to_png', 2);

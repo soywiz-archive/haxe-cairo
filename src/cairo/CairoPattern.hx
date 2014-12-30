@@ -22,8 +22,8 @@ class CairoPattern {
 		return new CairoPattern(CairoRaw.cairo_pattern_create_for_surface(surface.handle));
 	}
 
-	static public function createMesh():CairoMeshPattern {
-		return new CairoMeshPattern(CairoRaw.cairo_pattern_create_mesh());
+	static public function createMesh():CairoPatternMesh {
+		return new CairoPatternMesh(CairoRaw.cairo_pattern_create_mesh());
 	}
 
 	static public function createLinear(x0:Float, y0:Float, x1:Float, y1:Float):CairoPatternGradient {
@@ -52,6 +52,12 @@ class CairoPattern {
 	public function setMatrix(matrix:CairoMatrix):CairoPattern {
 		CairoRaw.cairo_pattern_set_matrix(handle, matrix);
 		return this;
+	}
+
+	public function getRgba():CairoRgba {
+		var r = [0.0], g = [0.0], b = [0.0], a = [0.0];
+		CairoRaw.cairo_pattern_get_rgba(handle, r, g, b, a);
+		return new CairoRgba(r[0], g[0], b[0], a[0]);
 	}
 
 	public function getMatrix() {

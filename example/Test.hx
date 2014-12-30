@@ -16,7 +16,9 @@ class Test {
 			context.setSourceRgba(1, 0, 0, 1);
 			context.rectangle(10, 10, 50, 50);
 			context.fill();
-			context.setSource(CairoPattern.createLinear(30, 30, 70, 70).addColorStopRgb(0, 0.5, 0, 0).addColorStopRgb(1, 0, 0, 1));
+			var gradient = CairoPattern.createLinear(30, 30, 70, 70).addColorStopRgb(0, 0.5, 0, 0).addColorStopRgb(1, 0, 0, 1);
+			context.setSource(gradient);
+			trace('color stop count 2 == ', gradient.getColorStops());
 			context.rectangle(30, 30, 70, 70);
 			context.fill();
 
@@ -46,7 +48,9 @@ class Test {
 			context.translate(50, 50);
 			context.selectFontFace("Arial", CairoFontSlant.NORMAL, CairoFontWeight.NORMAL);
 			context.setFontSize(50);
-			//context.showText('Hello World!');
+
+			trace('First time, this could take a while, it seems that it is building a font cache...');
+			context.showText('Hello World!');
 		});
 
 		//surface.flush();

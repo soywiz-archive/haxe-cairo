@@ -2186,6 +2186,342 @@ extern "C" {
 	        					return val_null;
         	        }
 				DEFINE_PRIM(hx_cairo_pattern_get_matrix, 2);
+		    					value hx_cairo_pattern_get_color_stop_count(value pattern, value countPtr) {
+		        	        		kind_cairo_pattern_t_check(pattern);
+        	        		
+				val_check(countPtr, array);
+				int countPtr_size = val_array_size(countPtr);
+				int* countPtr_values = (int*)malloc(sizeof(int) * countPtr_size);
+				{
+					for (int n = 0; n < countPtr_size; n++) countPtr_values[n] = val_int(val_array_i(countPtr, n));
+				}
+			;
+        	
+        					cairo_status_t _result = cairo_pattern_get_color_stop_count(kind_cairo_pattern_t_get(pattern), countPtr_values);
+	        		        		;
+	        		        		
+				{
+					for (int n = 0; n < countPtr_size; n++) val_array_set_i(countPtr, n, alloc_int(countPtr_values[n]));
+				}
+				free(countPtr_values);
+			;
+	        					return alloc_int(_result);
+        	        }
+				DEFINE_PRIM(hx_cairo_pattern_get_color_stop_count, 2);
+		    					value hx_cairo_pattern_get_color_stop_rgba(value *_args, int _nargs) {
+							value pattern = _args[0];
+							value index = _args[1];
+							value offset = _args[2];
+							value red = _args[3];
+							value green = _args[4];
+							value blue = _args[5];
+							value alpha = _args[6];
+					        	        		kind_cairo_pattern_t_check(pattern);
+        	        		val_check(index, int);
+        	        		
+				val_check(offset, array);
+				int offset_size = val_array_size(offset);
+				double* offset_values = (double*)malloc(sizeof(double) * offset_size);
+				{
+					for (int n = 0; n < offset_size; n++) offset_values[n] = val_number(val_array_i(offset, n));
+				}
+			;
+        	        		
+				val_check(red, array);
+				int red_size = val_array_size(red);
+				double* red_values = (double*)malloc(sizeof(double) * red_size);
+				{
+					for (int n = 0; n < red_size; n++) red_values[n] = val_number(val_array_i(red, n));
+				}
+			;
+        	        		
+				val_check(green, array);
+				int green_size = val_array_size(green);
+				double* green_values = (double*)malloc(sizeof(double) * green_size);
+				{
+					for (int n = 0; n < green_size; n++) green_values[n] = val_number(val_array_i(green, n));
+				}
+			;
+        	        		
+				val_check(blue, array);
+				int blue_size = val_array_size(blue);
+				double* blue_values = (double*)malloc(sizeof(double) * blue_size);
+				{
+					for (int n = 0; n < blue_size; n++) blue_values[n] = val_number(val_array_i(blue, n));
+				}
+			;
+        	        		
+				val_check(alpha, array);
+				int alpha_size = val_array_size(alpha);
+				double* alpha_values = (double*)malloc(sizeof(double) * alpha_size);
+				{
+					for (int n = 0; n < alpha_size; n++) alpha_values[n] = val_number(val_array_i(alpha, n));
+				}
+			;
+        	
+        					cairo_status_t _result = cairo_pattern_get_color_stop_rgba(kind_cairo_pattern_t_get(pattern), val_get_int(index), offset_values, red_values, green_values, blue_values, alpha_values);
+	        		        		;
+	        		        		;
+	        		        		
+				{
+					for (int n = 0; n < offset_size; n++) val_array_set_i(offset, n, alloc_float(offset_values[n]));
+				}
+				free(offset_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < red_size; n++) val_array_set_i(red, n, alloc_float(red_values[n]));
+				}
+				free(red_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < green_size; n++) val_array_set_i(green, n, alloc_float(green_values[n]));
+				}
+				free(green_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < blue_size; n++) val_array_set_i(blue, n, alloc_float(blue_values[n]));
+				}
+				free(blue_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < alpha_size; n++) val_array_set_i(alpha, n, alloc_float(alpha_values[n]));
+				}
+				free(alpha_values);
+			;
+	        					return alloc_int(_result);
+        	        }
+				DEFINE_PRIM_MULT(hx_cairo_pattern_get_color_stop_rgba);
+		    					value hx_cairo_pattern_get_rgba(value pattern, value red, value green, value blue, value alpha) {
+		        	        		kind_cairo_pattern_t_check(pattern);
+        	        		
+				val_check(red, array);
+				int red_size = val_array_size(red);
+				double* red_values = (double*)malloc(sizeof(double) * red_size);
+				{
+					for (int n = 0; n < red_size; n++) red_values[n] = val_number(val_array_i(red, n));
+				}
+			;
+        	        		
+				val_check(green, array);
+				int green_size = val_array_size(green);
+				double* green_values = (double*)malloc(sizeof(double) * green_size);
+				{
+					for (int n = 0; n < green_size; n++) green_values[n] = val_number(val_array_i(green, n));
+				}
+			;
+        	        		
+				val_check(blue, array);
+				int blue_size = val_array_size(blue);
+				double* blue_values = (double*)malloc(sizeof(double) * blue_size);
+				{
+					for (int n = 0; n < blue_size; n++) blue_values[n] = val_number(val_array_i(blue, n));
+				}
+			;
+        	        		
+				val_check(alpha, array);
+				int alpha_size = val_array_size(alpha);
+				double* alpha_values = (double*)malloc(sizeof(double) * alpha_size);
+				{
+					for (int n = 0; n < alpha_size; n++) alpha_values[n] = val_number(val_array_i(alpha, n));
+				}
+			;
+        	
+        					cairo_status_t _result = cairo_pattern_get_rgba(kind_cairo_pattern_t_get(pattern), red_values, green_values, blue_values, alpha_values);
+	        		        		;
+	        		        		
+				{
+					for (int n = 0; n < red_size; n++) val_array_set_i(red, n, alloc_float(red_values[n]));
+				}
+				free(red_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < green_size; n++) val_array_set_i(green, n, alloc_float(green_values[n]));
+				}
+				free(green_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < blue_size; n++) val_array_set_i(blue, n, alloc_float(blue_values[n]));
+				}
+				free(blue_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < alpha_size; n++) val_array_set_i(alpha, n, alloc_float(alpha_values[n]));
+				}
+				free(alpha_values);
+			;
+	        					return alloc_int(_result);
+        	        }
+				DEFINE_PRIM(hx_cairo_pattern_get_rgba, 5);
+		    					value hx_cairo_pattern_get_linear_points(value pattern, value x0, value y0, value x1, value y1) {
+		        	        		kind_cairo_pattern_t_check(pattern);
+        	        		
+				val_check(x0, array);
+				int x0_size = val_array_size(x0);
+				double* x0_values = (double*)malloc(sizeof(double) * x0_size);
+				{
+					for (int n = 0; n < x0_size; n++) x0_values[n] = val_number(val_array_i(x0, n));
+				}
+			;
+        	        		
+				val_check(y0, array);
+				int y0_size = val_array_size(y0);
+				double* y0_values = (double*)malloc(sizeof(double) * y0_size);
+				{
+					for (int n = 0; n < y0_size; n++) y0_values[n] = val_number(val_array_i(y0, n));
+				}
+			;
+        	        		
+				val_check(x1, array);
+				int x1_size = val_array_size(x1);
+				double* x1_values = (double*)malloc(sizeof(double) * x1_size);
+				{
+					for (int n = 0; n < x1_size; n++) x1_values[n] = val_number(val_array_i(x1, n));
+				}
+			;
+        	        		
+				val_check(y1, array);
+				int y1_size = val_array_size(y1);
+				double* y1_values = (double*)malloc(sizeof(double) * y1_size);
+				{
+					for (int n = 0; n < y1_size; n++) y1_values[n] = val_number(val_array_i(y1, n));
+				}
+			;
+        	
+        					cairo_status_t _result = cairo_pattern_get_linear_points(kind_cairo_pattern_t_get(pattern), x0_values, y0_values, x1_values, y1_values);
+	        		        		;
+	        		        		
+				{
+					for (int n = 0; n < x0_size; n++) val_array_set_i(x0, n, alloc_float(x0_values[n]));
+				}
+				free(x0_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < y0_size; n++) val_array_set_i(y0, n, alloc_float(y0_values[n]));
+				}
+				free(y0_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < x1_size; n++) val_array_set_i(x1, n, alloc_float(x1_values[n]));
+				}
+				free(x1_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < y1_size; n++) val_array_set_i(y1, n, alloc_float(y1_values[n]));
+				}
+				free(y1_values);
+			;
+	        					return alloc_int(_result);
+        	        }
+				DEFINE_PRIM(hx_cairo_pattern_get_linear_points, 5);
+		    					value hx_cairo_pattern_get_radial_circles(value *_args, int _nargs) {
+							value pattern = _args[0];
+							value x0 = _args[1];
+							value y0 = _args[2];
+							value r0 = _args[3];
+							value x1 = _args[4];
+							value y1 = _args[5];
+							value r1 = _args[6];
+					        	        		kind_cairo_pattern_t_check(pattern);
+        	        		
+				val_check(x0, array);
+				int x0_size = val_array_size(x0);
+				double* x0_values = (double*)malloc(sizeof(double) * x0_size);
+				{
+					for (int n = 0; n < x0_size; n++) x0_values[n] = val_number(val_array_i(x0, n));
+				}
+			;
+        	        		
+				val_check(y0, array);
+				int y0_size = val_array_size(y0);
+				double* y0_values = (double*)malloc(sizeof(double) * y0_size);
+				{
+					for (int n = 0; n < y0_size; n++) y0_values[n] = val_number(val_array_i(y0, n));
+				}
+			;
+        	        		
+				val_check(r0, array);
+				int r0_size = val_array_size(r0);
+				double* r0_values = (double*)malloc(sizeof(double) * r0_size);
+				{
+					for (int n = 0; n < r0_size; n++) r0_values[n] = val_number(val_array_i(r0, n));
+				}
+			;
+        	        		
+				val_check(x1, array);
+				int x1_size = val_array_size(x1);
+				double* x1_values = (double*)malloc(sizeof(double) * x1_size);
+				{
+					for (int n = 0; n < x1_size; n++) x1_values[n] = val_number(val_array_i(x1, n));
+				}
+			;
+        	        		
+				val_check(y1, array);
+				int y1_size = val_array_size(y1);
+				double* y1_values = (double*)malloc(sizeof(double) * y1_size);
+				{
+					for (int n = 0; n < y1_size; n++) y1_values[n] = val_number(val_array_i(y1, n));
+				}
+			;
+        	        		
+				val_check(r1, array);
+				int r1_size = val_array_size(r1);
+				double* r1_values = (double*)malloc(sizeof(double) * r1_size);
+				{
+					for (int n = 0; n < r1_size; n++) r1_values[n] = val_number(val_array_i(r1, n));
+				}
+			;
+        	
+        					cairo_status_t _result = cairo_pattern_get_radial_circles(kind_cairo_pattern_t_get(pattern), x0_values, y0_values, r0_values, x1_values, y1_values, r1_values);
+	        		        		;
+	        		        		
+				{
+					for (int n = 0; n < x0_size; n++) val_array_set_i(x0, n, alloc_float(x0_values[n]));
+				}
+				free(x0_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < y0_size; n++) val_array_set_i(y0, n, alloc_float(y0_values[n]));
+				}
+				free(y0_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < r0_size; n++) val_array_set_i(r0, n, alloc_float(r0_values[n]));
+				}
+				free(r0_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < x1_size; n++) val_array_set_i(x1, n, alloc_float(x1_values[n]));
+				}
+				free(x1_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < y1_size; n++) val_array_set_i(y1, n, alloc_float(y1_values[n]));
+				}
+				free(y1_values);
+			;
+	        		        		
+				{
+					for (int n = 0; n < r1_size; n++) val_array_set_i(r1, n, alloc_float(r1_values[n]));
+				}
+				free(r1_values);
+			;
+	        					return alloc_int(_result);
+        	        }
+				DEFINE_PRIM_MULT(hx_cairo_pattern_get_radial_circles);
 		    					value hx_cairo_image_surface_create_from_png(value filename) {
 		        	        		val_check(filename, string);
         	
