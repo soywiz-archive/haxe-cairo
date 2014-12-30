@@ -18,18 +18,38 @@
 extern "C" {
 	#define val_get_float(v) val_get_double(v)
 
+	cairo_status_t cairo_read_stream(void* _reader, unsigned char *data, unsigned int length) {
+		value reader = (value)_reader;
+		value result = val_call1(reader, alloc_int(length));
+		if (val_is_string(result)) {
+			memcpy(data, val_string(result), length);
+		} else {
+			buffer inbuffer = val_to_buffer(result);
+			memcpy(data, buffer_data(inbuffer), length);
+		}
+		return CAIRO_STATUS_SUCCESS;
+	}
+
 	cairo_status_t cairo_write_stream(void* _writer, const unsigned char *data, unsigned int length) {
 		value writer = (value)_writer;
 		buffer outbuffer = alloc_buffer_len(0);
 		buffer_append_sub(outbuffer, (const char *)data, length);
 		value result = val_call1(writer, buffer_val(outbuffer));
-		return CAIRO_STATUS_SUCCESS;
+		return (cairo_status_t)val_int(result);
 	}
 
 	cairo_status_t cairo_surface_write_to_png_stream2(cairo_surface_t *surface, value writer) {
 		value* root = alloc_root();
 		*root = writer;
 		cairo_status_t result = cairo_surface_write_to_png_stream(surface, cairo_write_stream, (void*)writer);
+		free_root(root);
+		return result;
+	}
+
+	cairo_surface_t *cairo_image_surface_create_from_png_stream2(value reader) {
+		value* root = alloc_root();
+		*root = reader;
+		cairo_surface_t *result = cairo_image_surface_create_from_png_stream(cairo_read_stream, (void*)reader);
 		free_root(root);
 		return result;
 	}
@@ -2052,6 +2072,14 @@ extern "C" {
 	        					return kind_cairo_surface_t_alloc(_result);
         	        }
         DEFINE_PRIM(hx_cairo_image_surface_create_from_png, 1);
+            value hx_cairo_image_surface_create_from_png_stream2(value reader) {
+        	        		;
+        	
+        					cairo_surface_t* _result = cairo_image_surface_create_from_png_stream2(reader);
+	        		        		;
+	        					return kind_cairo_surface_t_alloc(_result);
+        	        }
+        DEFINE_PRIM(hx_cairo_image_surface_create_from_png_stream2, 1);
             value hx_cairo_surface_write_to_png(value surface, value filename) {
         	        		kind_cairo_surface_t_check(surface);
         	        		val_check(filename, string);

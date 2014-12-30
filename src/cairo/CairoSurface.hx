@@ -1,5 +1,6 @@
 package cairo;
 
+import haxe.io.Input;
 import haxe.io.BytesOutput;
 import haxe.io.Output;
 import haxe.io.Bytes;
@@ -28,6 +29,14 @@ class CairoSurface {
 
 	static public function createFromPng(filename:String):CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_image_surface_create_from_png(filename));
+	}
+
+	static public function createFromPngStream(input:Input):CairoSurface {
+		var result = new CairoSurface(CairoRaw.cairo_image_surface_create_from_png_stream2(function(len:Int):BytesData {
+			return input.read(len).getData();
+		}));
+
+		return result;
 	}
 
 	static public function createForSvg(filename:String, width_in_points:Float, height_in_points:Float):CairoSurface {
@@ -83,8 +92,12 @@ class CairoSurface {
 
 	public function writeToPngStream<T: Output>(output:T, autoclose:Bool = true):T {
 		var result = CairoRaw.cairo_surface_write_to_png_stream2(handle, function(data:BytesData) {
-			output.write(Bytes.ofData(data));
-			return CairoStatus.SUCCESS;
+			try {
+				output.write(Bytes.ofData(data));
+				return CairoStatus.SUCCESS;
+			} catch (e:Dynamic) {
+				return CairoStatus.WRITE_ERROR;
+			}
 		});
 		output.flush();
 		if (autoclose) output.close();

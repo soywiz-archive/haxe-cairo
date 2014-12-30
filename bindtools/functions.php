@@ -423,6 +423,7 @@ cairo_status_t      cairo_mesh_pattern_get_corner_color_rgba(cairo_pattern_t *pa
 
 				// PNG Support : http://cairographics.org/manual/cairo-PNG-Support.html
 				func($surface, 'cairo_image_surface_create_from_png', [arg($string, 'filename')]),
+				func($surface, 'cairo_image_surface_create_from_png_stream2', [arg($value, 'reader')]),
 				func($status, 'cairo_surface_write_to_png', [arg($surface, 'surface'), arg($string, 'filename')]),
 				func($status, 'cairo_surface_write_to_png_stream2', [arg($surface, 'surface'), arg($value, 'writer')]),
 

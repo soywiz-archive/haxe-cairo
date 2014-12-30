@@ -1,3 +1,4 @@
+import sys.io.FileInput;
 import sys.io.File;
 import haxe.io.BytesOutput;
 import cairo.*;
@@ -5,6 +6,7 @@ import cairo.*;
 class Test {
 	static public function main() {
 		trace('Cairo version: ' + Cairo.getVersionString());
+
 		var surface = CairoSurface.create(CairoSurfaceFormat.ARGB32, 256, 256);
 		//var surface = CairoSurface.createForSvg("output.svg", 200, 200);
 		//var surface = CairoSurface.createForPdf("output.pdf", 200, 200);
@@ -46,7 +48,13 @@ class Test {
 		matrix.setToScale(2, 2);
 		trace(matrix.transformPoint(new CairoPoint(10, 10)));
 
+		testStreams();
 		testRegions();
+	}
+
+	static private function testStreams() {
+		var surface2 = CairoSurface.createFromPngStream(File.read("output2.png")).createForRectangle(50, 50, 100, 100);
+		surface2.writeToPngStream(File.write("output3.png"));
 	}
 
 	static private function testRegions() {
