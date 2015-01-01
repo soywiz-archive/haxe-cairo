@@ -1,0 +1,3 @@
+pushd project
+wine haxelib run hxcpp Build.xml -Dwindows
+popd

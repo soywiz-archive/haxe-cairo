@@ -1,3 +1,11 @@
+rm -rf example/outcpp
+rm example/output.png
+rm example/output2.png
+rm example/output3.png
+rm example/output4.svg
+rm example/n.n
+rm -rm example/.DS_Store
+rm deploy.zip
 7z a -tzip -mx=9 deploy.zip README.md haxelib.json include.xml src example ndll
 haxelib submit deploy.zip
 rm deploy.zip
