@@ -15,28 +15,10 @@
 #include "cairo/src/cairo-svg.h"
 #include "cairo/src/cairo-pdf.h"
 
+#include "ExtraFunctions.cpp"
+
 extern "C" {
 	#define val_get_float(v) val_get_double(v)
-
-	cairo_status_t cairo_read_stream(void* _reader, unsigned char *data, unsigned int length) {
-		value reader = (value)_reader;
-		value result = val_call1(reader, alloc_int(length));
-		if (val_is_string(result)) {
-			memcpy(data, val_string(result), length);
-		} else {
-			buffer inbuffer = val_to_buffer(result);
-			memcpy(data, buffer_data(inbuffer), length);
-		}
-		return CAIRO_STATUS_SUCCESS;
-	}
-
-	cairo_status_t cairo_write_stream(void* _writer, const unsigned char *data, unsigned int length) {
-		value writer = (value)_writer;
-		buffer outbuffer = alloc_buffer_len(0);
-		buffer_append_sub(outbuffer, (const char *)data, length);
-		value result = val_call1(writer, buffer_val(outbuffer));
-		return (cairo_status_t)val_int(result);
-	}
 
 	void dummy_free(void*ptr) { }
 

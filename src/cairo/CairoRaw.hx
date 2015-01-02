@@ -95,6 +95,13 @@ class CairoRaw {
 		static public var cairo_surface_create_similar_image = load('hx_cairo_surface_create_similar_image', 4);
 		static public var cairo_surface_create_for_rectangle = load('hx_cairo_surface_create_for_rectangle', 5);
 		static public var cairo_surface_status = load('hx_cairo_surface_status', 1);
+		static public var cairo_surface_copy_page = load('hx_cairo_surface_copy_page', 1);
+		static public var cairo_surface_show_page = load('hx_cairo_surface_show_page', 1);
+		static public var cairo_image_surface_get_data2 = load('hx_cairo_image_surface_get_data2', 1);
+		static public var cairo_image_surface_set_data2 = load('hx_cairo_image_surface_set_data2', 2);
+		static public var cairo_surface_get_content = load('hx_cairo_surface_get_content', 1);
+		static public var cairo_surface_mark_dirty = load('hx_cairo_surface_mark_dirty', 1);
+		static public var cairo_surface_mark_dirty_rectangle = load('hx_cairo_surface_mark_dirty_rectangle', 5);
 		static public var cairo_translate = load('hx_cairo_translate', 3);
 		static public var cairo_scale = load('hx_cairo_scale', 3);
 		static public var cairo_rotate = load('hx_cairo_rotate', 2);

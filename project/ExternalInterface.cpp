@@ -15,28 +15,10 @@
 #include "cairo/src/cairo-svg.h"
 #include "cairo/src/cairo-pdf.h"
 
+#include "ExtraFunctions.cpp"
+
 extern "C" {
 	#define val_get_float(v) val_get_double(v)
-
-	cairo_status_t cairo_read_stream(void* _reader, unsigned char *data, unsigned int length) {
-		value reader = (value)_reader;
-		value result = val_call1(reader, alloc_int(length));
-		if (val_is_string(result)) {
-			memcpy(data, val_string(result), length);
-		} else {
-			buffer inbuffer = val_to_buffer(result);
-			memcpy(data, buffer_data(inbuffer), length);
-		}
-		return CAIRO_STATUS_SUCCESS;
-	}
-
-	cairo_status_t cairo_write_stream(void* _writer, const unsigned char *data, unsigned int length) {
-		value writer = (value)_writer;
-		buffer outbuffer = alloc_buffer_len(0);
-		buffer_append_sub(outbuffer, (const char *)data, length);
-		value result = val_call1(writer, buffer_val(outbuffer));
-		return (cairo_status_t)val_int(result);
-	}
 
 	void dummy_free(void*ptr) { }
 
@@ -1015,6 +997,72 @@ extern "C" {
 	        					return alloc_int(_result);
         	        }
 				DEFINE_PRIM(hx_cairo_surface_status, 1);
+		    					value hx_cairo_surface_copy_page(value surface) {
+		        	        		kind_cairo_surface_t_check(surface);
+        	
+        					cairo_surface_copy_page(kind_cairo_surface_t_get(surface));
+	        		        		;
+	        					return val_null;
+        	        }
+				DEFINE_PRIM(hx_cairo_surface_copy_page, 1);
+		    					value hx_cairo_surface_show_page(value surface) {
+		        	        		kind_cairo_surface_t_check(surface);
+        	
+        					cairo_surface_show_page(kind_cairo_surface_t_get(surface));
+	        		        		;
+	        					return val_null;
+        	        }
+				DEFINE_PRIM(hx_cairo_surface_show_page, 1);
+		    					value hx_cairo_image_surface_get_data2(value surface) {
+		        	        		kind_cairo_surface_t_check(surface);
+        	
+        					value _result = cairo_image_surface_get_data2(kind_cairo_surface_t_get(surface));
+	        		        		;
+	        					return _result;
+        	        }
+				DEFINE_PRIM(hx_cairo_image_surface_get_data2, 1);
+		    					value hx_cairo_image_surface_set_data2(value surface, value vv) {
+		        	        		kind_cairo_surface_t_check(surface);
+        	        		value* root_vv = alloc_root(); *root_vv = vv;;
+        	
+        					cairo_image_surface_set_data2(kind_cairo_surface_t_get(surface), (void*)vv);
+	        		        		;
+	        		        		free_root(root_vv);;
+	        					return val_null;
+        	        }
+				DEFINE_PRIM(hx_cairo_image_surface_set_data2, 2);
+		    					value hx_cairo_surface_get_content(value surface) {
+		        	        		kind_cairo_surface_t_check(surface);
+        	
+        					cairo_content_t _result = cairo_surface_get_content(kind_cairo_surface_t_get(surface));
+	        		        		;
+	        					return alloc_int(_result);
+        	        }
+				DEFINE_PRIM(hx_cairo_surface_get_content, 1);
+		    					value hx_cairo_surface_mark_dirty(value surface) {
+		        	        		kind_cairo_surface_t_check(surface);
+        	
+        					cairo_surface_mark_dirty(kind_cairo_surface_t_get(surface));
+	        		        		;
+	        					return val_null;
+        	        }
+				DEFINE_PRIM(hx_cairo_surface_mark_dirty, 1);
+		    					value hx_cairo_surface_mark_dirty_rectangle(value surface, value x, value y, value width, value height) {
+		        	        		kind_cairo_surface_t_check(surface);
+        	        		val_check(x, int);
+        	        		val_check(y, int);
+        	        		val_check(width, int);
+        	        		val_check(height, int);
+        	
+        					cairo_surface_mark_dirty_rectangle(kind_cairo_surface_t_get(surface), val_get_int(x), val_get_int(y), val_get_int(width), val_get_int(height));
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        		        		;
+	        					return val_null;
+        	        }
+				DEFINE_PRIM(hx_cairo_surface_mark_dirty_rectangle, 5);
 		    					value hx_cairo_translate(value cr, value tx, value ty) {
 		        	        		kind_cairo_t_check(cr);
         	        		val_check(tx, number);;

@@ -1,5 +1,6 @@
 package cairo;
 
+import cairo.tool.CairoBlur;
 import haxe.io.Input;
 import haxe.io.BytesOutput;
 import haxe.io.Output;
@@ -22,6 +23,58 @@ class CairoSurface {
 	private function get_width() return CairoRaw.cairo_image_surface_get_width(handle);
 	private function get_height() return CairoRaw.cairo_image_surface_get_height(handle);
 	private function get_stride() return CairoRaw.cairo_image_surface_get_stride(handle);
+
+	public function setData(data:Bytes):Void {
+		CairoRaw.cairo_image_surface_set_data2(handle, data.getData());
+	}
+
+	public function getData():Bytes {
+		return Bytes.ofData(CairoRaw.cairo_image_surface_get_data2(handle));
+	}
+
+	public function blur(radiusX:Int, radiusY:Int):Void {
+		CairoBlur.blur(this, radiusX, radiusY);
+	}
+
+	public function setComponents(indices: Array<Int>, buffers:Array<Bytes>, x:Int, y:Int, width:Int, height:Int):Void {
+		var data = getData();
+		for (n in 0 ... indices.length) {
+			var index = indices[n];
+			var buffer = buffers[n];
+			var o = 0;
+			for (py in 0 ... height) {
+				var pos = (py + y) * stride + x * 4;
+				for (px in 0 ... width) {
+					data.set(pos + index, buffer.get(o));
+					pos += 4;
+					o++;
+				}
+			}
+		}
+		setData(data);
+	}
+
+	public function extractComponents(indices: Array<Int>, x:Int, y:Int, width:Int, height:Int):Array<Bytes> {
+		var buffers = [for (index in indices) Bytes.alloc(width * height)];
+		var data = getData();
+		//var width = this.width;
+		//var height = this.height;
+		var stride = this.stride;
+		for (n in 0 ... indices.length) {
+			var index = indices[n];
+			var buffer = buffers[n];
+			var o = 0;
+			for (py in 0 ... height) {
+				var pos = (py + y) * stride + x * 4;
+				for (px in 0 ... width) {
+					buffer.set(o, data.get(pos + index));
+					pos += 4;
+					o++;
+				}
+			}
+		}
+		return buffers;
+	}
 
 	static public function create(format:CairoSurfaceFormat, width:Int, height:Int):CairoSurface {
 		return new CairoSurface(CairoRaw.cairo_image_surface_create(format, width, height));
@@ -131,7 +184,16 @@ class CairoSurface {
 		return output;
 	}
 
-	public function toString() {
+	public function getContent():CairoContent return CairoRaw.cairo_surface_get_content(handle);
+	public function markDirty():Void CairoRaw.cairo_surface_mark_dirty(handle);
+	public function copyPage():Void CairoRaw.cairo_surface_copy_page(handle);
+	public function showPage():Void CairoRaw.cairo_surface_show_page(handle);
+
+	public function markDirtyRectangle(x:Int, y:Int, width:Int, height:Int):Void {
+		CairoRaw.cairo_surface_mark_dirty_rectangle(handle, x, y, width, height);
+	}
+
+	public function toString():String {
 		return 'CairoSurface(format=$format, ${width}x${height}, stride=$stride)';
 	}
 }

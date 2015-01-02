@@ -1,7 +1,17 @@
+import cairo.CairoRectangleInt;
+import cairo.CairoRegion;
+import cairo.CairoPoint;
+import cairo.CairoFontWeight;
+import cairo.CairoFontSlant;
+import cairo.CairoMatrix;
+import cairo.CairoAntialias;
+import cairo.CairoPattern;
 import sys.io.FileInput;
 import sys.io.File;
 import haxe.io.BytesOutput;
-import cairo.*;
+import cairo.CairoSurface;
+import cairo.Cairo;
+import cairo.CairoSurfaceFormat;
 
 class Test {
 	static public function main() {
@@ -67,6 +77,41 @@ class Test {
 
 		testStreams();
 		testRegions();
+		testData();
+	}
+
+	static private function testData() {
+		var surface = CairoSurface.create(CairoSurfaceFormat.ARGB32, 256, 256);
+		var context = surface.getContext();
+		context.saveRestore(function() {
+			context.translate(50, 0);
+			context.saveRestore(function() {
+				context.setAntialias(CairoAntialias.SUBPIXEL);
+				context.transform(new CairoMatrix().setToRotate(0.5));
+
+				context.setSourceRgba(1, 0, 0, 1);
+				context.rectangle(10, 10, 100, 100);
+				context.fill();
+
+				var gradient = CairoPattern.createLinear(30, 30, 70, 70).addColorStopRgb(0, 0.5, 0, 0).addColorStopRgb(1, 0, 0, 1);
+				context.setSource(gradient);
+				trace('color stop count 2 == ', gradient.getColorStops());
+				context.rectangle(30, 30, 70, 70);
+				context.fill();
+
+			});
+			/*
+			var gradient = CairoPattern.createLinear(30, 30, 70, 70).addColorStopRgb(0, 0.5, 0, 0).addColorStopRgb(1, 0, 0, 1);
+			context.setSource(gradient);
+			context.rectangle(30, 30, 70, 70);
+			context.fill();
+			*/
+		});
+		//neko.vm.Gc.run(true);
+		//var data = surface.getData();
+		//trace(data);
+		surface.blur(0, 20);
+		surface.writeToPng('output_blur.png');
 	}
 
 	static private function testStreams() {
